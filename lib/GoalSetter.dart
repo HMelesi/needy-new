@@ -163,8 +163,8 @@ class _GoalFormState extends State<GoalForm> {
         .collection('welcome')
         .document('test_user')
         .collection('goals')
-        .add({'goal': goal.text}).then((res) {
-      print(res.documentID);
+        .document(goal.text)
+        .setData({'goal': goal.text}).then((res) {
       Scaffold.of(context).showSnackBar(
         SnackBar(
           content: Text('Goal added!'),
