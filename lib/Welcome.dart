@@ -17,8 +17,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Column(children: <Widget>[
-      new StreamBuilder(
+    return Column(
+      children: <Widget>[
+        new StreamBuilder(
           stream: Firestore.instance
               .collection('welcome')
               .document('jamesinfo')
@@ -33,7 +34,9 @@ class _HomePageState extends State<HomePage> {
             final goal = userDocument["goal"];
             return new Text(
                 'hi ${name}, it is time to get to work now on your goal of "${goal}" or ${pet} will die of starvation');
-          }),
-    ]);
+          },
+        ),
+      ],
+    );
   }
 }
