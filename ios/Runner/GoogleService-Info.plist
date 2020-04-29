@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>662921807352-1853d6rui3cckeig45o5341s7f3fvfjs.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.662921807352-1853d6rui3cckeig45o5341s7f3fvfjs</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAvB2GHD1xtyEJiVl_6hG4qvPjZnkpaU84</string>
+	<key>GCM_SENDER_ID</key>
+	<string>662921807352</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.needyNew</string>
+	<key>PROJECT_ID</key>
+	<string>needy-pet</string>
+	<key>STORAGE_BUCKET</key>
+	<string>needy-pet.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:662921807352:ios:ee98f02b4e2ead8290c20d</string>
+	<key>DATABASE_URL</key>
+	<string>https://needy-pet.firebaseio.com</string>
+</dict>
+</plist>
