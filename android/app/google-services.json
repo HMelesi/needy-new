@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "662921807352",
+    "firebase_url": "https://needy-pet.firebaseio.com",
+    "project_id": "needy-pet",
+    "storage_bucket": "needy-pet.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:662921807352:android:c4646d1448dd248790c20d",
+        "android_client_info": {
+          "package_name": "com.example.needy_new"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "662921807352-f9rvmqj4u74uo6obua0hmti91rtojq0k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJL0TNFkGDnN-rWFTsiNEsivJCtZY00EU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "662921807352-f9rvmqj4u74uo6obua0hmti91rtojq0k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "662921807352-84084ecj1fk1m5slnds0fltfjdhbjlim.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.needyPet"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
