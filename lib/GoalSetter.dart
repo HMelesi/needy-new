@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class GoalSetter extends StatelessWidget {
   @override
@@ -22,8 +23,10 @@ class _GoalFormState extends State<GoalForm> {
   String _goalName;
 
   final _formKey = GlobalKey<FormState>();
+  final newGoalController = TextEditingController();
+  final databaseReference = Firestore.instance;
 
-  // TODO: Add better layout/constraints, handle form submit
+  // TODO: Add better layout/constraints, handle different pets
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +35,7 @@ class _GoalFormState extends State<GoalForm> {
       child: Column(
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.all(30.0),
+            padding: const EdgeInsets.all(8.0),
             child: Text(
               'hi james, select the creature you will take care of',
               style: TextStyle(
@@ -51,7 +54,7 @@ class _GoalFormState extends State<GoalForm> {
             child: Image.asset('images/pixil-cat.png'),
           ),
           Padding(
-            padding: const EdgeInsets.all(30.0),
+            padding: const EdgeInsets.all(8.0),
             child: Text(
               'name the creature',
               style: TextStyle(
@@ -61,7 +64,7 @@ class _GoalFormState extends State<GoalForm> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(30.0),
+            padding: const EdgeInsets.all(8.0),
             child: TextFormField(
               validator: (value) {
                 if (value.isEmpty) {
@@ -90,7 +93,7 @@ class _GoalFormState extends State<GoalForm> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(30.0),
+            padding: const EdgeInsets.all(8.0),
             child: Text(
               'what is your overall goal?',
               style: TextStyle(
@@ -100,12 +103,14 @@ class _GoalFormState extends State<GoalForm> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(30.0),
+            padding: const EdgeInsets.all(8.0),
             child: TextFormField(
+              controller: newGoalController,
               validator: (value) {
                 if (value.isEmpty) {
                   return 'Please enter a goal!';
                 }
+                return null;
               },
               onSaved: (String value) {
                 _goalName = value;
@@ -128,26 +133,50 @@ class _GoalFormState extends State<GoalForm> {
               ),
             ),
           ),
-          FlatButton(
-            onPressed: () {
-              if (_formKey.currentState.validate()) {
-                print('form is valid');
-                _formKey.currentState.save();
-              }
-              print(_petName);
-              print(_goalName);
-            },
-            child: Text(
-              'NEXT',
-              style: TextStyle(
-                fontFamily: 'PressStart2P',
-                fontSize: 24,
-                color: Colors.white,
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child: FlatButton(
+              onPressed: () {
+                if (_formKey.currentState.validate()) {
+                  print('form is valid');
+                  _formKey.currentState.save();
+                  addNewGoal(newGoalController);
+                }
+              },
+              child: Text(
+                'NEXT',
+                style: TextStyle(
+                  fontFamily: 'PressStart2P',
+                  fontSize: 24,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
         ],
       ),
     );
+  }
+
+  void addNewGoal(goal) {
+    databaseReference
+        .collection('welcome')
+        .document('test_user')
+        .collection('goals')
+        .add({'goal': goal.text}).then((res) {
+      print(res.documentID);
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Goal added!'),
+        ),
+      );
+      goal.clear();
+    }).catchError((err) {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text(err),
+        ),
+      );
+    });
   }
 }
