@@ -2,23 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class NewHabit extends StatelessWidget {
+  NewHabit({Key key, this.goalName, this.userId});
+  String goalName;
+  String userId;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: MyCustomForm(),
+      body: MyCustomForm(goalName: goalName, userId: userId),
       backgroundColor: Colors.purple[200],
     );
   }
 }
 
 class MyCustomForm extends StatefulWidget {
+  MyCustomForm({Key key, this.goalName, this.userId});
+  String goalName;
+  String userId;
   @override
   MyCustomFormState createState() {
-    return MyCustomFormState();
+    return MyCustomFormState(goalName: goalName, userId: userId);
   }
 }
 
 class MyCustomFormState extends State<MyCustomForm> {
+  MyCustomFormState({Key key, this.goalName, this.userId});
+  String goalName;
+  String userId;
   final _formKey = GlobalKey<FormState>();
   final newHabitController = TextEditingController();
   final dbRef = Firestore.instance;
@@ -104,8 +114,15 @@ class MyCustomFormState extends State<MyCustomForm> {
   }
 
   void addNewHabit(habit) {
-    dbRef.collection('new_habit').add({'habit': habit.text}).then((res) {
-      print(res.documentID);
+    print(goalName);
+    dbRef
+        .collection('users')
+        .document(userId)
+        .collection('goals')
+        .document(goalName)
+        .collection('habits')
+        .document(habit.text)
+        .setData({'habit': habit.text}).then((res) {
       Scaffold.of(context).showSnackBar(
         SnackBar(
           content: Text('Habit Added!'),
