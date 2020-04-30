@@ -1,4 +1,4 @@
-import 'package:needy_new/SignIn.dart';
+import 'package:needy_new/SignInSignUp.dart';
 import 'package:needy_new/Welcome.dart';
 import 'package:needy_new/authentication.dart';
 import 'package:flutter/material.dart';
@@ -70,14 +70,14 @@ class _RootPageState extends State<RootPage> {
         return buildWaitingScreen();
         break;
       case AuthStatus.NOT_LOGGED_IN:
-        return new LoginSignupPage(
+        return SignInSignUp(
           auth: widget.auth,
           loginCallback: loginCallback,
         );
         break;
       case AuthStatus.LOGGED_IN:
         if (_userId.length > 0 && _userId != null) {
-          return new HomePage(
+          return HomePage(
             userId: _userId,
             auth: widget.auth,
             logoutCallback: logoutCallback,
