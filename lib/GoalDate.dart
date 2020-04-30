@@ -12,16 +12,18 @@ class GoalDate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GoalDateForm(),
+      body: GoalDateForm(goalName: goalName),
       backgroundColor: Colors.purple,
     );
   }
 }
 
 class GoalDateForm extends StatefulWidget {
+  GoalDateForm({Key key, this.goalName});
+  String goalName;
   @override
   _GoalDateFormState createState() {
-    return _GoalDateFormState();
+    return _GoalDateFormState(goalName: goalName);
   }
 }
 
@@ -39,6 +41,7 @@ class _GoalDateFormState extends State<GoalDateForm> {
 
   @override
   Widget build(BuildContext context) {
+    print(goalName);
     return Scaffold(
       backgroundColor: Colors.purple,
       appBar: AppBar(
