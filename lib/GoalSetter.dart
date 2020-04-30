@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:needy_new/GoalDate.dart';
 
 class GoalSetter extends StatelessWidget {
   @override
@@ -20,7 +21,9 @@ class GoalForm extends StatefulWidget {
 
 class _GoalFormState extends State<GoalForm> {
   String _petName;
-  String _goalName;
+  String goalName;
+
+  final String username = 'test_user';
 
   final _formKey = GlobalKey<FormState>();
   final newGoalController = TextEditingController();
@@ -113,7 +116,7 @@ class _GoalFormState extends State<GoalForm> {
                 return null;
               },
               onSaved: (String value) {
-                _goalName = value;
+                goalName = value;
               },
               decoration: InputDecoration(
                 border: OutlineInputBorder(
@@ -138,9 +141,10 @@ class _GoalFormState extends State<GoalForm> {
             child: FlatButton(
               onPressed: () {
                 if (_formKey.currentState.validate()) {
-                  print('form is valid');
                   _formKey.currentState.save();
                   addNewGoal(newGoalController);
+                  navigateToDatePage(context);
+                  print(goalName);
                 }
               },
               child: Text(
@@ -158,10 +162,15 @@ class _GoalFormState extends State<GoalForm> {
     );
   }
 
+  Future navigateToDatePage(context) async {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => GoalDate(goalName: goalName)));
+  }
+
   void addNewGoal(goal) {
     databaseReference
         .collection('welcome')
-        .document('test_user')
+        .document(username)
         .collection('goals')
         .document(goal.text)
         .setData({'goal': goal.text}).then((res) {
