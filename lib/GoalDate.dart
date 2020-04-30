@@ -166,6 +166,9 @@ class _GoalDateFormState extends State<GoalDateForm> {
 
   Future navigateToHabitPage(context) async {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => NewHabit()));
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                NewHabit(goalName: goalName, userId: userId)));
   }
 }
