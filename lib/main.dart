@@ -9,7 +9,6 @@ import 'package:needy_new/PropsTest.dart';
 import 'package:needy_new/RootPage.dart';
 import 'package:needy_new/authentication.dart';
 
-
 void main() {
   return runApp(MaterialApp(
     home: Scaffold(
@@ -30,6 +29,5 @@ void main() {
     // body: NewHabit()
     // body: MyHabits(),
     // body: PropsTest(),
-  )));
   ));
 }

@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:needy_new/authentication.dart';
 
 class SignInSignUp extends StatefulWidget {
-  SignInSignUp({this.auth, this.loginCallback});
+  SignInSignUp(
+      {this.auth, this.loginCallback, this.onNameChange, this.addNewUser});
 
   final BaseAuth auth;
   final VoidCallback loginCallback;
+  final Function(String) onNameChange;
+  final Function(String, String) addNewUser;
 
   @override
   State<StatefulWidget> createState() => _SignInSignUpState();
@@ -13,6 +16,7 @@ class SignInSignUp extends StatefulWidget {
 
 class _SignInSignUpState extends State<SignInSignUp> {
   final _formKey = GlobalKey<FormState>();
+  String _name;
   String _email;
   String _password;
   String _errorMessage;
@@ -35,13 +39,18 @@ class _SignInSignUpState extends State<SignInSignUp> {
     });
     if (validateAndSave()) {
       String userId = '';
+      String name = '';
       try {
         if (_isLoginForm) {
           userId = await widget.auth.signIn(_email, _password);
-          print('Signed in: $userId');
+          name = _name;
+          widget.onNameChange(name);
+          print('Signed in: $userId with name $name');
         } else {
           userId = await widget.auth.signUp(_email, _password);
-          print('Signed up user: $userId');
+          name = _name;
+          widget.addNewUser(userId, name);
+          print('Signed up user: $userId with name $name');
         }
         setState(() {
           _isLoading = false;
@@ -120,9 +129,38 @@ class _SignInSignUpState extends State<SignInSignUp> {
     );
   }
 
-  Widget showEmailInput() {
+  Widget showNameInput() {
     return Padding(
       padding: EdgeInsets.fromLTRB(0.0, 50.0, 0.0, 0.0),
+      child: TextFormField(
+        maxLines: 1,
+        keyboardType: TextInputType.text,
+        autofocus: false,
+        decoration: InputDecoration(
+          hintText: 'name',
+          prefixIcon: Icon(Icons.person),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(10),
+            ),
+          ),
+          filled: true,
+          fillColor: Colors.grey,
+        ),
+        style: TextStyle(
+          fontFamily: 'PressStart2P',
+          color: Colors.black,
+          fontSize: 16.0,
+        ),
+        validator: (value) => value.isEmpty ? 'name required' : null,
+        onSaved: (value) => _name = value.trim(),
+      ),
+    );
+  }
+
+  Widget showEmailInput() {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
       child: TextFormField(
         maxLines: 1,
         keyboardType: TextInputType.emailAddress,
@@ -239,6 +277,7 @@ class _SignInSignUpState extends State<SignInSignUp> {
           shrinkWrap: true,
           children: <Widget>[
             showLogo(),
+            showNameInput(),
             showEmailInput(),
             showPasswordInput(),
             showPrimaryButton(),
