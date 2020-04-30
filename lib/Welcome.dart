@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:needy_new/GoalSetter.dart';
 // import 'package:needy_new/MyHabits.dart';
 import 'package:needy_new/authentication.dart';
 
@@ -23,7 +24,7 @@ class _HomePageState extends State<HomePage> {
   final BaseAuth auth;
   final VoidCallback logoutCallback;
   final String userId;
-  final String name;
+  String name;
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +42,35 @@ class _HomePageState extends State<HomePage> {
                     return new Text("Loading");
                   }
                   var userDocument = snapshot.data;
-                  final username = userDocument["username"];
-                  return new Text('hi $username, welcome to the app!');
+                  name = userDocument["username"];
+                  final goals = userDocument['goals'];
+                  return Column(
+                    children: <Widget>[
+                      new Text('hi $name, welcome to the app!'),
+                      (goals == null)
+                          ? Column(
+                              children: <Widget>[
+                                Text(
+                                    'hmmm it looks like you have no goals at the moment, would you like to set one up?'),
+                                RaisedButton(
+                                  textColor: Colors.white,
+                                  color: Colors.pink,
+                                  child: Text(
+                                    'Create a new goal',
+                                    style: TextStyle(
+                                      fontFamily: 'PressStart2P',
+                                      color: Colors.yellow,
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    toGoalSetter(context);
+                                  },
+                                )
+                              ],
+                            )
+                          : Text('here are your goals'),
+                    ],
+                  );
                 },
               ),
         RaisedButton(
@@ -61,5 +89,12 @@ class _HomePageState extends State<HomePage> {
         )
       ],
     );
+  }
+
+  Future toGoalSetter(context) async {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => GoalSetter(userId: userId, name: name)));
   }
 }
