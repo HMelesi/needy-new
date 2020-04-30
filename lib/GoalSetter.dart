@@ -37,8 +37,6 @@ class _GoalFormState extends State<GoalForm> {
   String _petName;
   String goalName;
 
-  final String username = 'test_user';
-
   final _formKey = GlobalKey<FormState>();
   final newGoalController = TextEditingController();
   final databaseReference = Firestore.instance;
@@ -177,14 +175,17 @@ class _GoalFormState extends State<GoalForm> {
   }
 
   Future navigateToDatePage(context) async {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => GoalDate(goalName: goalName)));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                GoalDate(goalName: goalName, userId: userId)));
   }
 
   void addNewGoal(goal) {
     databaseReference
-        .collection('welcome')
-        .document(username)
+        .collection('users')
+        .document(userId)
         .collection('goals')
         .document(goal.text)
         .setData({'goal': goal.text}).then((res) {

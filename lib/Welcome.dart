@@ -28,6 +28,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    print(userId);
     return Column(
       children: <Widget>[
         (userId == null)
