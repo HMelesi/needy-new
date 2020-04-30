@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MyHabits extends StatefulWidget {
+  MyHabits({Key key, this.testkey}) : super(key: key);
+
+  final String testkey;
+
   @override
   _MyHabits createState() {
+    print(this.testkey);
     return _MyHabits();
   }
 }
@@ -11,13 +16,14 @@ class MyHabits extends StatefulWidget {
 class _MyHabits extends State<MyHabits> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.purple[200],
-      body: _buildBody(context),
+    return SizedBox(
+      width: 500.0,
+      height: 300.0,
+      child: _buildHabitBody(context),
     );
   }
 
-  Widget _buildBody(BuildContext context) {
+  Widget _buildHabitBody(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance
           .collection('welcome')
@@ -25,40 +31,47 @@ class _MyHabits extends State<MyHabits> {
           .collection('goals')
           .document('be cool')
           .collection('habits')
-          .where('outstanding', isEqualTo: true)
+          // .where('outstanding', isEqualTo: true)
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return LinearProgressIndicator();
         // print(Firestore.instance.collection('new_habit').snapshots());
-        return _buildList(context, snapshot.data.documents);
+        return _buildHabitList(context, snapshot.data.documents);
       },
     );
   }
 
-  Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
+  Widget _buildHabitList(
+      BuildContext context, List<DocumentSnapshot> snapshot) {
     return ListView(
       padding: const EdgeInsets.only(top: 20.0),
-      children: snapshot.map((data) => _buildListItem(context, data)).toList(),
+      children:
+          snapshot.map((data) => _buildHabitListItem(context, data)).toList(),
     );
   }
 
-  Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
-    final record = Record.fromSnapshot(data);
+  Widget _buildHabitListItem(BuildContext context, DocumentSnapshot data) {
+    final habitrecord = HabitRecord.fromSnapshot(data);
 
     return Padding(
-      key: ValueKey(record.habit),
+      key: ValueKey(habitrecord.habit),
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey),
-          borderRadius: BorderRadius.circular(5.0),
-          color: Colors.yellow[200],
-        ),
+        decoration: BoxDecoration(color: Colors.purple),
         child: ListTile(
-          title: Text(record.habit),
-          onTap: () => print(record),
+          title: Text(habitrecord.habit,
+              style: TextStyle(
+                fontFamily: 'PressStart2P',
+                color: (habitrecord.outstanding == true)
+                    ? Colors.red
+                    : Colors.grey,
+              )),
+          onTap: () => habitrecord.reference
+              .updateData({'outstanding': !habitrecord.outstanding}),
           trailing: Icon(
-            Icons.check,
+            (habitrecord.outstanding == true)
+                ? Icons.beach_access
+                : Icons.check,
             color: Colors.green,
           ),
         ),
@@ -67,17 +80,23 @@ class _MyHabits extends State<MyHabits> {
   }
 }
 
-class Record {
+class HabitRecord {
   final String habit;
+  final bool outstanding;
+  final String frequency; // not using this currently
   final DocumentReference reference;
 
-  Record.fromMap(Map<String, dynamic> map, {this.reference})
+  HabitRecord.fromMap(Map<String, dynamic> map, {this.reference})
       : assert(map['habit'] != null),
-        habit = map['habit'];
+        assert(map['outstanding'] != null),
+        assert(map['frequency'] != null),
+        habit = map['habit'],
+        outstanding = map['outstanding'],
+        frequency = map['frequency'];
 
-  Record.fromSnapshot(DocumentSnapshot snapshot)
+  HabitRecord.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data, reference: snapshot.reference);
 
   @override
-  String toString() => "Record<$habit>";
+  String toString() => "HabitRecord<$habit$outstanding$frequency>";
 }
