@@ -110,7 +110,7 @@ class _SignInSignUpState extends State<SignInSignUp> {
     return new Hero(
       tag: 'hero',
       child: Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 70.0, 0.0, 0.0),
+        padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
         child: CircleAvatar(
           backgroundColor: Colors.transparent,
           radius: 48.0,
@@ -129,7 +129,19 @@ class _SignInSignUpState extends State<SignInSignUp> {
         autofocus: false,
         decoration: InputDecoration(
           hintText: 'email',
-          icon: Icon(Icons.mail),
+          prefixIcon: Icon(Icons.mail),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(10),
+            ),
+          ),
+          filled: true,
+          fillColor: Colors.grey,
+        ),
+        style: TextStyle(
+          fontFamily: 'PressStart2P',
+          color: Colors.black,
+          fontSize: 16.0,
         ),
         validator: (value) => value.isEmpty ? 'email required' : null,
         onSaved: (value) => _email = value.trim(),
@@ -146,7 +158,19 @@ class _SignInSignUpState extends State<SignInSignUp> {
         autofocus: false,
         decoration: InputDecoration(
           hintText: 'password',
-          icon: Icon(Icons.lock),
+          prefixIcon: Icon(Icons.lock),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(10),
+            ),
+          ),
+          filled: true,
+          fillColor: Colors.grey,
+        ),
+        style: TextStyle(
+          fontFamily: 'PressStart2P',
+          color: Colors.black,
+          fontSize: 16.0,
         ),
         validator: (value) => value.isEmpty ? 'password required' : null,
         onSaved: (value) => _password = value.trim(),
@@ -162,7 +186,7 @@ class _SignInSignUpState extends State<SignInSignUp> {
         child: FlatButton(
           onPressed: validateAndSubmit,
           child: Text(
-            _isLoginForm ? 'Login' : 'Create Account',
+            _isLoginForm ? 'Sign In' : 'Create Account',
             style: TextStyle(
               fontSize: 20.0,
               color: Colors.black,
@@ -180,7 +204,7 @@ class _SignInSignUpState extends State<SignInSignUp> {
       child: Text(
         _isLoginForm ? 'Create Account >' : '< Return to Sign In',
         style: TextStyle(
-          fontSize: 20.0,
+          fontSize: 15.0,
           color: Colors.black,
           fontFamily: 'PressStart2P',
         ),
