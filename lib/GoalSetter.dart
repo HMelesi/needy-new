@@ -2,23 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class GoalSetter extends StatelessWidget {
+  GoalSetter({Key key, this.userId, this.name});
+
+  final String userId;
+  final String name;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GoalForm(),
+      body: GoalForm(userId: userId, name: name),
       backgroundColor: Colors.purple,
     );
   }
 }
 
 class GoalForm extends StatefulWidget {
+  GoalForm({Key key, this.userId, this.name});
+
+  final String userId;
+  final String name;
+
   @override
   _GoalFormState createState() {
-    return _GoalFormState();
+    return _GoalFormState(userId: userId, name: name);
   }
 }
 
 class _GoalFormState extends State<GoalForm> {
+  _GoalFormState({Key key, this.userId, this.name});
+
+  final String userId;
+  final String name;
   String _petName;
   String _goalName;
 
@@ -37,7 +51,7 @@ class _GoalFormState extends State<GoalForm> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'hi james, select the creature you will take care of',
+              'hi $name, select the creature you will take care of',
               style: TextStyle(
                 fontFamily: 'PressStart2P',
                 color: Colors.cyan,
