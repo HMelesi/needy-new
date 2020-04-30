@@ -2,6 +2,7 @@ import 'package:needy_new/SignInSignUp.dart';
 import 'package:needy_new/Welcome.dart';
 import 'package:needy_new/authentication.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 enum AuthStatus {
   NOT_DETERMINED,
@@ -21,6 +22,8 @@ class RootPage extends StatefulWidget {
 class _RootPageState extends State<RootPage> {
   AuthStatus authStatus = AuthStatus.NOT_DETERMINED;
   String _userId = "";
+  String _name = "";
+  final databaseReference = Firestore.instance;
 
   @override
   void initState() {
@@ -33,6 +36,21 @@ class _RootPageState extends State<RootPage> {
         authStatus =
             user?.uid == null ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;
       });
+    });
+  }
+
+  void onNameChange(name) {
+    setState(() {
+      _name = name;
+    });
+  }
+
+  void addNewUser(userid, name) {
+    databaseReference
+        .collection('users')
+        .document(userid)
+        .setData({'username': name}).then((res) {
+      print('new user added to database');
     });
   }
 
@@ -51,6 +69,7 @@ class _RootPageState extends State<RootPage> {
     setState(() {
       authStatus = AuthStatus.NOT_LOGGED_IN;
       _userId = "";
+      _name = "";
     });
   }
 
@@ -73,10 +92,13 @@ class _RootPageState extends State<RootPage> {
         return SignInSignUp(
           auth: widget.auth,
           loginCallback: loginCallback,
+          onNameChange: onNameChange,
+          addNewUser: addNewUser,
         );
         break;
       case AuthStatus.LOGGED_IN:
         if (_userId.length > 0 && _userId != null) {
+          print(_userId);
           return HomePage(
             userId: _userId,
             auth: widget.auth,
