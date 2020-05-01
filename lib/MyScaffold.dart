@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:needy_new/GoalSetter.dart';
 import 'package:needy_new/MyHabits.dart';
 import 'package:needy_new/NewHabit.dart';
-// import 'package:needy_new/RootPage.dart';
-// import 'package:needy_new/authentication.dart';
+import 'package:needy_new/RootPage.dart';
+import 'package:needy_new/authentication.dart';
 import 'package:needy_new/Welcome.dart';
 
 class MyScaffold extends StatelessWidget {
-  MyScaffold({this.body, this.userId, this.name, this.logoutCallback});
+  MyScaffold(
+      {this.body, this.userId, this.name, this.logoutCallback, this.auth});
 
+  final BaseAuth auth;
   final Widget body;
   final String userId;
   final String name;
@@ -38,7 +40,7 @@ class MyScaffold extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (BuildContext context) =>
-                      HomePage(userId: userId, name: name),
+                      RootPage(userId: userId, name: name, auth: Auth()),
                 ));
           },
         ),
@@ -72,13 +74,28 @@ class MyScaffold extends StatelessWidget {
                         MyHabits(userId: userId, name: name),
                   ));
             }),
-        ListTile(
-            title: Text('logout'),
-            onTap: () {
-              print(Text(
-                  'need to get this working, go to homepage to logout for now'));
-              // logoutCallback();
-            })
+        RaisedButton(
+          textColor: Colors.white,
+          color: Colors.pink,
+          child: Text(
+            'Logout',
+            style: TextStyle(
+              fontFamily: 'PressStart2P',
+              color: Colors.yellow,
+            ),
+          ),
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) => RootPage(
+                      userId: userId,
+                      name: name,
+                      auth: Auth(),
+                      authstat: 'logout'),
+                ));
+          },
+        )
       ])),
     );
   }
