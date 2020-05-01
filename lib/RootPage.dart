@@ -26,12 +26,12 @@ class RootPage extends StatefulWidget {
 
 class _RootPageState extends State<RootPage> {
   _RootPageState({this.userId, this.name, this.authstat});
-  final String userId;
-  final String name;
+  String userId;
+  String name;
   final String authstat;
 
   AuthStatus authStatus = AuthStatus.NOT_DETERMINED;
-  String _userId = '';
+  String _userId = "";
   String _name = "";
   final databaseReference = Firestore.instance;
 
@@ -50,8 +50,7 @@ class _RootPageState extends State<RootPage> {
           }
         }
         if (authstat == 'logout') {
-          print('logout link');
-          authStatus = AuthStatus.NOT_LOGGED_IN;
+          logoutCallback();
         } else {
           authStatus = user?.uid == null
               ? AuthStatus.NOT_LOGGED_IN
@@ -63,14 +62,13 @@ class _RootPageState extends State<RootPage> {
 
   void onNameChange(nom) {
     setState(() {
-      if (name != null) {
+      if (name != "") {
         _name = name;
       } else {
         _name = nom;
       }
     });
   }
-
 
   void addNewUser(userid, name) async {
     String token = await PushNotificationsManager().init();
@@ -97,6 +95,8 @@ class _RootPageState extends State<RootPage> {
       authStatus = AuthStatus.NOT_LOGGED_IN;
       _userId = "";
       _name = "";
+      userId = "";
+      name = "";
     });
   }
 
