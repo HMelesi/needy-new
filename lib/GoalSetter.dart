@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:needy_new/GoalDate.dart';
+import 'package:needy_new/MyScaffold.dart';
 
 class GoalSetter extends StatelessWidget {
   GoalSetter({Key key, this.userId, this.name});
@@ -10,9 +11,10 @@ class GoalSetter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return MyScaffold(
+      userId: userId,
+      name: name,
       body: GoalForm(userId: userId, name: name),
-      backgroundColor: Colors.purple,
     );
   }
 }
@@ -47,6 +49,7 @@ class _GoalFormState extends State<GoalForm> {
 
   @override
   Widget build(BuildContext context) {
+    print('goalsetter: $userId $name');
     return Form(
       key: _formKey,
       child: Column(

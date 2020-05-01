@@ -1,30 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:needy_new/MyScaffold.dart';
 
 class NewHabit extends StatelessWidget {
+  NewHabit({Key key, this.userId, this.name});
+
+  final String userId;
+  final String name;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: MyCustomForm(),
-      backgroundColor: Colors.purple[200],
+    return MyScaffold(
+      userId: userId,
+      name: name,
+      body: MyCustomForm(userId: userId, name: name),
     );
   }
 }
 
 class MyCustomForm extends StatefulWidget {
+  MyCustomForm({Key key, this.userId, this.name});
+
+  final String userId;
+  final String name;
+
   @override
   MyCustomFormState createState() {
-    return MyCustomFormState();
+    return MyCustomFormState(userId: userId, name: name);
   }
 }
 
 class MyCustomFormState extends State<MyCustomForm> {
+  MyCustomFormState({this.userId, this.name});
+
+  final String userId;
+  final String name;
   final _formKey = GlobalKey<FormState>();
   final newHabitController = TextEditingController();
   final dbRef = Firestore.instance;
 
   @override
   Widget build(BuildContext context) {
+    print('newhabit: $userId $name');
     return Form(
       key: _formKey,
       child: Column(
