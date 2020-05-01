@@ -28,9 +28,7 @@ class _HomePageState extends State<HomePage> {
   final VoidCallback logoutCallback;
   final String userId;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-  String name;
-
- final String name;
+  final String name;
 
   @override
   Widget build(BuildContext context) {
@@ -72,8 +70,6 @@ class _HomePageState extends State<HomePage> {
                                         fontFamily: 'PressStart2P',
                                         color: Colors.yellow,
                                       ),
-
-
                                     ),
                                     onPressed: () {
                                       toGoalSetter(context);
