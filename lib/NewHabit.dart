@@ -3,38 +3,48 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:needy_new/MyScaffold.dart';
 
 class NewHabit extends StatelessWidget {
-  NewHabit({Key key, this.userId, this.name});
+
+  NewHabit({Key key, this.userId, this.name, this.goalName});
 
   final String userId;
   final String name;
+  final String goalName;
 
   @override
   Widget build(BuildContext context) {
     return MyScaffold(
       userId: userId,
       name: name,
-      body: MyCustomForm(userId: userId, name: name),
+      body: MyCustomForm(userId: userId, name: name, goalName: goalName),
+
     );
   }
 }
 
 class MyCustomForm extends StatefulWidget {
-  MyCustomForm({Key key, this.userId, this.name});
+
+  MyCustomForm({Key key, this.userId, this.name, this.goalName});
 
   final String userId;
   final String name;
+  final String goalName;
 
   @override
   MyCustomFormState createState() {
-    return MyCustomFormState(userId: userId, name: name);
+    return MyCustomFormState(userId: userId, name: name, goalName: goalName);
+
   }
 }
 
 class MyCustomFormState extends State<MyCustomForm> {
-  MyCustomFormState({this.userId, this.name});
+
+  MyCustomFormState({this.userId, this.name, this.goalName});
 
   final String userId;
   final String name;
+  final String goalName;
+  
+
   final _formKey = GlobalKey<FormState>();
   final newHabitController = TextEditingController();
   final dbRef = Firestore.instance;
@@ -121,8 +131,15 @@ class MyCustomFormState extends State<MyCustomForm> {
   }
 
   void addNewHabit(habit) {
-    dbRef.collection('new_habit').add({'habit': habit.text}).then((res) {
-      print(res.documentID);
+    print(goalName);
+    dbRef
+        .collection('users')
+        .document(userId)
+        .collection('goals')
+        .document(goalName)
+        .collection('habits')
+        .document(habit.text)
+        .setData({'habit': habit.text}).then((res) {
       Scaffold.of(context).showSnackBar(
         SnackBar(
           content: Text('Habit Added!'),

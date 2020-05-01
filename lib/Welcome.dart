@@ -68,6 +68,7 @@ class _HomePageState extends State<HomePage> {
                                         fontFamily: 'PressStart2P',
                                         color: Colors.yellow,
                                       ),
+
                                     ),
                                     onPressed: () {
                                       toGoalSetter(context);

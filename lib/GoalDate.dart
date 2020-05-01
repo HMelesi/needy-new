@@ -6,36 +6,36 @@ import 'package:intl/intl.dart';
 import 'package:needy_new/NewHabit.dart';
 
 class GoalDate extends StatelessWidget {
-  GoalDate({Key key, this.goalName});
+  GoalDate({Key key, this.goalName, this.userId});
   String goalName;
+  String userId;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GoalDateForm(goalName: goalName),
+      body: GoalDateForm(goalName: goalName, userId: userId),
       backgroundColor: Colors.purple,
     );
   }
 }
 
 class GoalDateForm extends StatefulWidget {
-  GoalDateForm({Key key, this.goalName});
+  GoalDateForm({Key key, this.goalName, this.userId});
   String goalName;
+  String userId;
   @override
   _GoalDateFormState createState() {
-    return _GoalDateFormState(goalName: goalName);
+    return _GoalDateFormState(goalName: goalName, userId: userId);
   }
 }
 
 class _GoalDateFormState extends State<GoalDateForm> {
-  _GoalDateFormState({Key key, this.goalName});
+  _GoalDateFormState({Key key, this.goalName, this.userId});
 
   final _formKey = GlobalKey<FormState>();
   final dbRef = Firestore.instance;
-
+  String userId;
   String goalName;
-  final String username = 'test_user';
-
   DateTime _dateTime;
   // double _frequency = 5.0;
 
@@ -146,8 +146,8 @@ class _GoalDateFormState extends State<GoalDateForm> {
 
   void addGoalDate(date) {
     dbRef
-        .collection('welcome')
-        .document(username)
+        .collection('users')
+        .document(userId)
         .collection('goals')
         .document(goalName)
         .setData({"endDate": date}).then((res) {
@@ -166,6 +166,9 @@ class _GoalDateFormState extends State<GoalDateForm> {
 
   Future navigateToHabitPage(context) async {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => NewHabit()));
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                NewHabit(goalName: goalName, userId: userId)));
   }
 }
