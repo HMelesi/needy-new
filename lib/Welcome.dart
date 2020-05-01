@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:needy_new/GoalSetter.dart';
 // import 'package:needy_new/MyHabits.dart';
 import 'package:needy_new/authentication.dart';
+import 'package:needy_new/MyScaffold.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.auth, this.userId, this.logoutCallback, this.name})
@@ -15,7 +16,8 @@ class HomePage extends StatefulWidget {
   final String name;
 
   @override
-  State<StatefulWidget> createState() => new _HomePageState(userId: userId);
+  State<StatefulWidget> createState() => new _HomePageState(
+      userId: userId, name: name, logoutCallback: logoutCallback);
 }
 
 class _HomePageState extends State<HomePage> {
@@ -64,34 +66,36 @@ class _HomePageState extends State<HomePage> {
                                     style: TextStyle(
                                       fontFamily: 'PressStart2P',
                                       color: Colors.yellow,
+
+ 
                                     ),
-                                  ),
-                                  onPressed: () {
-                                    toGoalSetter(context);
-                                  },
-                                )
-                              ],
-                            )
-                          : Text('here are your goals'),
-                    ],
-                  );
-                },
+                                    onPressed: () {
+                                      toGoalSetter(context);
+                                    },
+                                  )
+                                ],
+                              )
+                            : Text('here are your goals'),
+                      ],
+                    );
+                  },
+                ),
+          RaisedButton(
+            textColor: Colors.white,
+            color: Colors.pink,
+            child: Text(
+              'Logout',
+              style: TextStyle(
+                fontFamily: 'PressStart2P',
+                color: Colors.yellow,
               ),
-        RaisedButton(
-          textColor: Colors.white,
-          color: Colors.pink,
-          child: Text(
-            'Logout',
-            style: TextStyle(
-              fontFamily: 'PressStart2P',
-              color: Colors.yellow,
             ),
-          ),
-          onPressed: () {
-            widget.logoutCallback();
-          },
-        )
-      ],
+            onPressed: () {
+              widget.logoutCallback();
+            },
+          )
+        ],
+      ),
     );
   }
 

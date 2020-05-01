@@ -66,11 +66,11 @@ target 'Runner' do
 
   # Plugin Pods
   
-  # Firebase pod for Google Analytics
-  pod 'Firebase/Analytics'
+  # # Firebase pod for Google Analytics
+  # pod 'Firebase/Analytics'
 
-  # Firebase pod for Firebase Cloud Messaging
-  pod 'Firebase/Messaging'
+  # # Firebase pod for Firebase Cloud Messaging
+  # pod 'Firebase/Messaging'
 
 
   # Prepare symlinks folder. We use symlinks to avoid having Podfile.lock
