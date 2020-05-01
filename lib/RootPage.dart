@@ -3,6 +3,7 @@ import 'package:needy_new/Welcome.dart';
 import 'package:needy_new/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:needy_new/push_notifications.dart';
 
 enum AuthStatus {
   NOT_DETERMINED,
@@ -45,11 +46,13 @@ class _RootPageState extends State<RootPage> {
     });
   }
 
-  void addNewUser(userid, name) {
+  void addNewUser(userid, name) async {
+    String token = await PushNotificationsManager().init();
+
     databaseReference
         .collection('users')
         .document(userid)
-        .setData({'username': name}).then((res) {
+        .setData({'username': name, 'fcm': token}).then((res) {
       print('new user added to database');
     });
   }

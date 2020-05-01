@@ -11,7 +11,7 @@ class PushNotificationsManager {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   bool _initialised = false;
 
-  Future<void> init() async {
+  Future init() async {
     if (!_initialised) {
       _firebaseMessaging.requestNotificationPermissions();
       _firebaseMessaging.configure();
@@ -20,6 +20,8 @@ class PushNotificationsManager {
       print('FirebaseMessaging token: $token');
 
       _initialised = true;
+
+      return token;
     }
   }
 }
