@@ -49,10 +49,8 @@ class _RootPageState extends State<RootPage> {
   void addNewUser(userid, name) async {
     String token = await PushNotificationsManager().init();
 
-    databaseReference
-        .collection('users')
-        .document(userid)
-        .setData({'username': name, 'fcm': token}).then((res) {
+    databaseReference.collection('users').document(userid).setData(
+        {'username': name, 'fcm': token, 'outstanding': false}).then((res) {
       print('new user added to database');
     });
   }

@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:needy_new/GoalSetter.dart';
@@ -24,11 +25,13 @@ class _HomePageState extends State<HomePage> {
   final BaseAuth auth;
   final VoidCallback logoutCallback;
   final String userId;
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   String name;
 
   @override
   Widget build(BuildContext context) {
     print(userId);
+    updateToken();
     return Column(
       children: <Widget>[
         (userId == null)
@@ -97,5 +100,16 @@ class _HomePageState extends State<HomePage> {
         context,
         MaterialPageRoute(
             builder: (context) => GoalSetter(userId: userId, name: name)));
+  }
+
+  updateToken() async {
+    final dbRef = Firestore.instance;
+    final token = await _firebaseMessaging.getToken();
+
+    dbRef.collection('users').document(userId).updateData({
+      'fcm': token,
+    }).then((res) {
+      print('fcm token updated');
+    });
   }
 }
