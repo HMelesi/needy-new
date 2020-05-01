@@ -12,6 +12,7 @@ dependencies:
   cloud_firestore: ^0.13.5
   intl: ^0.16.1
   cupertino_icons: ^0.1.2
+  firebase_messaging: ^6.0.13
 
 dev_dependencies:
   flutter_test:
