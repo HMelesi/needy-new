@@ -11,17 +11,26 @@ enum AuthStatus {
 }
 
 class RootPage extends StatefulWidget {
-  RootPage({this.auth});
+  RootPage({this.auth, this.userId, this.name, this.authstat});
 
   final BaseAuth auth;
+  final String userId;
+  final String name;
+  final String authstat;
 
   @override
-  State<StatefulWidget> createState() => new _RootPageState();
+  State<StatefulWidget> createState() =>
+      new _RootPageState(userId: userId, name: name, authstat: authstat);
 }
 
 class _RootPageState extends State<RootPage> {
+  _RootPageState({this.userId, this.name, this.authstat});
+  final String userId;
+  final String name;
+  final String authstat;
+
   AuthStatus authStatus = AuthStatus.NOT_DETERMINED;
-  String _userId = "";
+  String _userId = '';
   String _name = "";
   final databaseReference = Firestore.instance;
 
@@ -31,25 +40,41 @@ class _RootPageState extends State<RootPage> {
     widget.auth.getCurrentUser().then((user) {
       setState(() {
         if (user != null) {
-          _userId = user?.uid;
+          if (userId != null) {
+            print('homepage link');
+            _name = name;
+            _userId = userId;
+          } else {
+            _userId = user?.uid;
+          }
         }
-        authStatus =
-            user?.uid == null ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;
+        if (authstat == 'logout') {
+          print('logout link');
+          authStatus = AuthStatus.NOT_LOGGED_IN;
+        } else {
+          authStatus = user?.uid == null
+              ? AuthStatus.NOT_LOGGED_IN
+              : AuthStatus.LOGGED_IN;
+        }
       });
     });
   }
 
-  void onNameChange(name) {
+  void onNameChange(nom) {
     setState(() {
-      _name = name;
+      if (name != null) {
+        _name = name;
+      } else {
+        _name = nom;
+      }
     });
   }
 
-  void addNewUser(userid, name) {
+  void addNewUser(userid, nom) {
     databaseReference
         .collection('users')
         .document(userid)
-        .setData({'username': name}).then((res) {
+        .setData({'username': nom}).then((res) {
       print('new user added to database');
     });
   }
@@ -99,11 +124,11 @@ class _RootPageState extends State<RootPage> {
       case AuthStatus.LOGGED_IN:
         if (_userId.length > 0 && _userId != null) {
           return HomePage(
-            userId: _userId,
-            auth: widget.auth,
-            logoutCallback: logoutCallback,
-            name: _name,
-          );
+              userId: _userId,
+              auth: widget.auth,
+              logoutCallback: logoutCallback,
+              name: _name,
+              logout: false);
         } else
           return buildWaitingScreen();
         break;

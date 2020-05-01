@@ -5,8 +5,9 @@ import 'package:needy_new/authentication.dart';
 void main() {
   return runApp(
     MaterialApp(
+        initialRoute: '/',
         home: Scaffold(
-      body: RootPage(auth: Auth()),
-    )),
+          body: RootPage(auth: Auth()),
+        )),
   );
 }
