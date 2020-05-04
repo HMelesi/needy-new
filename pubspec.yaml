@@ -4,7 +4,7 @@ description: A new Flutter project.
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.1.0 <3.0.0'
+  sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -14,6 +14,7 @@ dependencies:
   intl: ^0.16.1
   cupertino_icons: ^0.1.2
   firebase_messaging: ^6.0.13
+  carousel_slider: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -30,3 +31,4 @@ flutter:
         - asset: fonts/PressStart2P-Regular.ttf
   assets:
     - images/pixil-cat.png
+    - images/pixil-bat.png
