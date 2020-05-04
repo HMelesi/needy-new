@@ -271,21 +271,36 @@ class _SignInSignUpState extends State<SignInSignUp> {
   Widget _showForm() {
     return Container(
       padding: EdgeInsets.all(16.0),
-      child: Form(
-        key: _formKey,
-        child: ListView(
-          shrinkWrap: true,
-          children: <Widget>[
-            showLogo(),
-            showNameInput(),
-            showEmailInput(),
-            showPasswordInput(),
-            showPrimaryButton(),
-            showSecondaryButton(),
-            showErrorMessage(),
-          ],
-        ),
-      ),
+      child: (_isLoginForm)
+          ? Form(
+              key: _formKey,
+              child: ListView(
+                shrinkWrap: true,
+                children: <Widget>[
+                  showLogo(),
+                  showEmailInput(),
+                  showPasswordInput(),
+                  showPrimaryButton(),
+                  showSecondaryButton(),
+                  showErrorMessage(),
+                ],
+              ),
+            )
+          : Form(
+              key: _formKey,
+              child: ListView(
+                shrinkWrap: true,
+                children: <Widget>[
+                  showLogo(),
+                  showNameInput(),
+                  showEmailInput(),
+                  showPasswordInput(),
+                  showPrimaryButton(),
+                  showSecondaryButton(),
+                  showErrorMessage(),
+                ],
+              ),
+            ),
     );
   }
 }

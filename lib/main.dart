@@ -3,6 +3,7 @@ import 'package:needy_new/RootPage.dart';
 import 'package:needy_new/authentication.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   return runApp(
     MaterialApp(
         initialRoute: '/',
