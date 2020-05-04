@@ -187,7 +187,11 @@ class MyCustomFormState extends State<MyCustomForm> {
         .document(goalName)
         .collection('habits')
         .document(habit.text)
-        .setData({'habit': habit.text, 'frequency': frequency}).then((res) {
+        .setData({
+      'habitName': habit.text,
+      'frequency': frequency,
+      'outstanding': false
+    }).then((res) {
       Scaffold.of(context).showSnackBar(
         SnackBar(
           content: Text('Habit Added!'),
