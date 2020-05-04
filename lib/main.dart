@@ -11,6 +11,7 @@ import 'package:needy_new/authentication.dart';
 
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   return runApp(MaterialApp(
     home: Scaffold(
       backgroundColor: Colors.purple,
