@@ -1,26 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:needy_new/GoalDate.dart';
+import 'package:needy_new/MyScaffold.dart';
 
 class GoalSetter extends StatelessWidget {
+  GoalSetter({Key key, this.userId, this.name});
+
+  final String userId;
+  final String name;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: GoalForm(),
-      backgroundColor: Colors.purple,
+    return MyScaffold(
+      userId: userId,
+      name: name,
+      body: GoalForm(userId: userId, name: name),
     );
   }
 }
 
 class GoalForm extends StatefulWidget {
+  GoalForm({Key key, this.userId, this.name});
+
+  final String userId;
+  final String name;
+
   @override
   _GoalFormState createState() {
-    return _GoalFormState();
+    return _GoalFormState(userId: userId, name: name);
   }
 }
 
 class _GoalFormState extends State<GoalForm> {
+  _GoalFormState({Key key, this.userId, this.name});
+
+  final String userId;
+  final String name;
   String _petName;
-  String _goalName;
+  String _petType = 'cat';
+  String goalName;
 
   final _formKey = GlobalKey<FormState>();
   final newGoalController = TextEditingController();
@@ -30,6 +48,7 @@ class _GoalFormState extends State<GoalForm> {
 
   @override
   Widget build(BuildContext context) {
+    print('goalsetter: $userId $name');
     return Form(
       key: _formKey,
       child: Column(
@@ -37,7 +56,7 @@ class _GoalFormState extends State<GoalForm> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'hi james, select the creature you will take care of',
+              'hi $name, select the creature you will take care of',
               style: TextStyle(
                 fontFamily: 'PressStart2P',
                 color: Colors.cyan,
@@ -113,7 +132,7 @@ class _GoalFormState extends State<GoalForm> {
                 return null;
               },
               onSaved: (String value) {
-                _goalName = value;
+                goalName = value;
               },
               decoration: InputDecoration(
                 border: OutlineInputBorder(
@@ -138,9 +157,10 @@ class _GoalFormState extends State<GoalForm> {
             child: FlatButton(
               onPressed: () {
                 if (_formKey.currentState.validate()) {
-                  print('form is valid');
                   _formKey.currentState.save();
                   addNewGoal(newGoalController);
+                  navigateToDatePage(context);
+                  print(goalName);
                 }
               },
               child: Text(
@@ -158,13 +178,26 @@ class _GoalFormState extends State<GoalForm> {
     );
   }
 
+  Future navigateToDatePage(context) async {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => GoalDate(
+                goalName: goalName,
+                userId: userId,
+                petName: _petName,
+                petType: _petType)));
+  }
+
   void addNewGoal(goal) {
     databaseReference
-        .collection('welcome')
-        .document('test_user')
+        .collection('users')
+        .document(userId)
         .collection('goals')
         .document(goal.text)
-        .setData({'goal': goal.text}).then((res) {
+        .setData({
+      'goal': goal.text,
+    }).then((res) {
       Scaffold.of(context).showSnackBar(
         SnackBar(
           content: Text('Goal added!'),
