@@ -58,6 +58,7 @@ class _HomePageState extends State<HomePage> {
     updateToken();
 
     return MyScaffold(
+
         auth: auth,
         logoutCallback: logoutCallback,
         name: name,
@@ -82,6 +83,7 @@ class _HomePageState extends State<HomePage> {
                             color: Colors.white,
                           ),
                         ),
+
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
