@@ -90,20 +90,21 @@ class _HomePageState extends State<HomePage> {
                         stream: Firestore.instance
                             .collection('users')
                             .document(userId)
+                            .collection('goals')
                             .snapshots(),
                         builder: (context, snapshot) {
                           if (!snapshot.hasData) {
-                            return new Text("Loading");
+                            return LinearProgressIndicator();
                           }
                           var userDocument = snapshot.data;
-                          final goals = userDocument['goals'];
-                          final username = userDocument['username'];
+                          final goals = userDocument.documents;
+                          // final username = userDocument['username'];
                           return Column(
                             children: <Widget>[
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
-                                  'hi $username, welcome to the app!',
+                                  'hi, welcome to the app!',
                                   style: TextStyle(
                                     fontFamily: 'PressStart2P',
                                     color: Colors.white,
@@ -139,7 +140,18 @@ class _HomePageState extends State<HomePage> {
                                         )
                                       ],
                                     )
-                                  : Text('here are your goals'),
+                                  : Column(
+                                      children: <Widget>[
+                                        Text(
+                                          'here are your goals',
+                                          style: TextStyle(
+                                            fontFamily: 'PressStart2P',
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        _buildGoalList(context, goals),
+                                      ],
+                                    ),
                             ],
                           );
                         },
@@ -180,4 +192,47 @@ class _HomePageState extends State<HomePage> {
       print('fcm token updated');
     });
   }
+
+  Widget _buildGoalList(BuildContext context, List<DocumentSnapshot> snapshot) {
+    return ListView(
+      children:
+          snapshot.map((data) => _buildGoalListItem(context, data)).toList(),
+    );
+  }
+
+  Widget _buildGoalListItem(BuildContext context, DocumentSnapshot data) {
+    final goalRecord = GoalRecord.fromSnapshot(data);
+
+    return Padding(
+      key: ValueKey(goalRecord.petName),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: Container(
+        decoration: BoxDecoration(color: Colors.purple),
+        child: ListTile(
+          title: Text(goalRecord.goalName),
+        ),
+      ),
+    );
+  }
+}
+
+class GoalRecord {
+  final String endDate;
+  final String petName;
+  final String goalName;
+  final DocumentReference reference;
+
+  GoalRecord.fromMap(Map<String, dynamic> map, {this.reference})
+      : assert(map['endDate']),
+        assert(map['petName']),
+        assert(map['goalName']),
+        endDate = map['endDate'],
+        petName = map['petName'],
+        goalName = map['goalName'];
+
+  GoalRecord.fromSnapshot(DocumentSnapshot snapshot)
+      : this.fromMap(snapshot.data, reference: snapshot.reference);
+
+  @override
+  String toString() => "GoalRecord<$endDate$petName>";
 }
