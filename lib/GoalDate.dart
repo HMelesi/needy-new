@@ -145,9 +145,12 @@ class _GoalDateFormState extends State<GoalDateForm> {
         .collection('goals')
         .document(goalName)
         .setData({
+      "goalName": goalName,
       "endDate": date,
       "petName": petName,
-      "petType": petType
+      "petType": petType,
+      "petHealth": 10,
+      "outstanding": false
     }).then((res) {
       Scaffold.of(context).showSnackBar(
         SnackBar(

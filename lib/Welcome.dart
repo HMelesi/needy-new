@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
   final VoidCallback logoutCallback;
   final String userId;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-  final String name;
+  String name;
   final bool logout;
 
   void logoutplease() {
@@ -52,115 +52,106 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    print('welcome: $userId $name');
+    getUsername(userId);
+    print('welcome: $userId');
     return MyScaffold(
-      auth: auth,
-      logoutCallback: logoutCallback,
-      name: name,
-      userId: userId,
-      body: logout
-          ? Column(
-              children: <Widget>[
-                (userId == null)
-                    ? Text('you idiot you have not passed the userid')
-                    : Column(children: <Widget>[
-                        new Text('hi $name, are you sure you want to logout?'),
-                      ]),
-                RaisedButton(
-                  textColor: Colors.white,
-                  color: Colors.pink,
-                  child: Text(
-                    'Logout',
-                    style: TextStyle(
-                      fontFamily: 'PressStart2P',
-                      color: Colors.yellow,
-                    ),
-                  ),
-                  onPressed: () {
-                    logoutplease();
-                  },
-                )
-              ],
-            )
-          : Column(
-              children: <Widget>[
-                (userId == null)
-                    ? Text('you idiot you have not passed the userid')
-                    : new StreamBuilder(
-                        stream: Firestore.instance
-                            .collection('users')
-                            .document(userId)
-                            .snapshots(),
-                        builder: (context, snapshot) {
-                          if (!snapshot.hasData) {
-                            return new Text("Loading");
-                          }
-                          var userDocument = snapshot.data;
-                          final goals = userDocument['goals'];
-                          final username = userDocument['username'];
-                          return Column(
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  'hi $username, welcome to the app!',
-                                  style: TextStyle(
-                                    fontFamily: 'PressStart2P',
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                              (goals == null)
-                                  ? Column(
-                                      children: <Widget>[
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                            'hmmm it looks like you have no goals at the moment, would you like to set one up?',
-                                            style: TextStyle(
-                                              fontFamily: 'PressStart2P',
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                        RaisedButton(
-                                          textColor: Colors.white,
-                                          color: Colors.pink,
-                                          child: Text(
-                                            'Create a new goal',
-                                            style: TextStyle(
-                                              fontFamily: 'PressStart2P',
-                                              color: Colors.yellow,
-                                            ),
-                                          ),
-                                          onPressed: () {
-                                            toGoalSetter(context);
-                                          },
-                                        )
-                                      ],
-                                    )
-                                  : Text('here are your goals'),
-                            ],
-                          );
-                        },
+        auth: auth,
+        logoutCallback: logoutCallback,
+        name: name,
+        userId: userId,
+        body: (userId == null)
+            ? Text('you idiot you have not passed the userid')
+            : StreamBuilder<QuerySnapshot>(
+                stream: Firestore.instance
+                    .collection('users')
+                    .document(userId)
+                    .collection('goals')
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Column(children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'hi $name, welcome to the app!',
+                          style: TextStyle(
+                            fontFamily: 'PressStart2P',
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
-                RaisedButton(
-                  textColor: Colors.white,
-                  color: Colors.pink,
-                  child: Text(
-                    'Logout',
-                    style: TextStyle(
-                      fontFamily: 'PressStart2P',
-                      color: Colors.yellow,
-                    ),
-                  ),
-                  onPressed: () {
-                    logoutplease();
-                  },
-                )
-              ],
-            ),
-    );
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'hmmm it looks like you have no goals at the moment, would you like to set one up?',
+                          style: TextStyle(
+                            fontFamily: 'PressStart2P',
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      RaisedButton(
+                        textColor: Colors.white,
+                        color: Colors.pink,
+                        child: Text(
+                          'Create a new goal',
+                          style: TextStyle(
+                            fontFamily: 'PressStart2P',
+                            color: Colors.yellow,
+                          ),
+                        ),
+                        onPressed: () {
+                          toGoalSetter(context);
+                        },
+                      )
+                    ]);
+                  } else {
+                    return Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'hi $name, welcome to the app!',
+                            style: TextStyle(
+                              fontFamily: 'PressStart2P',
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          'here are your goals',
+                          style: TextStyle(
+                            fontFamily: 'PressStart2P',
+                            color: Colors.white,
+                          ),
+                        ),
+                        Expanded(
+                            child: _buildGoalList(
+                                context, snapshot.data.documents)),
+                        RaisedButton(
+                          textColor: Colors.white,
+                          color: Colors.pink,
+                          child: Text(
+                            'Create a new goal',
+                            style: TextStyle(
+                              fontFamily: 'PressStart2P',
+                              color: Colors.yellow,
+                            ),
+                          ),
+                          onPressed: () {
+                            toGoalSetter(context);
+                          },
+                        )
+                      ],
+                    );
+                  }
+                }));
+  }
+
+  Future getUsername(userId) async {
+    Firestore.instance.collection('users').document(userId).get().then((res) {
+      name = (res['username']);
+    });
   }
 
   Future toGoalSetter(context) async {
@@ -180,4 +171,46 @@ class _HomePageState extends State<HomePage> {
       print('fcm token updated');
     });
   }
+
+  Widget _buildGoalList(BuildContext context, List<DocumentSnapshot> snapshot) {
+    return ListView(
+      padding: const EdgeInsets.only(top: 20.0),
+      children:
+          snapshot.map((data) => _buildGoalListItem(context, data)).toList(),
+    );
+  }
+
+  Widget _buildGoalListItem(BuildContext context, DocumentSnapshot data) {
+    final goalRecord = GoalRecord.fromSnapshot(data);
+    return Padding(
+      key: ValueKey(goalRecord.petName),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: Container(
+        child: ListTile(
+          title: Text(goalRecord.goalName),
+        ),
+      ),
+    );
+  }
+}
+
+class GoalRecord {
+  final Timestamp endDate;
+  final String petName;
+  final String goalName;
+  final DocumentReference reference;
+
+  GoalRecord.fromMap(Map<String, dynamic> map, {this.reference})
+      : assert(map['endDate'] != null),
+        assert(map['petName'] != null),
+        assert(map['goalName'] != null),
+        endDate = map['endDate'],
+        petName = map['petName'],
+        goalName = map['goalName'];
+
+  GoalRecord.fromSnapshot(DocumentSnapshot snapshot)
+      : this.fromMap(snapshot.data, reference: snapshot.reference);
+
+  @override
+  String toString() => "goalRecord<$endDate$petName$goalName>";
 }
