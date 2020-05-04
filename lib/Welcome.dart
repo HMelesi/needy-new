@@ -52,6 +52,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    updateToken();
     print('welcome: $userId $name');
     return MyScaffold(
       auth: auth,
