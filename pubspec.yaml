@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   cloud_firestore: ^0.13.5
+  syncfusion_flutter_charts: ^1.0.0-beta.4
   intl: ^0.16.1
   cupertino_icons: ^0.1.2
   firebase_messaging: ^6.0.13
