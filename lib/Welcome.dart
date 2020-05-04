@@ -97,14 +97,17 @@ class _HomePageState extends State<HomePage> {
                             return LinearProgressIndicator();
                           }
                           var userDocument = snapshot.data;
-                          final goals = userDocument.documents;
-                          // final username = userDocument['username'];
+
+                          final goals = userDocument['goals'];
+                          final username = userDocument['username'];
                           return Column(
                             children: <Widget>[
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
+
                                   'hi, welcome to the app!',
+
                                   style: TextStyle(
                                     fontFamily: 'PressStart2P',
                                     color: Colors.white,

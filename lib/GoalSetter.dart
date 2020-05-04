@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:needy_new/GoalDate.dart';
 import 'package:needy_new/MyScaffold.dart';
+import 'package:needy_new/PetCarousel.dart';
 
 class GoalSetter extends StatelessWidget {
   GoalSetter({Key key, this.userId, this.name});
@@ -39,12 +40,17 @@ class _GoalFormState extends State<GoalForm> {
   String _petName;
   String _petType = 'cat';
   String goalName;
+  String _creatureName;
 
   final _formKey = GlobalKey<FormState>();
   final newGoalController = TextEditingController();
   final databaseReference = Firestore.instance;
 
   // TODO: Add better layout/constraints, handle different pets
+
+  void changeCreatureName(name) {
+    _petName = name;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,14 +70,9 @@ class _GoalFormState extends State<GoalForm> {
             ),
           ),
           Container(
-            width: 117.0,
-            height: 100.0,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.grey,
-            ),
-            child: Image.asset('images/pixil-cat.png'),
-          ),
+              height: 200.0,
+              width: 500,
+              child: CarouselDemo(changeCreatureName: changeCreatureName)),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:needy_new/Footer.dart';
 import 'package:needy_new/GoalSetter.dart';
 import 'package:needy_new/MyHabits.dart';
 import 'package:needy_new/NewHabit.dart';
@@ -97,6 +98,13 @@ class MyScaffold extends StatelessWidget {
           },
         )
       ])),
+      bottomNavigationBar: BottomAppBar(
+        child: Container(
+          height: 50.0,
+          child: Footer(userId: userId),
+        ),
+        color: Colors.cyan,
+      ),
     );
   }
 }
