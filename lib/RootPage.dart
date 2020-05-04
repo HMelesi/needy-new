@@ -71,7 +71,6 @@ class _RootPageState extends State<RootPage> {
     });
   }
 
-
   void addNewUser(userid, name) async {
     String token = await PushNotificationsManager().init();
 
@@ -129,7 +128,6 @@ class _RootPageState extends State<RootPage> {
               userId: _userId,
               auth: widget.auth,
               logoutCallback: logoutCallback,
-              name: _name,
               logout: false);
         } else
           return buildWaitingScreen();
