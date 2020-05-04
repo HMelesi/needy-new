@@ -37,6 +37,7 @@ class _GoalFormState extends State<GoalForm> {
   final String userId;
   final String name;
   String _petName;
+  String _petType = 'cat';
   String goalName;
 
   final _formKey = GlobalKey<FormState>();
@@ -181,8 +182,11 @@ class _GoalFormState extends State<GoalForm> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) =>
-                GoalDate(goalName: goalName, userId: userId)));
+            builder: (context) => GoalDate(
+                goalName: goalName,
+                userId: userId,
+                petName: _petName,
+                petType: _petType)));
   }
 
   void addNewGoal(goal) {
@@ -191,7 +195,9 @@ class _GoalFormState extends State<GoalForm> {
         .document(userId)
         .collection('goals')
         .document(goal.text)
-        .setData({'goal': goal.text}).then((res) {
+        .setData({
+      'goal': goal.text,
+    }).then((res) {
       Scaffold.of(context).showSnackBar(
         SnackBar(
           content: Text('Goal added!'),

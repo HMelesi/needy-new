@@ -6,38 +6,51 @@ import 'package:intl/intl.dart';
 import 'package:needy_new/NewHabit.dart';
 
 class GoalDate extends StatelessWidget {
-  GoalDate({Key key, this.goalName, this.userId});
+  GoalDate({Key key, this.goalName, this.userId, this.petName, this.petType});
   String goalName;
   String userId;
+  String petName;
+  String petType;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GoalDateForm(goalName: goalName, userId: userId),
+      body: GoalDateForm(
+          goalName: goalName,
+          userId: userId,
+          petName: petName,
+          petType: petType),
       backgroundColor: Colors.purple,
     );
   }
 }
 
 class GoalDateForm extends StatefulWidget {
-  GoalDateForm({Key key, this.goalName, this.userId});
+  GoalDateForm(
+      {Key key, this.goalName, this.userId, this.petName, this.petType});
   String goalName;
   String userId;
+  String petName;
+  String petType;
+
   @override
   _GoalDateFormState createState() {
-    return _GoalDateFormState(goalName: goalName, userId: userId);
+    return _GoalDateFormState(
+        goalName: goalName, userId: userId, petName: petName, petType: petType);
   }
 }
 
 class _GoalDateFormState extends State<GoalDateForm> {
-  _GoalDateFormState({Key key, this.goalName, this.userId});
+  _GoalDateFormState(
+      {Key key, this.goalName, this.userId, this.petName, this.petType});
 
   final _formKey = GlobalKey<FormState>();
   final dbRef = Firestore.instance;
   String userId;
   String goalName;
+  String petName;
+  String petType;
   DateTime _dateTime;
-  // double _frequency = 5.0;
 
   @override
   Widget build(BuildContext context) {
@@ -102,30 +115,11 @@ class _GoalDateFormState extends State<GoalDateForm> {
                 });
               },
             ),
-            // Padding(
-            //   padding: const EdgeInsets.all(20.0),
-            //   child: Text(
-            //     'how freqently do you want to be reminded about this goal?',
-            //     style: TextStyle(
-            //       fontFamily: 'PressStart2P',
-            //       color: Colors.cyan,
-            //     ),
-            //   ),
-            // ),
-            // Padding(
-            //   padding: const EdgeInsets.all(8.0),
-            //   child: Slider.adaptive(
-            //     value: _frequency,
-            //     onChanged: (newValue) {
-            //       setState(() => _frequency = newValue);
-            //     },
-            //   ),
-            // ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: FlatButton(
                 onPressed: () {
-                  addGoalDate(_dateTime);
+                  addGoalData(_dateTime, petName, petType);
                   navigateToHabitPage(context);
                 },
                 child: Text(
@@ -144,13 +138,17 @@ class _GoalDateFormState extends State<GoalDateForm> {
     );
   }
 
-  void addGoalDate(date) {
+  void addGoalData(date, petName, petType) {
     dbRef
         .collection('users')
         .document(userId)
         .collection('goals')
         .document(goalName)
-        .setData({"endDate": date}).then((res) {
+        .setData({
+      "endDate": date,
+      "petName": petName,
+      "petType": petType
+    }).then((res) {
       Scaffold.of(context).showSnackBar(
         SnackBar(
           content: Text('Date set!'),
