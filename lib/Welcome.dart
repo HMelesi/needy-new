@@ -58,7 +58,6 @@ class _HomePageState extends State<HomePage> {
       logoutCallback: logoutCallback,
       name: name,
       userId: userId,
-
       body: logout
           ? Column(
               children: <Widget>[
@@ -98,14 +97,32 @@ class _HomePageState extends State<HomePage> {
                           }
                           var userDocument = snapshot.data;
                           final goals = userDocument['goals'];
+                          final username = userDocument['username'];
                           return Column(
                             children: <Widget>[
-                              new Text('hi $name, welcome to the app!'),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  'hi $username, welcome to the app!',
+                                  style: TextStyle(
+                                    fontFamily: 'PressStart2P',
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
                               (goals == null)
                                   ? Column(
                                       children: <Widget>[
-                                        Text(
-                                            'hmmm it looks like you have no goals at the moment, would you like to set one up?'),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            'hmmm it looks like you have no goals at the moment, would you like to set one up?',
+                                            style: TextStyle(
+                                              fontFamily: 'PressStart2P',
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
                                         RaisedButton(
                                           textColor: Colors.white,
                                           color: Colors.pink,
