@@ -22,13 +22,15 @@ class CarouselDemo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Row(children: <Widget>[
-        RaisedButton(
+        IconButton(
           onPressed: () {
             buttonCarouselController.previousPage(
                 duration: Duration(milliseconds: 300), curve: Curves.ease);
             changePage(-1);
           },
-          child: Text('←'),
+          icon: Icon(Icons.arrow_left),
+          iconSize: 90.0,
+          color: Colors.pink,
         ),
         Container(
           width: 180,
@@ -50,13 +52,15 @@ class CarouselDemo extends StatelessWidget {
             ),
           ),
         ),
-        RaisedButton(
+        IconButton(
           onPressed: () {
             buttonCarouselController.nextPage(
                 duration: Duration(milliseconds: 300), curve: Curves.ease);
             changePage(1);
           },
-          child: Text('→'),
+          icon: Icon(Icons.arrow_right),
+          iconSize: 90.0,
+          color: Colors.pink,
         )
       ]);
 }
