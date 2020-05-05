@@ -58,14 +58,16 @@ class _GoalFormState extends State<GoalForm> {
     return Form(
       key: _formKey,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'hi $name, select the creature you will take care of',
+              'Select the creature you will take care of!',
               style: TextStyle(
-                fontFamily: 'PressStart2P',
-                color: Colors.cyan,
+                fontFamily: 'Pixelar',
+                fontSize: 32,
               ),
             ),
           ),
@@ -76,10 +78,10 @@ class _GoalFormState extends State<GoalForm> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'name the creature',
+              'Give the creature a name!',
               style: TextStyle(
-                fontFamily: 'PressStart2P',
-                color: Colors.cyan,
+                fontFamily: 'Pixelar',
+                fontSize: 26,
               ),
             ),
           ),
@@ -104,21 +106,23 @@ class _GoalFormState extends State<GoalForm> {
                 fillColor: Colors.grey,
                 hintText: 'enter a name...',
                 hintStyle: TextStyle(
-                  fontFamily: 'PressStart2P',
+                  fontFamily: 'Pixelar',
+                  fontSize: 26,
                 ),
               ),
               style: TextStyle(
-                fontFamily: 'PressStart2P',
+                fontFamily: 'Pixelar',
+                fontSize: 26,
               ),
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'what is your overall goal?',
+              'What is your overall goal?',
               style: TextStyle(
-                fontFamily: 'PressStart2P',
-                color: Colors.cyan,
+                fontFamily: 'Pixelar',
+                fontSize: 26,
               ),
             ),
           ),
@@ -145,17 +149,28 @@ class _GoalFormState extends State<GoalForm> {
                 fillColor: Colors.grey,
                 hintText: 'enter a goal...',
                 hintStyle: TextStyle(
-                  fontFamily: 'PressStart2P',
+                  fontFamily: 'Pixelar',
+                  fontSize: 26,
                 ),
               ),
               style: TextStyle(
-                fontFamily: 'PressStart2P',
+                fontFamily: 'Pixelar',
+                fontSize: 26,
               ),
             ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: FlatButton(
+            child: RaisedButton(
+              textColor: Colors.white,
+              color: Colors.pink,
+              child: Text(
+                'NEXT',
+                style: TextStyle(
+                  fontFamily: 'PressStart2P',
+                  color: Colors.yellow,
+                ),
+              ),
               onPressed: () {
                 if (_formKey.currentState.validate()) {
                   _formKey.currentState.save();
@@ -164,14 +179,6 @@ class _GoalFormState extends State<GoalForm> {
                   print(goalName);
                 }
               },
-              child: Text(
-                'NEXT',
-                style: TextStyle(
-                  fontFamily: 'PressStart2P',
-                  fontSize: 24,
-                  color: Colors.white,
-                ),
-              ),
             ),
           ),
         ],

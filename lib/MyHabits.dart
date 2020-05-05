@@ -32,7 +32,16 @@ class _MyHabits extends State<MyHabits> {
       name: name,
       body: Column(
         children: <Widget>[
-          Text(goalName),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Text(
+              goalName,
+              style: TextStyle(
+                fontFamily: 'PressStart2P',
+                fontSize: 24,
+              ),
+            ),
+          ),
           Container(
             height: 500.0,
             width: 600.0,
@@ -58,7 +67,7 @@ class _MyHabits extends State<MyHabits> {
             textColor: Colors.white,
             color: Colors.pink,
             child: Text(
-              'Create a new habit for this goal',
+              'Create a new habit',
               style: TextStyle(
                 fontFamily: 'PressStart2P',
                 color: Colors.yellow,
@@ -77,7 +86,7 @@ class _MyHabits extends State<MyHabits> {
             textColor: Colors.white,
             color: Colors.pink,
             child: Text(
-              'Go to Goal summary page',
+              'View summary',
               style: TextStyle(
                 fontFamily: 'PressStart2P',
                 color: Colors.yellow,
@@ -113,15 +122,18 @@ class _MyHabits extends State<MyHabits> {
       key: ValueKey(habitrecord.habitName),
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Container(
-        decoration: BoxDecoration(color: Colors.purple),
+        decoration: BoxDecoration(color: Colors.green[300]),
         child: ListTile(
-          title: Text(habitrecord.habitName,
-              style: TextStyle(
-                fontFamily: 'PressStart2P',
-                color: (habitrecord.outstanding == true)
-                    ? Colors.red
-                    : Colors.grey,
-              )),
+          title: Text(
+            habitrecord.habitName,
+            style: TextStyle(
+              fontFamily: 'Pixelar',
+              fontSize: 28,
+              color: (habitrecord.outstanding == true)
+                  ? Colors.red
+                  : Colors.grey[800],
+            ),
+          ),
           onTap: () => habitrecord.reference
               .updateData({'outstanding': !habitrecord.outstanding}),
           trailing: Icon(
