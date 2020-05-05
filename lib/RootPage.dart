@@ -1,3 +1,4 @@
+import 'package:needy_new/MyApp.dart';
 import 'package:needy_new/SignInSignUp.dart';
 import 'package:needy_new/Welcome.dart';
 import 'package:needy_new/authentication.dart';
@@ -125,7 +126,7 @@ class _RootPageState extends State<RootPage> {
         break;
       case AuthStatus.LOGGED_IN:
         if (_userId.length > 0 && _userId != null) {
-          return HomePage(
+          return MyApp(
               userId: _userId,
               auth: widget.auth,
               logoutCallback: logoutCallback,

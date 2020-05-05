@@ -2,15 +2,49 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:background_fetch/background_fetch.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:needy_new/RootPage.dart';
+import 'package:needy_new/Welcome.dart';
 import 'package:needy_new/authentication.dart';
 
 class MyApp extends StatefulWidget {
+  MyApp(
+      {this.auth,
+      this.userId,
+      this.name,
+      this.authstat,
+      this.logoutCallback,
+      this.logout});
+
+  final BaseAuth auth;
+  final String userId;
+  final String name;
+  final String authstat;
+  final VoidCallback logoutCallback;
+  final bool logout;
+
   @override
-  _MyAppState createState() => new _MyAppState();
+  _MyAppState createState() => new _MyAppState(
+      userId: userId,
+      name: name,
+      logoutCallback: logoutCallback,
+      auth: auth,
+      logout: logout);
 }
 
 class _MyAppState extends State<MyApp> {
+  _MyAppState(
+      {Key key,
+      this.auth,
+      this.userId,
+      this.logoutCallback,
+      this.name,
+      this.logout});
+
+  final BaseAuth auth;
+  final VoidCallback logoutCallback;
+  final String userId;
+  String name;
+  final bool logout;
+
   @override
   void initState() {
     super.initState();
@@ -36,7 +70,7 @@ class _MyAppState extends State<MyApp> {
       final dbRef = Firestore.instance;
       var goals = await dbRef
           .collection('users')
-          .document('ClLcgK1mL6UYM9Ak4uUqNe9K4wp1')
+          .document(userId)
           .collection('goals')
           .getDocuments();
       var goalsList = goals.documents
@@ -48,7 +82,7 @@ class _MyAppState extends State<MyApp> {
         goalsList.forEach((goal) async {
           var habits = await dbRef
               .collection('users')
-              .document('ClLcgK1mL6UYM9Ak4uUqNe9K4wp1')
+              .document(userId)
               .collection('goals')
               .document(goal)
               .collection('habits')
@@ -69,7 +103,7 @@ class _MyAppState extends State<MyApp> {
             if (timeDiff.inSeconds > 86400 * habit['freq']) {
               dbRef
                   .collection('users')
-                  .document('ClLcgK1mL6UYM9Ak4uUqNe9K4wp1')
+                  .document(userId)
                   .collection('goals')
                   .document(goal)
                   .collection('habits')
@@ -95,11 +129,10 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
-      initialRoute: '/',
-      home: Scaffold(
-        body: RootPage(auth: Auth()),
-      ),
-    );
+    return HomePage(
+        userId: userId,
+        auth: widget.auth,
+        logoutCallback: logoutCallback,
+        logout: false);
   }
 }
