@@ -35,6 +35,9 @@ class CarouselDemo extends StatelessWidget {
           child: CarouselSlider(
             items: <Widget>[
               Image.asset('images/pixil-cat.png'),
+              Image.asset('images/pixil-axolotl.png'),
+              Image.asset('images/pixil-sloth.png'),
+              Image.asset('images/pixil-hamster.png'),
               Image.asset('images/pixil-bat.png'),
             ],
             carouselController: buttonCarouselController,
