@@ -76,10 +76,11 @@ class _HomePageState extends State<HomePage> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          'hi $name, welcome to the app!',
+                          'hi $name, welcome to Keeper!',
                           style: TextStyle(
-                            fontFamily: 'PressStart2P',
-                            color: Colors.white,
+                            fontFamily: 'Pixelar',
+                            color: Colors.black,
+                            fontSize: 26,
                           ),
                         ),
                       ),
@@ -88,8 +89,9 @@ class _HomePageState extends State<HomePage> {
                         child: Text(
                           'hmmm it looks like you have no goals at the moment, would you like to set one up?',
                           style: TextStyle(
-                            fontFamily: 'PressStart2P',
-                            color: Colors.white,
+                            fontFamily: 'Pixelar',
+                            color: Colors.black,
+                            fontSize: 26,
                           ),
                         ),
                       ),
@@ -114,18 +116,20 @@ class _HomePageState extends State<HomePage> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            'hi $name, welcome to the app!',
+                            'hi $name, welcome to Keeper!',
                             style: TextStyle(
-                              fontFamily: 'PressStart2P',
-                              color: Colors.white,
+                              fontFamily: 'Pixelar',
+                              color: Colors.black,
+                              fontSize: 26,
                             ),
                           ),
                         ),
                         Text(
                           'here are your goals',
                           style: TextStyle(
-                            fontFamily: 'PressStart2P',
-                            color: Colors.white,
+                            fontFamily: 'Pixelar',
+                            color: Colors.black,
+                            fontSize: 26,
                           ),
                         ),
                         Expanded(
@@ -190,8 +194,24 @@ class _HomePageState extends State<HomePage> {
       key: ValueKey(goalRecord.petName),
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Container(
+        decoration: BoxDecoration(color: Colors.green[300]),
         child: ListTile(
-            title: Text(goalRecord.goalName),
+            title: Text(
+              goalRecord.goalName,
+              style: TextStyle(
+                fontFamily: 'Pixelar',
+                fontSize: 26,
+                color: Colors.black,
+              ),
+            ),
+            subtitle: Text(
+              goalRecord.petName,
+              style: TextStyle(
+                fontFamily: 'Pixelar',
+                fontSize: 18,
+                color: Colors.black,
+              ),
+            ),
             onTap: () {
               Navigator.push(
                   context,

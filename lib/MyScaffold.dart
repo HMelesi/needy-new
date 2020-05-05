@@ -21,7 +21,7 @@ class MyScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.purple,
+      backgroundColor: Colors.green[200],
       appBar: AppBar(
         title: Text(
           'KEEPER',
@@ -30,75 +30,98 @@ class MyScaffold extends StatelessWidget {
             color: Colors.yellow,
           ),
         ),
-        backgroundColor: Colors.purple,
+        backgroundColor: Colors.green,
       ),
       body: body,
-      drawer: Drawer(
-          child: ListView(padding: EdgeInsets.zero, children: <Widget>[
-        ListTile(
-          title: Text('homepage'),
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) =>
-                      RootPage(userId: userId, name: name, auth: Auth()),
-                ));
-          },
-        ),
-        ListTile(
-            title: Text('create a new goal'),
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (BuildContext context) =>
-                        GoalSetter(userId: userId, name: name),
-                  ));
-            }),
-        // ListTile(
-        //     title: Text('create a new habit'),
-        //     onTap: () {
-        //       Navigator.push(
-        //           context,
-        //           MaterialPageRoute(
-        //             builder: (BuildContext context) =>
-        //                 NewHabit(userId: userId, name: name),
-        //           ));
-        //     }),
-        // ListTile(
-        //     title: Text('my habits'),
-        //     onTap: () {
-        //       Navigator.push(
-        //           context,
-        //           MaterialPageRoute(
-        //             builder: (BuildContext context) =>
-        //                 MyHabits(userId: userId, name: name),
-        //           ));
-        //     }),
-        RaisedButton(
-          textColor: Colors.white,
-          color: Colors.pink,
-          child: Text(
-            'Logout',
-            style: TextStyle(
-              fontFamily: 'PressStart2P',
-              color: Colors.yellow,
+      drawer: Theme(
+        data: Theme.of(context).copyWith(canvasColor: Colors.green[400]),
+        child: Drawer(
+          child: SafeArea(
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                ListTile(
+                  title: Text(
+                    'homepage',
+                    style: TextStyle(
+                      fontFamily: 'Pixelar',
+                      fontSize: 24,
+                      color: Colors.white,
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => RootPage(
+                              userId: userId, name: name, auth: Auth()),
+                        ));
+                  },
+                ),
+                ListTile(
+                    title: Text(
+                      'create a new goal',
+                      style: TextStyle(
+                        fontFamily: 'Pixelar',
+                        fontSize: 24,
+                        color: Colors.white,
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                GoalSetter(userId: userId, name: name),
+                          ));
+                    }),
+                // ListTile(
+                //     title: Text('create a new habit'),
+                //     onTap: () {
+                //       Navigator.push(
+                //           context,
+                //           MaterialPageRoute(
+                //             builder: (BuildContext context) =>
+                //                 NewHabit(userId: userId, name: name),
+                //           ));
+                //     }),
+                // ListTile(
+                //     title: Text('my habits'),
+                //     onTap: () {
+                //       Navigator.push(
+                //           context,
+                //           MaterialPageRoute(
+                //             builder: (BuildContext context) =>
+                //                 MyHabits(userId: userId, name: name),
+                //           ));
+                //     }),
+                RaisedButton(
+                  textColor: Colors.white,
+                  color: Colors.pink,
+                  child: Text(
+                    'Logout',
+                    style: TextStyle(
+                      fontFamily: 'PressStart2P',
+                      color: Colors.yellow,
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => RootPage(
+                              userId: userId,
+                              name: name,
+                              auth: Auth(),
+                              authstat: 'logout'),
+                        ));
+                  },
+                ),
+              ],
             ),
           ),
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => RootPage(
-                      userId: userId,
-                      name: name,
-                      auth: Auth(),
-                      authstat: 'logout'),
-                ));
-          },
-        )
-      ])),
+        ),
+      ),
       bottomNavigationBar: BottomAppBar(
         child: Container(
           height: 50.0,
