@@ -1,45 +1,78 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:needy_new/MyScaffold.dart';
+import 'package:needy_new/NewHabit.dart';
 
 class MyHabits extends StatefulWidget {
-  MyHabits({Key key, this.userId, this.name}) : super(key: key);
+  MyHabits({Key key, this.userId, this.name, this.goalName}) : super(key: key);
 
   final String userId;
   final String name;
+  final String goalName;
 
   @override
   _MyHabits createState() {
-    return _MyHabits(userId: userId, name: name);
+    return _MyHabits(userId: userId, name: name, goalName: goalName);
   }
 }
 
 class _MyHabits extends State<MyHabits> {
-  _MyHabits({this.userId, this.name});
+  _MyHabits({this.userId, this.name, this.goalName});
 
   final String userId;
   final String name;
+  final String goalName;
 
   @override
   Widget build(BuildContext context) {
-    print('myhabits: $userId $name');
+    print('myhabits: $userId $name $goalName');
     return MyScaffold(
       userId: userId,
       name: name,
-      body: StreamBuilder<QuerySnapshot>(
-        stream: Firestore.instance
-            .collection('welcome')
-            .document('test_user')
-            .collection('goals')
-            .document('be cool')
-            .collection('habits')
-            // .where('outstanding', isEqualTo: true)
-            .snapshots(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) return LinearProgressIndicator();
-          // print(Firestore.instance.collection('new_habit').snapshots());
-          return _buildHabitList(context, snapshot.data.documents);
-        },
+      body: Column(
+        children: <Widget>[
+          Text(goalName),
+          Container(
+            height: 500.0,
+            width: 600.0,
+            child: StreamBuilder<QuerySnapshot>(
+              stream: Firestore.instance
+                  .collection('users')
+                  .document(userId)
+                  .collection('goals')
+                  .document(goalName)
+                  .collection('habits')
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  print('there are no habits here we need to create a ternary');
+                  return LinearProgressIndicator();
+                }
+                // print(Firestore.instance.collection('new_habit').snapshots());
+                return _buildHabitList(context, snapshot.data.documents);
+              },
+            ),
+          ),
+          RaisedButton(
+            textColor: Colors.white,
+            color: Colors.pink,
+            child: Text(
+              'Create a new habit for this goal',
+              style: TextStyle(
+                fontFamily: 'PressStart2P',
+                color: Colors.yellow,
+              ),
+            ),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => NewHabit(
+                        userId: userId, name: name, goalName: goalName),
+                  ));
+            },
+          )
+        ],
       ),
     );
   }
@@ -57,12 +90,12 @@ class _MyHabits extends State<MyHabits> {
     final habitrecord = HabitRecord.fromSnapshot(data);
 
     return Padding(
-      key: ValueKey(habitrecord.habit),
+      key: ValueKey(habitrecord.habitName),
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Container(
         decoration: BoxDecoration(color: Colors.purple),
         child: ListTile(
-          title: Text(habitrecord.habit,
+          title: Text(habitrecord.habitName,
               style: TextStyle(
                 fontFamily: 'PressStart2P',
                 color: (habitrecord.outstanding == true)
@@ -84,16 +117,16 @@ class _MyHabits extends State<MyHabits> {
 }
 
 class HabitRecord {
-  final String habit;
+  final String habitName;
   final bool outstanding;
   // final String frequency; // not using this currently
   final DocumentReference reference;
 
   HabitRecord.fromMap(Map<String, dynamic> map, {this.reference})
-      : assert(map['habit'] != null),
+      : assert(map['habitName'] != null),
         assert(map['outstanding'] != null),
         // assert(map['frequency'] != null),
-        habit = map['habit'],
+        habitName = map['habitName'],
         outstanding = map['outstanding'];
   // frequency = map['frequency'];
 
@@ -101,5 +134,5 @@ class HabitRecord {
       : this.fromMap(snapshot.data, reference: snapshot.reference);
 
   @override
-  String toString() => "HabitRecord<$habit$outstanding>";
+  String toString() => "HabitRecord<$habitName$outstanding>";
 }

@@ -16,7 +16,16 @@ class NewHabit extends StatelessWidget {
     return MyScaffold(
       userId: userId,
       name: name,
-      body: MyCustomForm(userId: userId, name: name, goalName: goalName),
+      body: Column(
+        children: <Widget>[
+          Text('add a new habit for the goal: $goalName'),
+          Container(
+              height: 500.0,
+              width: 600.0,
+              child:
+                  MyCustomForm(userId: userId, name: name, goalName: goalName)),
+        ],
+      ),
     );
   }
 }

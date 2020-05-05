@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:needy_new/GoalSetter.dart';
 import 'package:needy_new/authentication.dart';
 import 'package:needy_new/MyScaffold.dart';
+import 'package:needy_new/MyHabits.dart';
 
 class HomePage extends StatefulWidget {
   HomePage(
@@ -52,13 +53,11 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-
     getUsername(userId);
     print('welcome: $userId');
     updateToken();
 
     return MyScaffold(
-
         auth: auth,
         logoutCallback: logoutCallback,
         name: name,
@@ -83,7 +82,6 @@ class _HomePageState extends State<HomePage> {
                             color: Colors.white,
                           ),
                         ),
-
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -187,13 +185,21 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildGoalListItem(BuildContext context, DocumentSnapshot data) {
     final goalRecord = GoalRecord.fromSnapshot(data);
+    final goalName = goalRecord.goalName;
     return Padding(
       key: ValueKey(goalRecord.petName),
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Container(
         child: ListTile(
-          title: Text(goalRecord.goalName),
-        ),
+            title: Text(goalRecord.goalName),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => MyHabits(
+                        userId: userId, name: name, goalName: goalName),
+                  ));
+            }),
       ),
     );
   }
