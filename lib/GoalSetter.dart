@@ -72,6 +72,7 @@ class _GoalFormState extends State<GoalForm> {
             ),
           ),
           Container(
+              alignment: Alignment(0.0, 0.0),
               height: 200.0,
               width: 500,
               child: CarouselDemo(changeCreatureName: changeCreatureName)),

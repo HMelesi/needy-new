@@ -125,9 +125,9 @@ class MyScaffold extends StatelessWidget {
       bottomNavigationBar: BottomAppBar(
         child: Container(
           height: 70.0,
+          color: Colors.green,
           child: Footer(userId: userId),
         ),
-        color: Colors.cyan,
       ),
     );
   }
