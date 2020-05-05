@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:needy_new/MyScaffold.dart';
-import 'package:needy_new/RootPage.dart';
-import 'package:needy_new/authentication.dart';
+import 'package:needy_new/MyHabits.dart';
+
+// import 'package:needy_new/RootPage.dart';
+// import 'package:needy_new/authentication.dart';
 
 class NewHabit extends StatelessWidget {
   NewHabit({Key key, this.userId, this.name, this.goalName});
@@ -161,7 +163,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                 if (_formKey.currentState.validate()) {
                   print(newHabitController);
                   addNewHabit(newHabitController, _frequency);
-                  navigateToWelcomePage(context);
+                  navigateToGoalPage(context);
                 }
               },
               child: Text(
@@ -178,12 +180,12 @@ class MyCustomFormState extends State<MyCustomForm> {
     );
   }
 
-  Future navigateToWelcomePage(context) async {
+  Future navigateToGoalPage(context) async {
     Navigator.push(
         context,
         MaterialPageRoute(
           builder: (BuildContext context) =>
-              RootPage(userId: userId, name: name, auth: Auth()),
+              MyHabits(userId: userId, name: name, goalName: goalName),
         ));
   }
 
