@@ -20,7 +20,7 @@ class GoalDate extends StatelessWidget {
           userId: userId,
           petName: petName,
           petType: petType),
-      backgroundColor: Colors.purple,
+      backgroundColor: Colors.green[200],
     );
   }
 }
@@ -56,7 +56,7 @@ class _GoalDateFormState extends State<GoalDateForm> {
   Widget build(BuildContext context) {
     print(goalName);
     return Scaffold(
-      backgroundColor: Colors.purple,
+      backgroundColor: Colors.green[200],
       appBar: AppBar(
         title: Text(
           'KEEPER',
@@ -65,7 +65,7 @@ class _GoalDateFormState extends State<GoalDateForm> {
             color: Colors.yellow,
           ),
         ),
-        backgroundColor: Colors.purple,
+        backgroundColor: Colors.green,
       ),
       body: Form(
         key: _formKey,
@@ -76,8 +76,8 @@ class _GoalDateFormState extends State<GoalDateForm> {
               child: Text(
                 'when would you like to complete this goal?',
                 style: TextStyle(
-                  fontFamily: 'PressStart2P',
-                  color: Colors.cyan,
+                  fontFamily: 'Pixelar',
+                  fontSize: 26,
                 ),
               ),
             ),
@@ -88,18 +88,19 @@ class _GoalDateFormState extends State<GoalDateForm> {
                     ? 'this goal currently has no end date!'
                     : DateFormat.yMMMMEEEEd().format(_dateTime),
                 style: TextStyle(
-                  fontFamily: 'PressStart2P',
-                  color: Colors.yellow,
-                  fontSize: 12,
+                  fontFamily: 'Pixelar',
+                  color: Colors.grey[800],
+                  fontSize: 18,
                 ),
               ),
             ),
-            FlatButton(
+            RaisedButton(
+              color: Colors.pink,
               child: Text(
                 'Pick a date (optional)',
                 style: TextStyle(
                   fontFamily: 'PressStart2P',
-                  color: Colors.white,
+                  color: Colors.yellow,
                 ),
               ),
               onPressed: () {
@@ -117,7 +118,8 @@ class _GoalDateFormState extends State<GoalDateForm> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: FlatButton(
+              child: RaisedButton(
+                color: Colors.pink,
                 onPressed: () {
                   addGoalData(_dateTime, petName, petType);
                   navigateToHabitPage(context);
@@ -126,8 +128,7 @@ class _GoalDateFormState extends State<GoalDateForm> {
                   'NEXT',
                   style: TextStyle(
                     fontFamily: 'PressStart2P',
-                    fontSize: 24,
-                    color: Colors.white,
+                    color: Colors.yellow,
                   ),
                 ),
               ),

@@ -18,15 +18,26 @@ class NewHabit extends StatelessWidget {
     return MyScaffold(
       userId: userId,
       name: name,
-      body: Column(
-        children: <Widget>[
-          Text('add a new habit for the goal: $goalName'),
-          Container(
-              height: 500.0,
-              width: 600.0,
-              child:
-                  MyCustomForm(userId: userId, name: name, goalName: goalName)),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Add a new habit for the goal: $goalName',
+                style: TextStyle(
+                  fontFamily: 'Pixelar',
+                  fontSize: 28,
+                ),
+              ),
+            ),
+            Container(
+                height: 500.0,
+                width: 600.0,
+                child: MyCustomForm(
+                    userId: userId, name: name, goalName: goalName)),
+          ],
+        ),
       ),
     );
   }
@@ -66,22 +77,11 @@ class MyCustomFormState extends State<MyCustomForm> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'New Habit',
-              style: TextStyle(
-                fontFamily: 'PressStart2P',
-                color: Colors.black,
-                fontSize: 25.0,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
               'Please enter a habit to continue. You can add more later.',
               style: TextStyle(
-                fontFamily: 'PressStart2P',
+                fontFamily: 'Pixelar',
                 color: Colors.black,
-                fontSize: 16.0,
+                fontSize: 24,
               ),
             ),
           ),
@@ -100,9 +100,9 @@ class MyCustomFormState extends State<MyCustomForm> {
                 hintText: 'enter habit...',
               ),
               style: TextStyle(
-                fontFamily: 'PressStart2P',
+                fontFamily: 'Pixelar',
                 color: Colors.black,
-                fontSize: 16.0,
+                fontSize: 24,
               ),
               validator: (value) {
                 if (value.isEmpty) {
@@ -117,25 +117,25 @@ class MyCustomFormState extends State<MyCustomForm> {
             child: Text(
               'How often would you like to be reminded about this habit?',
               style: TextStyle(
-                fontFamily: 'PressStart2P',
+                fontFamily: 'Pixelar',
                 color: Colors.black,
-                fontSize: 16.0,
+                fontSize: 24,
               ),
             ),
           ),
           SliderTheme(
             data: SliderTheme.of(context).copyWith(
-              activeTrackColor: Colors.cyan[700],
-              inactiveTrackColor: Colors.cyan[100],
+              activeTrackColor: Colors.purple[200],
+              inactiveTrackColor: Colors.purple[200],
               trackShape: RectangularSliderTrackShape(),
               trackHeight: 4.0,
-              thumbColor: Colors.cyanAccent,
+              thumbColor: Colors.purpleAccent,
               thumbShape: RoundSliderThumbShape(enabledThumbRadius: 12.0),
-              overlayColor: Colors.cyan.withAlpha(32),
+              overlayColor: Colors.purple.withAlpha(32),
               overlayShape: RoundSliderOverlayShape(overlayRadius: 28.0),
               tickMarkShape: RoundSliderTickMarkShape(),
-              activeTickMarkColor: Colors.cyan[700],
-              inactiveTickMarkColor: Colors.cyan[100],
+              activeTickMarkColor: Colors.purple[200],
+              inactiveTickMarkColor: Colors.purple[200],
               valueIndicatorShape: PaddleSliderValueIndicatorShape(),
               valueIndicatorTextStyle: TextStyle(
                 fontFamily: 'PressStart2P',
@@ -157,8 +157,9 @@ class MyCustomFormState extends State<MyCustomForm> {
           ),
           Spacer(),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: FlatButton(
+            padding: const EdgeInsets.all(16.0),
+            child: RaisedButton(
+              color: Colors.pink,
               onPressed: () {
                 if (_formKey.currentState.validate()) {
                   print(newHabitController);
@@ -170,7 +171,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                 'Next >',
                 style: TextStyle(
                   fontFamily: 'PressStart2P',
-                  color: Colors.black,
+                  color: Colors.yellow,
                 ),
               ),
             ),
