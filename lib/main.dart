@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:needy_new/MyApp.dart';
 import 'package:background_fetch/background_fetch.dart';
+import 'package:needy_new/RootPage.dart';
+import 'package:needy_new/authentication.dart';
 
 /// This "Headless Task" is run when app is terminated.
 void backgroundFetchHeadlessTask(String taskId) async {
@@ -10,6 +12,12 @@ void backgroundFetchHeadlessTask(String taskId) async {
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MyApp());
+  runApp(
+    MaterialApp(
+        initialRoute: '/',
+        home: Scaffold(
+          body: RootPage(auth: Auth()),
+        )),
+  );
   BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
 }
