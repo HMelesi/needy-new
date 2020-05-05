@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:needy_new/MyScaffold.dart';
 import 'package:needy_new/NewHabit.dart';
+import 'package:needy_new/Summary.dart';
 
 class MyHabits extends StatefulWidget {
   MyHabits({Key key, this.userId, this.name, this.goalName}) : super(key: key);
@@ -69,6 +70,25 @@ class _MyHabits extends State<MyHabits> {
                   MaterialPageRoute(
                     builder: (BuildContext context) => NewHabit(
                         userId: userId, name: name, goalName: goalName),
+                  ));
+            },
+          ),
+          RaisedButton(
+            textColor: Colors.white,
+            color: Colors.pink,
+            child: Text(
+              'Go to Goal summary page',
+              style: TextStyle(
+                fontFamily: 'PressStart2P',
+                color: Colors.yellow,
+              ),
+            ),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) =>
+                        Summary(userId: userId, goalName: goalName),
                   ));
             },
           )
