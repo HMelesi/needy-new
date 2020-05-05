@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:needy_new/Footer.dart';
 import 'package:needy_new/GoalSetter.dart';
-import 'package:needy_new/MyHabits.dart';
-import 'package:needy_new/NewHabit.dart';
+// import 'package:needy_new/MyHabits.dart';
+// import 'package:needy_new/NewHabit.dart';
 import 'package:needy_new/RootPage.dart';
 import 'package:needy_new/authentication.dart';
 // import 'package:needy_new/Welcome.dart';
@@ -101,7 +101,7 @@ class MyScaffold extends StatelessWidget {
       ])),
       bottomNavigationBar: BottomAppBar(
         child: Container(
-          height: 50.0,
+          height: 70.0,
           child: Footer(userId: userId),
         ),
         color: Colors.cyan,

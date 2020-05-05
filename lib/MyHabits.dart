@@ -4,7 +4,6 @@ import 'package:needy_new/MyScaffold.dart';
 import 'package:needy_new/NewHabit.dart';
 import 'package:needy_new/Summary.dart';
 
-
 class MyHabits extends StatefulWidget {
   MyHabits({Key key, this.userId, this.name, this.goalName}) : super(key: key);
 
@@ -73,7 +72,6 @@ class _MyHabits extends State<MyHabits> {
                         userId: userId, name: name, goalName: goalName),
                   ));
             },
-
           ),
           RaisedButton(
             textColor: Colors.white,
@@ -93,7 +91,6 @@ class _MyHabits extends State<MyHabits> {
                         Summary(userId: userId, goalName: goalName),
                   ));
             },
-
           )
         ],
       ),
