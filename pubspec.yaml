@@ -35,3 +35,5 @@ flutter:
   assets:
     - images/pixil-cat.png
     - images/pixil-bat.png
+    - images/pixil-hamster.png
+    - images/catgif.gif

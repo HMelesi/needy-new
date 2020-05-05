@@ -123,7 +123,7 @@ class _SignInSignUpState extends State<SignInSignUp> {
         child: CircleAvatar(
           backgroundColor: Colors.transparent,
           radius: 48.0,
-          child: Image.asset('images/pixil-cat.png'),
+          child: Image.asset('images/catgif.gif'),
         ),
       ),
     );
