@@ -30,9 +30,9 @@ class Footer extends StatelessWidget {
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
-                      while (index < goalsCount + 1) {
+                      for (int ind = 0; ind < goalsCount; ind++) {
                         final DocumentSnapshot goal =
-                            snapshot.data.documents[index];
+                            snapshot.data.documents[ind];
                         return Container(
                           height: 30.0,
                           width: 200.0,
