@@ -59,12 +59,6 @@ class _SummaryState extends State<Summary> {
                 ],
               ),
             ),
-            RaisedButton(
-              child: Text('View Summary'),
-              onPressed: () {
-                getData();
-              },
-            ),
           ],
         )), //center
       ),
