@@ -23,7 +23,7 @@ class Footer extends StatelessWidget {
               children: <Widget>[
                 Container(
                     color: Colors.green,
-                    height: 20.0,
+                    height: 25.0,
                     width: 600.0,
                     child: Row(
                       children: <Widget>[
@@ -38,7 +38,7 @@ class Footer extends StatelessWidget {
                     )),
                 Container(
                   color: Colors.green,
-                  height: 50.0,
+                  height: 45.0,
                   width: 600.0,
                   child: CustomScrollView(
                     // shrinkWrap: true,
@@ -67,6 +67,16 @@ class Footer extends StatelessWidget {
                                           fontSize: 16)),
                                   trailing:
                                       Image.asset('images/pixil-$petType.png'),
+                                  onTap: () => {
+                                    (goal['petHealth'] == 0)
+                                        ? print(
+                                            'this pet is dead, you canot play with dead pets')
+                                        : (goal['petHealth'] > 5)
+                                            ? print(
+                                                'this pet is healthy enough to play!')
+                                            : print(
+                                                'this pet is not healthy enough to play right now')
+                                  },
                                 ));
                           }
                           return null;

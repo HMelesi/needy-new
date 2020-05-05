@@ -93,7 +93,7 @@ class _SignInSignUpState extends State<SignInSignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.purple[200],
+      backgroundColor: Colors.green,
       body: Container(
         child: Stack(
           children: <Widget>[
@@ -118,13 +118,28 @@ class _SignInSignUpState extends State<SignInSignUp> {
   Widget showLogo() {
     return new Hero(
       tag: 'hero',
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
-        child: CircleAvatar(
-          backgroundColor: Colors.transparent,
-          radius: 48.0,
-          child: Image.asset('images/catgif.gif'),
-        ),
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
+            child: CircleAvatar(
+              backgroundColor: Colors.transparent,
+              radius: 48.0,
+              child: Image.asset('images/catgif.gif'),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Text(
+              'KEEPER',
+              style: TextStyle(
+                fontFamily: 'PressStart2P',
+                color: Colors.yellow,
+                fontSize: 24,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -218,16 +233,17 @@ class _SignInSignUpState extends State<SignInSignUp> {
 
   Widget showPrimaryButton() {
     return Padding(
-      padding: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
+      padding: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 10.0),
       child: SizedBox(
         height: 40.0,
-        child: FlatButton(
+        child: RaisedButton(
+          textColor: Colors.yellow,
+          color: Colors.pink,
           onPressed: validateAndSubmit,
           child: Text(
             _isLoginForm ? 'Sign In' : 'Create Account',
             style: TextStyle(
               fontSize: 20.0,
-              color: Colors.black,
               fontFamily: 'PressStart2P',
             ),
           ),
@@ -238,12 +254,13 @@ class _SignInSignUpState extends State<SignInSignUp> {
 
   Widget showSecondaryButton() {
     return FlatButton(
+      textColor: Colors.pink,
+      // color: Colors.yellow,
       onPressed: toggleFormMode,
       child: Text(
         _isLoginForm ? 'Create Account >' : '< Return to Sign In',
         style: TextStyle(
           fontSize: 15.0,
-          color: Colors.black,
           fontFamily: 'PressStart2P',
         ),
       ),
