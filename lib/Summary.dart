@@ -21,10 +21,10 @@ class _SummaryState extends State<Summary> {
   final String goalName;
 
   final databaseReference = Firestore.instance;
-
   int incomplete;
-
   int complete;
+  String total;
+
   @override
   void initState() {
     super.initState();
@@ -35,32 +35,44 @@ class _SummaryState extends State<Summary> {
   Widget build(BuildContext context) {
     return MyScaffold(
       userId: userId,
-      body: Container(
-        child: Center(
-            child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Container(
-              height: 500,
-              child: SfCartesianChart(
-                title: ChartTitle(text: 'Progress report'),
-                primaryXAxis: CategoryAxis(title: AxisTitle(text: 'status')),
-                primaryYAxis:
-                    NumericAxis(title: AxisTitle(text: 'number of habits')),
-                legend: Legend(
-                  isVisible: true,
-                ),
-                series: <ChartSeries>[
-                  ColumnSeries<HabitsData, String>(
-                      name: 'goal name',
-                      dataSource: getColumnData(),
-                      xValueMapper: (HabitsData habits, _) => habits.x,
-                      yValueMapper: (HabitsData habits, _) => habits.y)
-                ],
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Container(
+              child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Container(
+                height: 670,
+                child:  SfCircularChart(
+                        annotations: <CircularChartAnnotation>[
+                         CircularChartAnnotation(
+                           child: Container(
+                             child: PhysicalModel(
+                              child: Container(),
+                                shape: BoxShape.circle,
+                                elevation: 10,
+                                shadowColor: Colors.black,
+                                color: const Color.fromRGBO(0, 230, 0, 1)))),
+                                CircularChartAnnotation(
+                                  child: Container(
+                                  child: Text(total + '%\ncomplete',
+                                 style: TextStyle(
+                                color: Color.fromRGBO(0, 0, 0, 0.5), fontSize: 25))))
+                                   ],
+                        series: <CircularSeries>[
+                            DoughnutSeries<HabitsData, String>(
+                                dataSource: getColumnData(),
+                                pointColorMapper:(HabitsData data,  _) => data.color,
+                                xValueMapper: (HabitsData data, _) => data.x,
+                                yValueMapper: (HabitsData data, _) => data.y,
+                                radius: '100%'
+                            )
+                        ]
+                    ),
               ),
-            ),
-          ],
-        )), //center
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -79,30 +91,28 @@ class _SummaryState extends State<Summary> {
         .then((QuerySnapshot snapshot) {
       incomplete = snapshot.documents.length;
       return incomplete;
-      // snapshot.documents.forEach((f) => print('${f.data}, here')
-      //     );
     }).then((incomplete) {
       return query
           .where('outstanding', isEqualTo: false)
           .getDocuments()
           .then((QuerySnapshot snapshot) {
         complete = snapshot.documents.length;
-        return [incomplete, complete];
+        total = ((complete / (incomplete + complete)) * 100).toString(); 
+        return [incomplete, complete, total];
       });
-    }).then(([incomplete, complete]) {
+    }).then(([incomplete, complete, total]) {
       setState(() {
         complete = complete;
         incomplete = incomplete;
+        total= total;
       });
     });
   }
 
   getColumnData() {
-    print(incomplete);
-    print(complete);
     List<HabitsData> columnData = <HabitsData>[
-      HabitsData('incomplete', incomplete),
-      HabitsData('complete', complete),
+      HabitsData('complete', complete, Colors.blue),
+      HabitsData('incomplete', incomplete, Colors.green[200]),
     ];
     return columnData;
   }
@@ -111,6 +121,6 @@ class _SummaryState extends State<Summary> {
 class HabitsData {
   String x;
   int y;
-
-  HabitsData(this.x, this.y);
+final Color color;
+  HabitsData(this.x, this.y, this.color);
 }
