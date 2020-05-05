@@ -30,78 +30,81 @@ class _MyHabits extends State<MyHabits> {
     return MyScaffold(
       userId: userId,
       name: name,
-      body: Column(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Text(
-              goalName,
-              style: TextStyle(
-                fontFamily: 'PressStart2P',
-                fontSize: 24,
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Text(
+                goalName,
+                style: TextStyle(
+                  fontFamily: 'PressStart2P',
+                  fontSize: 24,
+                ),
               ),
             ),
-          ),
-          Container(
-            height: 500.0,
-            width: 600.0,
-            child: StreamBuilder<QuerySnapshot>(
-              stream: Firestore.instance
-                  .collection('users')
-                  .document(userId)
-                  .collection('goals')
-                  .document(goalName)
-                  .collection('habits')
-                  .snapshots(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  print('there are no habits here we need to create a ternary');
-                  return LinearProgressIndicator();
-                }
-                // print(Firestore.instance.collection('new_habit').snapshots());
-                return _buildHabitList(context, snapshot.data.documents);
+            Container(
+              height: 500.0,
+              width: 600.0,
+              child: StreamBuilder<QuerySnapshot>(
+                stream: Firestore.instance
+                    .collection('users')
+                    .document(userId)
+                    .collection('goals')
+                    .document(goalName)
+                    .collection('habits')
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    print(
+                        'there are no habits here we need to create a ternary');
+                    return LinearProgressIndicator();
+                  }
+                  // print(Firestore.instance.collection('new_habit').snapshots());
+                  return _buildHabitList(context, snapshot.data.documents);
+                },
+              ),
+            ),
+            RaisedButton(
+              textColor: Colors.white,
+              color: Colors.pink,
+              child: Text(
+                'Create a new habit',
+                style: TextStyle(
+                  fontFamily: 'PressStart2P',
+                  color: Colors.yellow,
+                ),
+              ),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => NewHabit(
+                          userId: userId, name: name, goalName: goalName),
+                    ));
               },
             ),
-          ),
-          RaisedButton(
-            textColor: Colors.white,
-            color: Colors.pink,
-            child: Text(
-              'Create a new habit',
-              style: TextStyle(
-                fontFamily: 'PressStart2P',
-                color: Colors.yellow,
+            RaisedButton(
+              textColor: Colors.white,
+              color: Colors.pink,
+              child: Text(
+                'View summary',
+                style: TextStyle(
+                  fontFamily: 'PressStart2P',
+                  color: Colors.yellow,
+                ),
               ),
-            ),
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => NewHabit(
-                        userId: userId, name: name, goalName: goalName),
-                  ));
-            },
-          ),
-          RaisedButton(
-            textColor: Colors.white,
-            color: Colors.pink,
-            child: Text(
-              'View summary',
-              style: TextStyle(
-                fontFamily: 'PressStart2P',
-                color: Colors.yellow,
-              ),
-            ),
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (BuildContext context) =>
-                        Summary(userId: userId, goalName: goalName),
-                  ));
-            },
-          )
-        ],
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          Summary(userId: userId, goalName: goalName),
+                    ));
+              },
+            )
+          ],
+        ),
       ),
     );
   }

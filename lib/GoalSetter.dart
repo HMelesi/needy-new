@@ -57,17 +57,19 @@ class _GoalFormState extends State<GoalForm> {
     print('goalsetter: $userId $name');
     return Form(
       key: _formKey,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              'Select the creature you will take care of!',
-              style: TextStyle(
-                fontFamily: 'Pixelar',
-                fontSize: 32,
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Select the creature you will take care of!',
+                style: TextStyle(
+                  fontFamily: 'Pixelar',
+                  fontSize: 32,
+                ),
               ),
             ),
           ),
@@ -85,104 +87,104 @@ class _GoalFormState extends State<GoalForm> {
                 fontSize: 26,
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Please enter a name!';
-                }
-              },
-              onSaved: (String value) {
-                _petName = value;
-              },
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter a name!';
+                  }
+                },
+                onSaved: (String value) {
+                  _petName = value;
+                },
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                  ),
+                  filled: true,
+                  fillColor: Colors.grey,
+                  hintText: 'enter a name...',
+                  hintStyle: TextStyle(
+                    fontFamily: 'Pixelar',
+                    fontSize: 26,
                   ),
                 ),
-                filled: true,
-                fillColor: Colors.grey,
-                hintText: 'enter a name...',
-                hintStyle: TextStyle(
-                  fontFamily: 'Pixelar',
-                  fontSize: 26,
-                ),
-              ),
-              style: TextStyle(
-                fontFamily: 'Pixelar',
-                fontSize: 26,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              'What is your overall goal?',
-              style: TextStyle(
-                fontFamily: 'Pixelar',
-                fontSize: 26,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              controller: newGoalController,
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Please enter a goal!';
-                }
-                return null;
-              },
-              onSaved: (String value) {
-                goalName = value;
-              },
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10),
-                  ),
-                ),
-                filled: true,
-                fillColor: Colors.grey,
-                hintText: 'enter a goal...',
-                hintStyle: TextStyle(
-                  fontFamily: 'Pixelar',
-                  fontSize: 26,
-                ),
-              ),
-              style: TextStyle(
-                fontFamily: 'Pixelar',
-                fontSize: 26,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: RaisedButton(
-              textColor: Colors.white,
-              color: Colors.pink,
-              child: Text(
-                'NEXT',
                 style: TextStyle(
-                  fontFamily: 'PressStart2P',
-                  color: Colors.yellow,
+                  fontFamily: 'Pixelar',
+                  fontSize: 26,
                 ),
               ),
-              onPressed: () {
-                if (_formKey.currentState.validate()) {
-                  _formKey.currentState.save();
-                  addNewGoal(newGoalController);
-                  navigateToDatePage(context);
-                  print(goalName);
-                }
-              },
             ),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'What is your overall goal?',
+                style: TextStyle(
+                  fontFamily: 'Pixelar',
+                  fontSize: 26,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                controller: newGoalController,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter a goal!';
+                  }
+                  return null;
+                },
+                onSaved: (String value) {
+                  goalName = value;
+                },
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                  ),
+                  filled: true,
+                  fillColor: Colors.grey,
+                  hintText: 'enter a goal...',
+                  hintStyle: TextStyle(
+                    fontFamily: 'Pixelar',
+                    fontSize: 26,
+                  ),
+                ),
+                style: TextStyle(
+                  fontFamily: 'Pixelar',
+                  fontSize: 26,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: RaisedButton(
+                textColor: Colors.white,
+                color: Colors.pink,
+                child: Text(
+                  'NEXT',
+                  style: TextStyle(
+                    fontFamily: 'PressStart2P',
+                    color: Colors.yellow,
+                  ),
+                ),
+                onPressed: () {
+                  if (_formKey.currentState.validate()) {
+                    _formKey.currentState.save();
+                    addNewGoal(newGoalController);
+                    navigateToDatePage(context);
+                    print(goalName);
+                  }
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
