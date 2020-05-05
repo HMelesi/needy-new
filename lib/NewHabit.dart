@@ -202,7 +202,8 @@ class MyCustomFormState extends State<MyCustomForm> {
         .setData({
       'habitName': habit.text,
       'frequency': frequency,
-      'outstanding': false
+      'outstanding': false,
+      'time': DateTime.now(),
     }).then((res) {
       Scaffold.of(context).showSnackBar(
         SnackBar(

@@ -43,28 +43,6 @@ class _MyHabits extends State<MyHabits> {
                 ),
               ),
             ),
-            Container(
-              height: 500.0,
-              width: 600.0,
-              child: StreamBuilder<QuerySnapshot>(
-                stream: Firestore.instance
-                    .collection('users')
-                    .document(userId)
-                    .collection('goals')
-                    .document(goalName)
-                    .collection('habits')
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    print(
-                        'there are no habits here we need to create a ternary');
-                    return LinearProgressIndicator();
-                  }
-                  // print(Firestore.instance.collection('new_habit').snapshots());
-                  return _buildHabitList(context, snapshot.data.documents);
-                },
-              ),
-            ),
             RaisedButton(
               textColor: Colors.white,
               color: Colors.pink,
@@ -102,7 +80,29 @@ class _MyHabits extends State<MyHabits> {
                           Summary(userId: userId, goalName: goalName),
                     ));
               },
-            )
+            ),
+            Container(
+              height: 500.0,
+              width: 600.0,
+              child: StreamBuilder<QuerySnapshot>(
+                stream: Firestore.instance
+                    .collection('users')
+                    .document(userId)
+                    .collection('goals')
+                    .document(goalName)
+                    .collection('habits')
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    print(
+                        'there are no habits here we need to create a ternary');
+                    return LinearProgressIndicator();
+                  }
+                  // print(Firestore.instance.collection('new_habit').snapshots());
+                  return _buildHabitList(context, snapshot.data.documents);
+                },
+              ),
+            ),
           ],
         ),
       ),
@@ -137,8 +137,12 @@ class _MyHabits extends State<MyHabits> {
                   : Colors.grey[800],
             ),
           ),
-          onTap: () => habitrecord.reference
-              .updateData({'outstanding': !habitrecord.outstanding}),
+          onTap: (habitrecord.outstanding == true)
+              ? () => habitrecord.reference.updateData({
+                    'outstanding': !habitrecord.outstanding,
+                    'time': DateTime.now()
+                  })
+              : null,
           trailing: Icon(
             (habitrecord.outstanding == true)
                 ? Icons.beach_access

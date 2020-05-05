@@ -124,17 +124,6 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                         ),
-                        Text(
-                          'here are your goals',
-                          style: TextStyle(
-                            fontFamily: 'Pixelar',
-                            color: Colors.black,
-                            fontSize: 26,
-                          ),
-                        ),
-                        Expanded(
-                            child: _buildGoalList(
-                                context, snapshot.data.documents)),
                         RaisedButton(
                           textColor: Colors.white,
                           color: Colors.pink,
@@ -148,7 +137,18 @@ class _HomePageState extends State<HomePage> {
                           onPressed: () {
                             toGoalSetter(context);
                           },
-                        )
+                        ),
+                        Text(
+                          'here are your goals',
+                          style: TextStyle(
+                            fontFamily: 'Pixelar',
+                            color: Colors.black,
+                            fontSize: 26,
+                          ),
+                        ),
+                        Expanded(
+                            child: _buildGoalList(
+                                context, snapshot.data.documents)),
                       ],
                     );
                   }
