@@ -5,7 +5,7 @@ import 'package:needy_new/MyHabits.dart';
 import 'package:needy_new/NewHabit.dart';
 import 'package:needy_new/RootPage.dart';
 import 'package:needy_new/authentication.dart';
-import 'package:needy_new/Welcome.dart';
+// import 'package:needy_new/Welcome.dart';
 
 class MyScaffold extends StatelessWidget {
   MyScaffold(
@@ -15,6 +15,7 @@ class MyScaffold extends StatelessWidget {
   final Widget body;
   final String userId;
   final String name;
+
   final VoidCallback logoutCallback;
 
   @override
@@ -55,26 +56,26 @@ class MyScaffold extends StatelessWidget {
                         GoalSetter(userId: userId, name: name),
                   ));
             }),
-        ListTile(
-            title: Text('create a new habit'),
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (BuildContext context) =>
-                        NewHabit(userId: userId, name: name),
-                  ));
-            }),
-        ListTile(
-            title: Text('my habits'),
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (BuildContext context) =>
-                        MyHabits(userId: userId, name: name),
-                  ));
-            }),
+        // ListTile(
+        //     title: Text('create a new habit'),
+        //     onTap: () {
+        //       Navigator.push(
+        //           context,
+        //           MaterialPageRoute(
+        //             builder: (BuildContext context) =>
+        //                 NewHabit(userId: userId, name: name),
+        //           ));
+        //     }),
+        // ListTile(
+        //     title: Text('my habits'),
+        //     onTap: () {
+        //       Navigator.push(
+        //           context,
+        //           MaterialPageRoute(
+        //             builder: (BuildContext context) =>
+        //                 MyHabits(userId: userId, name: name),
+        //           ));
+        //     }),
         RaisedButton(
           textColor: Colors.white,
           color: Colors.pink,
