@@ -33,7 +33,7 @@ class CarouselDemo extends StatelessWidget {
           color: Colors.pink,
         ),
         Container(
-          width: 180,
+          width: 85,
           child: CarouselSlider(
             items: <Widget>[
               Image.asset('images/pixil-cat.png'),
@@ -45,9 +45,7 @@ class CarouselDemo extends StatelessWidget {
             carouselController: buttonCarouselController,
             options: CarouselOptions(
               autoPlay: false,
-              enlargeCenterPage: false,
-              viewportFraction: 0.9,
-              aspectRatio: 2.0,
+              aspectRatio: 1.7,
               initialPage: currentPage,
             ),
           ),

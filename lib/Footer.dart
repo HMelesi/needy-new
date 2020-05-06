@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:needy_new/GamePage.dart';
 
 class Footer extends StatelessWidget {
   Footer({this.userId});
@@ -51,31 +52,49 @@ class Footer extends StatelessWidget {
                             DocumentSnapshot goal =
                                 snapshot.data.documents[index];
                             String petType = goal['petType'];
+                            String petName = goal['petName'];
+                            int petHealth = goal['petHealth'];
+                            String goalName = goal['goalName'];
                             return Container(
                                 height: 50.0,
                                 width: 200.0,
                                 margin: const EdgeInsets.only(bottom: 20.0),
-                                child: ListTile(
-                                  title: Text(goal['petName'],
-                                      style: TextStyle(
-                                          color: (goal['petHealth'] == 0)
-                                              ? Colors.white
-                                              : (goal['petHealth'] > 5)
-                                                  ? Colors.pink
-                                                  : Colors.pink[200],
-                                          fontFamily: 'PressStart2P',
-                                          fontSize: 16)),
-                                  trailing:
+                                child: FlatButton(
+                                  child: Row(
+                                    children: <Widget>[
+                                      Text(petName,
+                                          style: TextStyle(
+                                              color: (petHealth == 0)
+                                                  ? Colors.white
+                                                  : (petHealth > 5)
+                                                      ? Colors.pink
+                                                      : Colors.pink[200],
+                                              fontFamily: 'PressStart2P',
+                                              fontSize: 16)),
                                       Image.asset('images/pixil-$petType.png'),
-                                  onTap: () => {
-                                    (goal['petHealth'] == 0)
+                                    ],
+                                  ),
+                                  onPressed: () {
+                                    print('this is being tapped');
+                                    (petHealth == 0)
                                         ? print(
                                             'this pet is dead, you canot play with dead pets')
-                                        : (goal['petHealth'] > 5)
-                                            ? print(
-                                                'this pet is healthy enough to play!')
+                                        : (petHealth > 5)
+                                            ? Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder:
+                                                      (BuildContext context) =>
+                                                          GamePage(
+                                                    userId: userId,
+                                                    goalName: goalName,
+                                                    petHealth: petHealth,
+                                                    petType: petType,
+                                                    petName: petName,
+                                                  ),
+                                                ))
                                             : print(
-                                                'this pet is not healthy enough to play right now')
+                                                'this pet is not healthy enough to play right now');
                                   },
                                 ));
                           }
