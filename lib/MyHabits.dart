@@ -5,24 +5,28 @@ import 'package:needy_new/NewHabit.dart';
 import 'package:needy_new/Summary.dart';
 
 class MyHabits extends StatefulWidget {
-  MyHabits({Key key, this.userId, this.name, this.goalName}) : super(key: key);
+  MyHabits({Key key, this.userId, this.name, this.goalName, this.endDate})
+      : super(key: key);
 
   final String userId;
   final String name;
   final String goalName;
+  final Timestamp endDate;
 
   @override
   _MyHabits createState() {
-    return _MyHabits(userId: userId, name: name, goalName: goalName);
+    return _MyHabits(
+        userId: userId, name: name, goalName: goalName, endDate: endDate);
   }
 }
 
 class _MyHabits extends State<MyHabits> {
-  _MyHabits({this.userId, this.name, this.goalName});
+  _MyHabits({this.userId, this.name, this.goalName, this.endDate});
 
   final String userId;
   final String name;
   final String goalName;
+  final Timestamp endDate;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +45,14 @@ class _MyHabits extends State<MyHabits> {
                   fontFamily: 'PressStart2P',
                   fontSize: 24,
                 ),
+              ),
+            ),
+            Text(
+              'This goal will end on $endDate',
+              style: TextStyle(
+                fontFamily: 'Pixelar',
+                fontSize: 18,
+                color: Colors.grey[800],
               ),
             ),
             RaisedButton(
