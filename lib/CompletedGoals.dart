@@ -65,7 +65,7 @@ class _CompletedGoalsState extends State<CompletedGoals> {
                   .collection('users')
                   .document(userId)
                   .collection('goals')
-                  .where('endDate', isLessThanOrEqualTo: DateTime.now())
+                  .where('endDate', isLessThan: DateTime.now())
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.data.documents.length == 0) {
