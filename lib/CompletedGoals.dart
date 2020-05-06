@@ -6,8 +6,8 @@ import 'package:needy_new/authentication.dart';
 import 'package:needy_new/MyScaffold.dart';
 import 'package:needy_new/MyHabits.dart';
 
-class HomePage extends StatefulWidget {
-  HomePage(
+class CompletedGoals extends StatefulWidget {
+  CompletedGoals(
       {Key key,
       this.auth,
       this.userId,
@@ -23,7 +23,7 @@ class HomePage extends StatefulWidget {
   final bool logout;
 
   @override
-  _HomePageState createState() => new _HomePageState(
+  State<StatefulWidget> createState() => new _CompletedGoalsState(
       userId: userId,
       name: name,
       logoutCallback: logoutCallback,
@@ -31,8 +31,8 @@ class HomePage extends StatefulWidget {
       logout: logout);
 }
 
-class _HomePageState extends State<HomePage> {
-  _HomePageState(
+class _CompletedGoalsState extends State<CompletedGoals> {
+  _CompletedGoalsState(
       {Key key,
       this.auth,
       this.userId,
@@ -55,7 +55,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     getUsername(userId);
     print('welcome: $userId');
-    updateToken();
+    // updateToken();
 
     return MyScaffold(
         auth: auth,
@@ -69,94 +69,93 @@ class _HomePageState extends State<HomePage> {
                     .collection('users')
                     .document(userId)
                     .collection('goals')
-                    .where('endDate', isGreaterThan: DateTime.now())
+                    .where('endDate', isLessThanOrEqualTo: DateTime.now())
                     .snapshots(),
                 builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return Column(children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: (name == null)
-                            ? null
-                            : Text(
-                                'hi $name, welcome to Keeper!',
-                                style: TextStyle(
-                                  fontFamily: 'Pixelar',
-                                  color: Colors.black,
-                                  fontSize: 26,
-                                ),
-                              ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'hmmm it looks like you have no goals at the moment, would you like to set one up?',
-                          style: TextStyle(
-                            fontFamily: 'Pixelar',
-                            color: Colors.black,
-                            fontSize: 26,
-                          ),
+                  // if (!snapshot.hasData) {
+                  // return Column(children: <Widget>[
+                  //   Padding(
+                  //     padding: const EdgeInsets.all(8.0),
+                  //     child: (name == null)
+                  //         ? null
+                  //         : Text(
+                  //             'Here are your completed goals:',
+                  //             style: TextStyle(
+                  //               fontFamily: 'Pixelar',
+                  //               color: Colors.black,
+                  //               fontSize: 26,
+                  //             ),
+                  //           ),
+                  //   ),
+                  // Padding(
+                  //   padding: const EdgeInsets.all(8.0),
+                  //   child: Text(
+                  //     'hmmm it looks like you have no goals at the moment, would you like to set one up?',
+                  //     style: TextStyle(
+                  //       fontFamily: 'Pixelar',
+                  //       color: Colors.black,
+                  //       fontSize: 26,
+                  //     ),
+                  //   ),
+                  // ),
+                  // RaisedButton(
+                  //   textColor: Colors.white,
+                  //   color: Colors.pink,
+                  //   child: Text(
+                  //     'Create a new goal',
+                  //     style: TextStyle(
+                  //       fontFamily: 'PressStart2P',
+                  //       color: Colors.yellow,
+                  //     ),
+                  //   ),
+                  //   onPressed: () {
+                  //     toGoalSetter(context);
+                  //   },
+                  // )
+                  // ]);
+                  // } else {
+                  return Column(
+                    children: <Widget>[
+                      // Padding(
+                      //   padding: const EdgeInsets.all(8.0),
+                      //   child: (name == null)
+                      //       ? null
+                      //       : Text(
+                      //           'hi $name, welcome to Keeper!',
+                      //           style: TextStyle(
+                      //             fontFamily: 'Pixelar',
+                      //             color: Colors.black,
+                      //             fontSize: 26,
+                      //           ),
+                      //         ),
+                      // ),
+                      // RaisedButton(
+                      //   textColor: Colors.white,
+                      //   color: Colors.pink,
+                      //   child: Text(
+                      //     'Create a new goal',
+                      //     style: TextStyle(
+                      //       fontFamily: 'PressStart2P',
+                      //       color: Colors.yellow,
+                      //     ),
+                      //   ),
+                      //   onPressed: () {
+                      //     toGoalSetter(context);
+                      //   },
+                      // ),
+                      Text(
+                        'Completed Goals:',
+                        style: TextStyle(
+                          fontFamily: 'Pixelar',
+                          color: Colors.black,
+                          fontSize: 26,
                         ),
                       ),
-                      RaisedButton(
-                        textColor: Colors.white,
-                        color: Colors.pink,
-                        child: Text(
-                          'Create a new goal',
-                          style: TextStyle(
-                            fontFamily: 'PressStart2P',
-                            color: Colors.yellow,
-                          ),
-                        ),
-                        onPressed: () {
-                          toGoalSetter(context);
-                        },
-                      )
-                    ]);
-                  } else {
-                    return Column(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: (name == null)
-                              ? null
-                              : Text(
-                                  'hi $name, welcome to Keeper!',
-                                  style: TextStyle(
-                                    fontFamily: 'Pixelar',
-                                    color: Colors.black,
-                                    fontSize: 26,
-                                  ),
-                                ),
-                        ),
-                        RaisedButton(
-                          textColor: Colors.white,
-                          color: Colors.pink,
-                          child: Text(
-                            'Create a new goal',
-                            style: TextStyle(
-                              fontFamily: 'PressStart2P',
-                              color: Colors.yellow,
-                            ),
-                          ),
-                          onPressed: () {
-                            toGoalSetter(context);
-                          },
-                        ),
-                        Text(
-                          'Currently open goals:',
-                          style: TextStyle(
-                            fontFamily: 'Pixelar',
-                            color: Colors.black,
-                            fontSize: 26,
-                          ),
-                        ),
-                        Expanded(
-                            child: _buildGoalList(
-                                context, snapshot.data.documents)),
-                      ],
-                    );
-                  }
+                      Expanded(
+                          child:
+                              _buildGoalList(context, snapshot.data.documents)),
+                    ],
+                  );
                 }));
   }
 
@@ -166,23 +165,23 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  Future toGoalSetter(context) async {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => GoalSetter(userId: userId, name: name)));
-  }
+  // Future toGoalSetter(context) async {
+  //   Navigator.push(
+  //       context,
+  //       MaterialPageRoute(
+  //           builder: (context) => GoalSetter(userId: userId, name: name)));
+  // }
 
-  updateToken() async {
-    final dbRef = Firestore.instance;
-    final token = await _firebaseMessaging.getToken();
+  // updateToken() async {
+  //   final dbRef = Firestore.instance;
+  //   final token = await _firebaseMessaging.getToken();
 
-    dbRef.collection('users').document(userId).updateData({
-      'fcm': token,
-    }).then((res) {
-      print('fcm token updated');
-    });
-  }
+  //   dbRef.collection('users').document(userId).updateData({
+  //     'fcm': token,
+  //   }).then((res) {
+  //     print('fcm token updated');
+  //   });
+  // }
 
   Widget _buildGoalList(BuildContext context, List<DocumentSnapshot> snapshot) {
     return ListView(
