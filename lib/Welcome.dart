@@ -23,7 +23,7 @@ class HomePage extends StatefulWidget {
   final bool logout;
 
   @override
-  State<StatefulWidget> createState() => new _HomePageState(
+  _HomePageState createState() => new _HomePageState(
       userId: userId,
       name: name,
       logoutCallback: logoutCallback,
@@ -69,6 +69,7 @@ class _HomePageState extends State<HomePage> {
                     .collection('users')
                     .document(userId)
                     .collection('goals')
+                    .where('endDate', isGreaterThan: DateTime.now())
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
@@ -143,7 +144,7 @@ class _HomePageState extends State<HomePage> {
                           },
                         ),
                         Text(
-                          'here are your goals',
+                          'Currently open goals:',
                           style: TextStyle(
                             fontFamily: 'Pixelar',
                             color: Colors.black,
