@@ -1,10 +1,7 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:needy_new/GoalSetter.dart';
 import 'package:needy_new/authentication.dart';
 import 'package:needy_new/MyScaffold.dart';
-import 'package:needy_new/MyHabits.dart';
 
 class CompletedGoals extends StatefulWidget {
   CompletedGoals(
@@ -43,7 +40,6 @@ class _CompletedGoalsState extends State<CompletedGoals> {
   final BaseAuth auth;
   final VoidCallback logoutCallback;
   final String userId;
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   String name;
   final bool logout;
 
@@ -58,91 +54,35 @@ class _CompletedGoalsState extends State<CompletedGoals> {
     // updateToken();
 
     return MyScaffold(
-        auth: auth,
-        logoutCallback: logoutCallback,
-        name: name,
-        userId: userId,
-        body: (userId == null)
-            ? Text('you idiot you have not passed the userid')
-            : StreamBuilder<QuerySnapshot>(
-                stream: Firestore.instance
-                    .collection('users')
-                    .document(userId)
-                    .collection('goals')
-                    .where('endDate', isLessThanOrEqualTo: DateTime.now())
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  // if (!snapshot.hasData) {
-                  // return Column(children: <Widget>[
-                  //   Padding(
-                  //     padding: const EdgeInsets.all(8.0),
-                  //     child: (name == null)
-                  //         ? null
-                  //         : Text(
-                  //             'Here are your completed goals:',
-                  //             style: TextStyle(
-                  //               fontFamily: 'Pixelar',
-                  //               color: Colors.black,
-                  //               fontSize: 26,
-                  //             ),
-                  //           ),
-                  //   ),
-                  // Padding(
-                  //   padding: const EdgeInsets.all(8.0),
-                  //   child: Text(
-                  //     'hmmm it looks like you have no goals at the moment, would you like to set one up?',
-                  //     style: TextStyle(
-                  //       fontFamily: 'Pixelar',
-                  //       color: Colors.black,
-                  //       fontSize: 26,
-                  //     ),
-                  //   ),
-                  // ),
-                  // RaisedButton(
-                  //   textColor: Colors.white,
-                  //   color: Colors.pink,
-                  //   child: Text(
-                  //     'Create a new goal',
-                  //     style: TextStyle(
-                  //       fontFamily: 'PressStart2P',
-                  //       color: Colors.yellow,
-                  //     ),
-                  //   ),
-                  //   onPressed: () {
-                  //     toGoalSetter(context);
-                  //   },
-                  // )
-                  // ]);
-                  // } else {
+      auth: auth,
+      logoutCallback: logoutCallback,
+      name: name,
+      userId: userId,
+      body: (userId == null)
+          ? Text('you idiot you have not passed the userid')
+          : StreamBuilder<QuerySnapshot>(
+              stream: Firestore.instance
+                  .collection('users')
+                  .document(userId)
+                  .collection('goals')
+                  .where('endDate', isLessThanOrEqualTo: DateTime.now())
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.data.documents.length == 0) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'There\'s nothing here! Try sticking with the goals you\'ve made.',
+                      style: TextStyle(
+                        fontFamily: 'Pixelar',
+                        color: Colors.black,
+                        fontSize: 26,
+                      ),
+                    ),
+                  );
+                } else {
                   return Column(
                     children: <Widget>[
-                      // Padding(
-                      //   padding: const EdgeInsets.all(8.0),
-                      //   child: (name == null)
-                      //       ? null
-                      //       : Text(
-                      //           'hi $name, welcome to Keeper!',
-                      //           style: TextStyle(
-                      //             fontFamily: 'Pixelar',
-                      //             color: Colors.black,
-                      //             fontSize: 26,
-                      //           ),
-                      //         ),
-                      // ),
-                      // RaisedButton(
-                      //   textColor: Colors.white,
-                      //   color: Colors.pink,
-                      //   child: Text(
-                      //     'Create a new goal',
-                      //     style: TextStyle(
-                      //       fontFamily: 'PressStart2P',
-                      //       color: Colors.yellow,
-                      //     ),
-                      //   ),
-                      //   onPressed: () {
-                      //     toGoalSetter(context);
-                      //   },
-                      // ),
                       Text(
                         'Completed Goals:',
                         style: TextStyle(
@@ -156,7 +96,9 @@ class _CompletedGoalsState extends State<CompletedGoals> {
                               _buildGoalList(context, snapshot.data.documents)),
                     ],
                   );
-                }));
+                }
+              }),
+    );
   }
 
   Future getUsername(userId) async {
@@ -164,24 +106,6 @@ class _CompletedGoalsState extends State<CompletedGoals> {
       name = (res['username']);
     });
   }
-
-  // Future toGoalSetter(context) async {
-  //   Navigator.push(
-  //       context,
-  //       MaterialPageRoute(
-  //           builder: (context) => GoalSetter(userId: userId, name: name)));
-  // }
-
-  // updateToken() async {
-  //   final dbRef = Firestore.instance;
-  //   final token = await _firebaseMessaging.getToken();
-
-  //   dbRef.collection('users').document(userId).updateData({
-  //     'fcm': token,
-  //   }).then((res) {
-  //     print('fcm token updated');
-  //   });
-  // }
 
   Widget _buildGoalList(BuildContext context, List<DocumentSnapshot> snapshot) {
     return ListView(
@@ -194,43 +118,38 @@ class _CompletedGoalsState extends State<CompletedGoals> {
   Widget _buildGoalListItem(BuildContext context, DocumentSnapshot data) {
     final goalRecord = GoalRecord.fromSnapshot(data);
     final goalName = goalRecord.goalName;
+    final petName = goalRecord.petName;
+    final outstanding = goalRecord.outstanding;
+
     return Padding(
       key: ValueKey(goalRecord.petName),
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Container(
         decoration: BoxDecoration(color: Colors.green[300]),
         child: ListTile(
-            title: Text(
-              goalRecord.goalName,
-              style: TextStyle(
-                fontFamily: 'Pixelar',
-                fontSize: 26,
-                color: Colors.black,
-              ),
+          title: Text(
+            goalName,
+            style: TextStyle(
+              fontFamily: 'Pixelar',
+              fontSize: 26,
+              color: Colors.black,
             ),
-            subtitle: Text(
-              goalRecord.petName,
-              style: TextStyle(
-                fontFamily: 'Pixelar',
-                fontSize: 18,
-                color: Colors.black,
-              ),
+          ),
+          subtitle: Text(
+            petName,
+            style: TextStyle(
+              fontFamily: 'Pixelar',
+              fontSize: 18,
+              color: Colors.black,
             ),
-            trailing: (goalRecord.outstanding == true)
-                ? Icon(
-                    Icons.warning,
-                    color: Colors.red,
-                  )
-                : SizedBox(),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) =>
-                      MyHabits(userId: userId, name: name, goalName: goalName),
-                ),
-              );
-            }),
+          ),
+          trailing: (outstanding == true)
+              ? Icon(
+                  Icons.warning,
+                  color: Colors.red,
+                )
+              : SizedBox(),
+        ),
       ),
     );
   }
