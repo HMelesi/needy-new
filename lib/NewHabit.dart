@@ -61,7 +61,7 @@ class MyCustomFormState extends State<MyCustomForm> {
   final String userId;
   final String name;
   final String goalName;
-  double _frequency = 5.0;
+  double _frequency = 1.0;
   final _formKey = GlobalKey<FormState>();
   final newHabitController = TextEditingController();
   final dbRef = Firestore.instance;
@@ -144,10 +144,10 @@ class MyCustomFormState extends State<MyCustomForm> {
             ),
             child: Slider(
               min: 0,
-              max: 10,
+              max: 7,
               value: _frequency,
-              divisions: 10,
-              label: '$_frequency',
+              divisions: 7,
+              label: '${_frequency.round()} days',
               onChanged: (value) {
                 setState(() {
                   _frequency = value;
@@ -155,7 +155,23 @@ class MyCustomFormState extends State<MyCustomForm> {
               },
             ),
           ),
-          Spacer(),
+          (_frequency == 1.0)
+              ? Text(
+                  'Okay, you will be reminded every day!',
+                  style: TextStyle(
+                    fontFamily: 'Pixelar',
+                    fontSize: 18,
+                    color: Colors.grey[800],
+                  ),
+                )
+              : Text(
+                  'Okay, you will be reminded every ${_frequency.round()} days!',
+                  style: TextStyle(
+                    fontFamily: 'Pixelar',
+                    fontSize: 18,
+                    color: Colors.grey[800],
+                  ),
+                ),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: RaisedButton(
