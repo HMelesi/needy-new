@@ -98,19 +98,13 @@ class Footer extends StatelessWidget {
                                               ? print(
                                                   'this pet is dead, you canot play with dead pets')
                                               : (petHealth > 5)
-                                                  ? Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (BuildContext
-                                                                context) =>
-                                                            gamestart(
-                                                          userId,
-                                                          goalName,
-                                                          petHealth,
-                                                          petType,
-                                                          petName,
-                                                        ),
-                                                      ))
+                                                  ? gamestart(
+                                                      userId,
+                                                      goalName,
+                                                      petHealth,
+                                                      petType,
+                                                      petName,
+                                                    )
                                                   : print(
                                                       'this pet is not healthy enough to play right now');
                                         },
