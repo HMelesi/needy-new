@@ -10,6 +10,7 @@ class Footer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.green[200],
       body: (userId == null)
           ? Container(
               height: 70,
