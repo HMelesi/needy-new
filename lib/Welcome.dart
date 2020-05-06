@@ -75,14 +75,16 @@ class _HomePageState extends State<HomePage> {
                     return Column(children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'hi $name, welcome to Keeper!',
-                          style: TextStyle(
-                            fontFamily: 'Pixelar',
-                            color: Colors.black,
-                            fontSize: 26,
-                          ),
-                        ),
+                        child: (name == null)
+                            ? null
+                            : Text(
+                                'hi $name, welcome to Keeper!',
+                                style: TextStyle(
+                                  fontFamily: 'Pixelar',
+                                  color: Colors.black,
+                                  fontSize: 26,
+                                ),
+                              ),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -115,14 +117,16 @@ class _HomePageState extends State<HomePage> {
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'hi $name, welcome to Keeper!',
-                            style: TextStyle(
-                              fontFamily: 'Pixelar',
-                              color: Colors.black,
-                              fontSize: 26,
-                            ),
-                          ),
+                          child: (name == null)
+                              ? null
+                              : Text(
+                                  'hi $name, welcome to Keeper!',
+                                  style: TextStyle(
+                                    fontFamily: 'Pixelar',
+                                    color: Colors.black,
+                                    fontSize: 26,
+                                  ),
+                                ),
                         ),
                         RaisedButton(
                           textColor: Colors.white,
