@@ -59,6 +59,7 @@ class _GoalFormState extends State<GoalForm> {
       key: _formKey,
       child: SingleChildScrollView(
         child: Column(
+          mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
@@ -72,11 +73,13 @@ class _GoalFormState extends State<GoalForm> {
                 ),
               ),
             ),
-            Container(
-                alignment: Alignment(0.0, 0.0),
-                height: 200.0,
-                width: 500,
-                child: CarouselDemo(changeCreatureName: changeCreatureName)),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                  height: 180.0,
+                  width: 300,
+                  child: CarouselDemo(changeCreatureName: changeCreatureName)),
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(

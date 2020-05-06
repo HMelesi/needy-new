@@ -140,6 +140,9 @@ class _GoalDateFormState extends State<GoalDateForm> {
   }
 
   void addGoalData(date, petName, petType) {
+    if (date == null) {
+      date = DateTime.now().add(new Duration(days: 20000));
+    }
     dbRef
         .collection('users')
         .document(userId)
