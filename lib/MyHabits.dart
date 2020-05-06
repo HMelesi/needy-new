@@ -91,6 +91,7 @@ class _MyHabits extends State<MyHabits> {
                     .collection('goals')
                     .document(goalName)
                     .collection('habits')
+                    .orderBy('outstanding', descending: true)
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
