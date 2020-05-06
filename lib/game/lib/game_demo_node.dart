@@ -15,45 +15,45 @@ class GameDemoNode extends NodeWithSize {
       this._gameState, this._gameOverCallback)
       : super(new Size(320.0, 320.0)) {
     // Add background
-    _background = new RepeatedImage(_images["assets/starfield.png"]);
+    _background = new RepeatedImage(_images["lib/game/assets/grass.png"]);
     addChild(_background);
 
     // Create starfield
-    _starField = new StarField(_spritesGame, 200);
-    addChild(_starField);
+    // _starField = new StarField(_spritesGame, 200);
+    // addChild(_starField);
 
     // Add nebula
-    _nebula =
-        new RepeatedImage(_images["assets/nebula.png"], ui.BlendMode.plus);
-    addChild(_nebula);
+    // _nebula =
+    //     new RepeatedImage(_images["assets/nebula.png"], ui.BlendMode.plus);
+    // addChild(_nebula);
 
     // Setup game screen, it will always be anchored to the bottom of the screen
-    _gameScreen = new Node();
-    addChild(_gameScreen);
+    // _gameScreen = new Node();
+    // addChild(_gameScreen);
 
     // Setup the level and add it to the screen, the level is the node where
     // all our game objects live. It is moved to scroll the game
-    _level = new Level();
-    _gameScreen.addChild(_level);
+    // _level = new Level();
+    // _gameScreen.addChild(_level);
 
     // Add heads up display
-    _playerState = new PlayerState(_spritesUI, _spritesGame, _gameState);
-    _playerState.position = Offset(0.0, 20.0);
-    addChild(_playerState);
+    // _playerState = new PlayerState(_spritesUI, _spritesGame, _gameState);
+    // _playerState.position = Offset(0.0, 20.0);
+    // addChild(_playerState);
 
-    _objectFactory =
-        new GameObjectFactory(_spritesGame, _sounds, _level, _playerState);
+    // _objectFactory =
+    //     new GameObjectFactory(_spritesGame, _sounds, _level, _playerState);
 
-    _level.ship = new Ship(_objectFactory);
-    _level.ship.setupActions();
-    _level.addChild(_level.ship);
+    // _level.ship = new Ship(_objectFactory);
+    // _level.ship.setupActions();
+    // _level.addChild(_level.ship);
 
     // Add the joystick
-    _joystick = new VirtualJoystick();
-    _gameScreen.addChild(_joystick);
+    // _joystick = new VirtualJoystick();
+    // _gameScreen.addChild(_joystick);
 
     // Add initial game objects
-    addObjects();
+    // addObjects();
   }
 
   final PersistantGameState _gameState;

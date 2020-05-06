@@ -12,11 +12,13 @@ import 'package:spritewidget/spritewidget.dart';
 
 import 'game_demo.dart';
 
-// PersistantGameState _gameState;
+PersistantGameState _gameState;
 
 ImageMap _imageMap;
 SpriteSheet _spriteSheet;
 SpriteSheet _spriteSheetUI;
+
+SoundAssets _sounds;
 
 gamestart(
   userId,
@@ -28,11 +30,11 @@ gamestart(
   // We need to call ensureInitialized if we are loading images before runApp
   // is called.
   // TODO: This should be refactored to use a loading screen
-  // WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
 
   // Load game state
-  // _gameState = new PersistantGameState();
-  // await _gameState.load();
+  _gameState = new PersistantGameState();
+  await _gameState.load();
 
   // Load images
   _imageMap = new ImageMap(rootBundle);
@@ -42,15 +44,15 @@ gamestart(
   ]);
 
   // Load sprite sheets
-  String json = await rootBundle.loadString('lib/game/assets/sprites.json');
-  _spriteSheet =
-      new SpriteSheet(_imageMap['lib/game/assets/sprites.png'], json);
+  // String json = await rootBundle.loadString('lib/game/assets/sprites.json');
+  // _spriteSheet =
+  //     new SpriteSheet(_imageMap['lib/game/assets/sprites.png'], json);
 
-  json = await rootBundle.loadString('lib/game/assets/game_ui.json');
-  _spriteSheetUI =
-      new SpriteSheet(_imageMap['lib/game/assets/game_ui.png'], json);
+  // json = await rootBundle.loadString('lib/game/assets/game_ui.json');
+  // _spriteSheetUI =
+  //     new SpriteSheet(_imageMap['lib/game/assets/game_ui.png'], json);
 
-  assert(_spriteSheet.image != null);
+  // assert(_spriteSheet.image != null);
 
   // All game assets are loaded - we are good to go!
   runApp(new GamePage(
@@ -112,10 +114,11 @@ class _GamePage extends State<GamePage> {
               key: _navigatorKey,
               onGenerateRoute: (RouteSettings settings) {
                 switch (settings.name) {
-                  case '/game':
-                    return _buildGameSceneRoute();
+                  // case '/game':
+                  //   return _buildMainSceneRoute();
+                  // these have been switched over from the original settings by CM!!
                   default:
-                    return _buildMainSceneRoute();
+                    return _buildGameSceneRoute();
                 }
               })),
     );
@@ -123,17 +126,15 @@ class _GamePage extends State<GamePage> {
 
   PageRoute _buildGameSceneRoute() {
     return new MaterialPageRoute(builder: (BuildContext context) {
-      return Text('in the game scene route with $petName');
-      // return new GameScene(
-      //   onGameOver: (int lastScore, int coins, int levelReached) {
-      //     setState(() {
-      //       _gameState.lastScore = lastScore;
-      //       _gameState.coins += coins;
-      //       _gameState.reachedLevel(levelReached);
-      //     });
-      //   },
-      //   gameState: _gameState
-      // );
+      return new GameScene(
+          onGameOver: (int lastScore, int coins, int levelReached) {
+            setState(() {
+              _gameState.lastScore = lastScore;
+              _gameState.coins += coins;
+              _gameState.reachedLevel(levelReached);
+            });
+          },
+          gameState: _gameState);
     });
   }
 
@@ -175,10 +176,10 @@ class _GamePage extends State<GamePage> {
 }
 
 class GameScene extends StatefulWidget {
-  // GameScene({this.onGameOver, this.gameState});
+  GameScene({this.onGameOver, this.gameState});
 
-  // final GameOverCallback onGameOver;
-  // final PersistantGameState gameState;
+  final GameOverCallback onGameOver;
+  final PersistantGameState gameState;
 
   State<GameScene> createState() => new GameSceneState();
 }
@@ -189,12 +190,12 @@ class GameSceneState extends State<GameScene> {
   void initState() {
     super.initState();
 
-    // _game = new GameDemoNode(
-    //     _imageMap, _spriteSheet, _spriteSheetUI, widget.gameState,
-    //     (int score, int coins, int levelReached) {
-    //   Navigator.pop(context);
-    //   widget.onGameOver(score, coins, levelReached);
-    // });
+    _game = new GameDemoNode(
+        _imageMap, _spriteSheet, _spriteSheetUI, _sounds, widget.gameState,
+        (int score, int coins, int levelReached) {
+      Navigator.pop(context);
+      widget.onGameOver(score, coins, levelReached);
+    });
   }
 
   Widget build(BuildContext context) {
@@ -248,36 +249,36 @@ class MainSceneState extends State<MainScene> {
               child: Stack(
                 children: <Widget>[
                   MainSceneBackground(),
-                  // Column(
-                  //   children: <Widget>[
-                  //     SizedBox(
-                  //       width: 320.0,
-                  //       height: 98.0,
-                  //       child: TopBar(
-                  //         gameState: widget.gameState,
-                  //       ),
-                  //     ),
-                  //     Expanded(
-                  //       child: CenterArea(
-                  //         onUpgradeLaser: widget.onUpgradeLaser,
-                  //         onUpgradePowerUp: widget.onUpgradePowerUp,
-                  //         gameState: widget.gameState,
-                  //       ),
-                  //     ),
-                  //     SizedBox(
-                  //       width: 320.0,
-                  //       height: 93.0,
-                  //       child: BottomBar(
-                  //         onPlay: () {
-                  //           Navigator.pushNamed(context, '/game');
-                  //         },
-                  //         onStartLevelUp: widget.onStartLevelUp,
-                  //         onStartLevelDown: widget.onStartLevelDown,
-                  //         gameState: widget.gameState,
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
+                  Column(
+                    children: <Widget>[
+                      // SizedBox(
+                      //   width: 320.0,
+                      //   height: 98.0,
+                      //   child: TopBar(
+                      //     gameState: widget.gameState,
+                      //   ),
+                      // ),
+                      // Expanded(
+                      //   child: CenterArea(
+                      //     onUpgradeLaser: widget.onUpgradeLaser,
+                      //     onUpgradePowerUp: widget.onUpgradePowerUp,
+                      //     gameState: widget.gameState,
+                      //   ),
+                      // ),
+                      // SizedBox(
+                      //   width: 320.0,
+                      //   height: 93.0,
+                      //   child: BottomBar(
+                      //     onPlay: () {
+                      //       Navigator.pushNamed(context, '/game');
+                      //     },
+                      //     onStartLevelUp: widget.onStartLevelUp,
+                      //     onStartLevelDown: widget.onStartLevelDown,
+                      //     gameState: widget.gameState,
+                      //   ),
+                      // ),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -561,7 +562,7 @@ class MainSceneBackgroundNode extends NodeWithSize {
   RepeatedImage _nebula;
 
   MainSceneBackgroundNode() : super(new Size(320.0, 320.0)) {
-    assert(_spriteSheet.image != null);
+    // assert(_spriteSheet.image != null);
 
     // Add background
     _background = new RepeatedImage(_imageMap['lib/game/assets/grass.png']);
@@ -601,28 +602,26 @@ class MainSceneBackgroundNode extends NodeWithSize {
   }
 }
 
-// class LaserDisplay extends StatelessWidget {
-//   LaserDisplay({this.level});
+class LaserDisplay extends StatelessWidget {
+  LaserDisplay({this.level});
 
-//   final int level;
+  final int level;
 
-//   Widget build(BuildContext context) {
-//     return new IgnorePointer(
-//       child: new SizedBox(
-//         child: new SpriteWidget(new LaserDisplayNode(level)),
-//         width: 26.0,
-//         height: 26.0
-//       )
-//     );
-//   }
-// }
+  Widget build(BuildContext context) {
+    return new IgnorePointer(
+        child: new SizedBox(
+            child: new SpriteWidget(new LaserDisplayNode(level)),
+            width: 26.0,
+            height: 26.0));
+  }
+}
 
-// class LaserDisplayNode extends NodeWithSize {
-//   LaserDisplayNode(int level): super(new Size(16.0, 16.0)) {
-//     Node placementNode = new Node();
-//     placementNode.position = new Offset(8.0, 8.0);
-//     placementNode.scale = 0.7;
-//     addChild(placementNode);
-//     addLaserSprites(placementNode, level, 0.0, _spriteSheet);
-//   }
-// }
+class LaserDisplayNode extends NodeWithSize {
+  LaserDisplayNode(int level) : super(new Size(16.0, 16.0)) {
+    Node placementNode = new Node();
+    placementNode.position = new Offset(8.0, 8.0);
+    placementNode.scale = 0.7;
+    addChild(placementNode);
+    addLaserSprites(placementNode, level, 0.0, _spriteSheet);
+  }
+}
