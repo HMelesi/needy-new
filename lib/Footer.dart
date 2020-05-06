@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:needy_new/GamePage.dart';
+import 'package:needy_new/game/lib/GameMain.dart';
 
 class Footer extends StatelessWidget {
   Footer({this.userId});
@@ -103,12 +103,12 @@ class Footer extends StatelessWidget {
                                                       MaterialPageRoute(
                                                         builder: (BuildContext
                                                                 context) =>
-                                                            GamePage(
-                                                          userId: userId,
-                                                          goalName: goalName,
-                                                          petHealth: petHealth,
-                                                          petType: petType,
-                                                          petName: petName,
+                                                            gamestart(
+                                                          userId,
+                                                          goalName,
+                                                          petHealth,
+                                                          petType,
+                                                          petName,
                                                         ),
                                                       ))
                                                   : print(
