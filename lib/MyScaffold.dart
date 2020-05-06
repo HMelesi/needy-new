@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:needy_new/CompletedGoals.dart';
 import 'package:needy_new/Footer.dart';
 import 'package:needy_new/GoalSetter.dart';
 // import 'package:needy_new/MyHabits.dart';
@@ -75,6 +76,24 @@ class MyScaffold extends StatelessWidget {
                                 GoalSetter(userId: userId, name: name),
                           ));
                     }),
+                ListTile(
+                  title: Text(
+                    'Completed Goals',
+                    style: TextStyle(
+                      fontFamily: 'Pixelar',
+                      fontSize: 24,
+                      color: Colors.white,
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => CompletedGoals(
+                              userId: userId, name: name, auth: Auth()),
+                        ));
+                  },
+                ),
                 // ListTile(
                 //     title: Text('create a new habit'),
                 //     onTap: () {
