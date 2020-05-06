@@ -143,7 +143,7 @@ class MyCustomFormState extends State<MyCustomForm> {
               ),
             ),
             child: Slider(
-              min: 0,
+              min: 1,
               max: 7,
               value: _frequency,
               divisions: 7,
