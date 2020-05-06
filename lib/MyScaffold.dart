@@ -123,6 +123,7 @@ class MyScaffold extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
+        color: Colors.green,
         child: Container(
           height: 70.0,
           color: Colors.green,
