@@ -212,13 +212,20 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.black,
               ),
             ),
+            trailing: (goalRecord.outstanding == true)
+                ? Icon(
+                    Icons.warning,
+                    color: Colors.red,
+                  )
+                : SizedBox(),
             onTap: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => MyHabits(
-                        userId: userId, name: name, goalName: goalName),
-                  ));
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                      MyHabits(userId: userId, name: name, goalName: goalName),
+                ),
+              );
             }),
       ),
     );
@@ -229,19 +236,22 @@ class GoalRecord {
   final Timestamp endDate;
   final String petName;
   final String goalName;
+  final bool outstanding;
   final DocumentReference reference;
 
   GoalRecord.fromMap(Map<String, dynamic> map, {this.reference})
       : assert(map['endDate'] != null),
         assert(map['petName'] != null),
         assert(map['goalName'] != null),
+        assert(map['outstanding'] != null),
         endDate = map['endDate'],
         petName = map['petName'],
-        goalName = map['goalName'];
+        goalName = map['goalName'],
+        outstanding = map['outstanding'];
 
   GoalRecord.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data, reference: snapshot.reference);
 
   @override
-  String toString() => "goalRecord<$endDate$petName$goalName>";
+  String toString() => "goalRecord<$endDate$petName$goalName$outstanding>";
 }
