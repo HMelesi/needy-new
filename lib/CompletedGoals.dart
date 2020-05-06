@@ -69,16 +69,22 @@ class _CompletedGoalsState extends State<CompletedGoals> {
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.data.documents.length == 0) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'There\'s nothing here! Try sticking with the goals you\'ve made.',
-                      style: TextStyle(
-                        fontFamily: 'Pixelar',
-                        color: Colors.black,
-                        fontSize: 26,
+                  return Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'There\'s nothing here! Try sticking with the goals you\'ve made.',
+                          style: TextStyle(
+                            fontFamily: 'Pixelar',
+                            color: Colors.black,
+                            fontSize: 26,
+                          ),
+                        ),
                       ),
-                    ),
+                      Spacer(),
+                      Image.asset('images/cobweb.png')
+                    ],
                   );
                 } else {
                   return Column(
