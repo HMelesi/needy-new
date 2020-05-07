@@ -46,5 +46,12 @@ flutter:
     - lib/game/assets/grass.png
     - lib/game/assets/sprites.json
     - lib/game/assets/sprites.png
+    - lib/game/assets/game_uiold.png
+    - lib/game/assets/game_uiold.json
+    - lib/game/assets/catabove.png
+    - lib/game/assets/spritesheet.json
+    - lib/game/assets/spritesheet.png
+    - lib/game/assets/good.png
+    - lib/game/assets/bad.png
     - lib/game/assets/game_ui.png
     - lib/game/assets/game_ui.json

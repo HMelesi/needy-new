@@ -28,29 +28,29 @@ class GameDemoNode extends NodeWithSize {
     // addChild(_nebula);
 
     // Setup game screen, it will always be anchored to the bottom of the screen
-    // _gameScreen = new Node();
-    // addChild(_gameScreen);
+    _gameScreen = new Node();
+    addChild(_gameScreen);
 
     // Setup the level and add it to the screen, the level is the node where
     // all our game objects live. It is moved to scroll the game
-    // _level = new Level();
-    // _gameScreen.addChild(_level);
+    _level = new Level();
+    _gameScreen.addChild(_level);
 
     // Add heads up display
-    // _playerState = new PlayerState(_spritesUI, _spritesGame, _gameState);
-    // _playerState.position = Offset(0.0, 20.0);
-    // addChild(_playerState);
+    _playerState = new PlayerState(_spritesUI, _spritesGame, _gameState);
+    _playerState.position = Offset(0.0, 20.0);
+    addChild(_playerState);
 
-    // _objectFactory =
-    //     new GameObjectFactory(_spritesGame, _sounds, _level, _playerState);
+    _objectFactory =
+        new GameObjectFactory(_spritesGame, _sounds, _level, _playerState);
 
-    // _level.ship = new Ship(_objectFactory);
-    // _level.ship.setupActions();
-    // _level.addChild(_level.ship);
+    _level.ship = new Ship(_objectFactory);
+    _level.ship.setupActions();
+    _level.addChild(_level.ship);
 
     // Add the joystick
-    // _joystick = new VirtualJoystick();
-    // _gameScreen.addChild(_joystick);
+    _joystick = new VirtualJoystick();
+    _gameScreen.addChild(_joystick);
 
     // Add initial game objects
     // addObjects();
@@ -95,13 +95,13 @@ class GameDemoNode extends NodeWithSize {
   void update(double dt) {
     // Scroll the level
     _scroll = _level.scroll(_playerState.scrollSpeed);
-    _starField.move(0.0, _playerState.scrollSpeed);
+    // _starField.move(0.0, _playerState.scrollSpeed);
 
-    _background.move(_playerState.scrollSpeed * 0.1);
-    _nebula.move(_playerState.scrollSpeed);
+    _background.move(_playerState.scrollSpeed * 0.2);
+    // _nebula.move(_playerState.scrollSpeed);
 
     // Add objects
-    addObjects();
+    // addObjects();
 
     // Move the ship
     if (!_gameOver) {
@@ -179,42 +179,42 @@ class GameDemoNode extends NodeWithSize {
 
   int _chunk = 0;
 
-  void addObjects() {
-    while (_scroll + _chunkSpacing >= _chunk * _chunkSpacing) {
-      addLevelChunk(_chunk, -_chunk * _chunkSpacing - _chunkSpacing);
+  // void addObjects() {
+  //   while (_scroll + _chunkSpacing >= _chunk * _chunkSpacing) {
+  //     addLevelChunk(_chunk, -_chunk * _chunkSpacing - _chunkSpacing);
 
-      _chunk += 1;
-    }
-  }
+  //     _chunk += 1;
+  //   }
+  // }
 
-  void addLevelChunk(int chunk, double yPos) {
-    int level = chunk ~/ _chunksPerLevel + _gameState.currentStartingLevel;
-    int part = chunk % _chunksPerLevel;
+  // void addLevelChunk(int chunk, double yPos) {
+  //   int level = chunk ~/ _chunksPerLevel + _gameState.currentStartingLevel;
+  //   int part = chunk % _chunksPerLevel;
 
-    if (part == 0) {
-      LevelLabel lbl = new LevelLabel(_objectFactory, level + 1);
-      lbl.position = new Offset(0.0, yPos + _chunkSpacing / 2.0 - 150.0);
+  //   if (part == 0) {
+  //     LevelLabel lbl = new LevelLabel(_objectFactory, level + 1);
+  //     lbl.position = new Offset(0.0, yPos + _chunkSpacing / 2.0 - 150.0);
 
-      _topLevelReached = level;
-      _level.addChild(lbl);
-    } else if (part == 1) {
-      _objectFactory.addAsteroids(level, yPos);
-    } else if (part == 2) {
-      _objectFactory.addEnemyScoutSwarm(level, yPos);
-    } else if (part == 3) {
-      _objectFactory.addAsteroids(level, yPos);
-    } else if (part == 4) {
-      _objectFactory.addEnemyDestroyerSwarm(level, yPos);
-    } else if (part == 5) {
-      _objectFactory.addAsteroids(level, yPos);
-    } else if (part == 6) {
-      _objectFactory.addEnemyScoutSwarm(level, yPos);
-    } else if (part == 7) {
-      _objectFactory.addAsteroids(level, yPos);
-    } else if (part == 8) {
-      _objectFactory.addBossFight(level, yPos);
-    }
-  }
+  //     _topLevelReached = level;
+  //     _level.addChild(lbl);
+  //   } else if (part == 1) {
+  //     _objectFactory.addAsteroids(level, yPos);
+  //   } else if (part == 2) {
+  //     _objectFactory.addEnemyScoutSwarm(level, yPos);
+  //   } else if (part == 3) {
+  //     _objectFactory.addAsteroids(level, yPos);
+  //   } else if (part == 4) {
+  //     _objectFactory.addEnemyDestroyerSwarm(level, yPos);
+  //   } else if (part == 5) {
+  //     _objectFactory.addAsteroids(level, yPos);
+  //   } else if (part == 6) {
+  //     _objectFactory.addEnemyScoutSwarm(level, yPos);
+  //   } else if (part == 7) {
+  //     _objectFactory.addAsteroids(level, yPos);
+  //   } else if (part == 8) {
+  //     _objectFactory.addBossFight(level, yPos);
+  //   }
+  // }
 
   void fire() {
     int laserLevel = _objectFactory.playerState.laserLevel;

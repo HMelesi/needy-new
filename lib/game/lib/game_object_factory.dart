@@ -10,90 +10,90 @@ class GameObjectFactory {
   Level level;
   PlayerState playerState;
 
-  void addAsteroids(int level, double yPos) {
-    int numAsteroids = 10 + level * 4;
-    double distribution = (level * 0.2).clamp(0.0, 0.8);
+  // void addAsteroids(int level, double yPos) {
+  //   int numAsteroids = 10 + level * 4;
+  //   double distribution = (level * 0.2).clamp(0.0, 0.8);
 
-    for (int i = 0; i < numAsteroids; i++) {
-      GameObject obj;
-      if (i == 0)
-        obj = new AsteroidPowerUp(this);
-      else if (randomDouble() < distribution)
-        obj = new AsteroidBig(this);
-      else
-        obj = new AsteroidSmall(this);
+  //   for (int i = 0; i < numAsteroids; i++) {
+  //     GameObject obj;
+  //     if (i == 0)
+  //       obj = new AsteroidPowerUp(this);
+  //     else if (randomDouble() < distribution)
+  //       obj = new AsteroidBig(this);
+  //     else
+  //       obj = new AsteroidSmall(this);
 
-      Offset pos = new Offset(
-          randomSignedDouble() * 160.0, yPos + _chunkSpacing * randomDouble());
-      addGameObject(obj, pos);
-    }
-  }
+  //     Offset pos = new Offset(
+  //         randomSignedDouble() * 160.0, yPos + _chunkSpacing * randomDouble());
+  //     addGameObject(obj, pos);
+  //   }
+  // }
 
-  void addEnemyScoutSwarm(int level, double yPos) {
-    int numEnemies = (3 + level * 3).clamp(0, 12);
-    List<int> types;
-    int swarmLevel = level % _maxLevel;
+  // void addEnemyScoutSwarm(int level, double yPos) {
+  //   int numEnemies = (3 + level * 3).clamp(0, 12);
+  //   List<int> types;
+  //   int swarmLevel = level % _maxLevel;
 
-    if (swarmLevel == 0)
-      types = [0, 0, 0];
-    else if (swarmLevel == 1)
-      types = [0, 1, 0];
-    else if (swarmLevel == 2)
-      types = [1, 0, 1];
-    else if (swarmLevel == 3)
-      types = [1, 1, 1];
-    else if (swarmLevel == 4)
-      types = [0, 1, 2];
-    else if (swarmLevel == 5)
-      types = [1, 2, 1];
-    else if (swarmLevel == 6)
-      types = [2, 1, 2];
-    else if (swarmLevel == 7)
-      types = [2, 1, 2];
-    else if (swarmLevel == 8) types = [2, 2, 2];
+  //   if (swarmLevel == 0)
+  //     types = [0, 0, 0];
+  //   else if (swarmLevel == 1)
+  //     types = [0, 1, 0];
+  //   else if (swarmLevel == 2)
+  //     types = [1, 0, 1];
+  //   else if (swarmLevel == 3)
+  //     types = [1, 1, 1];
+  //   else if (swarmLevel == 4)
+  //     types = [0, 1, 2];
+  //   else if (swarmLevel == 5)
+  //     types = [1, 2, 1];
+  //   else if (swarmLevel == 6)
+  //     types = [2, 1, 2];
+  //   else if (swarmLevel == 7)
+  //     types = [2, 1, 2];
+  //   else if (swarmLevel == 8) types = [2, 2, 2];
 
-    for (int i = 0; i < numEnemies; i++) {
-      int type = types[i % 3];
-      double spacing = math.max(_chunkSpacing / (numEnemies + 1.0), 80.0);
-      double y = yPos +
-          _chunkSpacing / 2.0 -
-          (numEnemies - 1) * spacing / 2.0 +
-          i * spacing;
-      addGameObject(new EnemyScout(this, type), new Offset(0.0, y));
-    }
-  }
+  //   for (int i = 0; i < numEnemies; i++) {
+  //     int type = types[i % 3];
+  //     double spacing = math.max(_chunkSpacing / (numEnemies + 1.0), 80.0);
+  //     double y = yPos +
+  //         _chunkSpacing / 2.0 -
+  //         (numEnemies - 1) * spacing / 2.0 +
+  //         i * spacing;
+  //     addGameObject(new EnemyScout(this, type), new Offset(0.0, y));
+  //   }
+  // }
 
-  void addEnemyDestroyerSwarm(int level, double yPos) {
-    int numEnemies = (2 + level).clamp(2, 10);
-    List<int> types;
-    int swarmLevel = level % _maxLevel;
+  // void addEnemyDestroyerSwarm(int level, double yPos) {
+  //   int numEnemies = (2 + level).clamp(2, 10);
+  //   List<int> types;
+  //   int swarmLevel = level % _maxLevel;
 
-    if (swarmLevel == 0)
-      types = [0, 0, 0];
-    else if (swarmLevel == 1)
-      types = [0, 1, 0];
-    else if (swarmLevel == 2)
-      types = [1, 0, 1];
-    else if (swarmLevel == 3)
-      types = [1, 1, 1];
-    else if (swarmLevel == 4)
-      types = [0, 1, 2];
-    else if (swarmLevel == 5)
-      types = [1, 2, 1];
-    else if (swarmLevel == 6)
-      types = [2, 1, 2];
-    else if (swarmLevel == 7)
-      types = [2, 1, 2];
-    else if (swarmLevel == 8) types = [2, 2, 2];
+  //   if (swarmLevel == 0)
+  //     types = [0, 0, 0];
+  //   else if (swarmLevel == 1)
+  //     types = [0, 1, 0];
+  //   else if (swarmLevel == 2)
+  //     types = [1, 0, 1];
+  //   else if (swarmLevel == 3)
+  //     types = [1, 1, 1];
+  //   else if (swarmLevel == 4)
+  //     types = [0, 1, 2];
+  //   else if (swarmLevel == 5)
+  //     types = [1, 2, 1];
+  //   else if (swarmLevel == 6)
+  //     types = [2, 1, 2];
+  //   else if (swarmLevel == 7)
+  //     types = [2, 1, 2];
+  //   else if (swarmLevel == 8) types = [2, 2, 2];
 
-    for (int i = 0; i < numEnemies; i++) {
-      int type = types[i % 3];
-      addGameObject(
-          new EnemyDestroyer(this, type),
-          new Offset(randomSignedDouble() * 120.0,
-              yPos + _chunkSpacing * randomDouble()));
-    }
-  }
+  //   for (int i = 0; i < numEnemies; i++) {
+  //     int type = types[i % 3];
+  //     addGameObject(
+  //         new EnemyDestroyer(this, type),
+  //         new Offset(randomSignedDouble() * 120.0,
+  //             yPos + _chunkSpacing * randomDouble()));
+  //   }
+  // }
 
   void addGameObject(GameObject obj, Offset pos) {
     obj.position = pos;
