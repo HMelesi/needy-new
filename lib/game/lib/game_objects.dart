@@ -60,7 +60,7 @@ abstract class GameObject extends Node {
       destroy();
       f.playerState.score += (maxDamage * 10).ceil();
     } else {
-      f.sounds.play("hit");
+      // f.sounds.play("hit");
     }
   }
 
@@ -102,19 +102,19 @@ class LevelLabel extends GameObject {
 class Ship extends GameObject {
   Ship(GameObjectFactory f) : super(f) {
     // Add main ship sprite
-    _sprite = new Sprite(f.sheet["ship.png"]);
+    _sprite = new Sprite(f.sheet["catabove.png"]);
     _sprite.scale = 0.3;
     _sprite.rotation = -90.0;
     addChild(_sprite);
 
-    _spriteShield = new Sprite(f.sheet["shield.png"]);
-    _spriteShield.scale = 0.35;
-    _spriteShield.transferMode = ui.BlendMode.plus;
-    addChild(_spriteShield);
+    // _spriteShield = new Sprite(f.sheet["shield.png"]);
+    // _spriteShield.scale = 0.35;
+    // _spriteShield.transferMode = ui.BlendMode.plus;
+    // addChild(_spriteShield);
 
-    radius = 20.0;
-    canBeDamaged = false;
-    canDamageShip = false;
+    // radius = 20.0;
+    // canBeDamaged = false;
+    // canDamageShip = false;
 
     // Set start position
     position = new Offset(0.0, 50.0);
@@ -133,24 +133,24 @@ class Ship extends GameObject {
         GameMath.filter(oldPos.dy, target.dy, filterFactor));
   }
 
-  void setupActions() {
-    MotionTween rotate = new MotionTween<double>((a) {
-      _spriteShield.rotation = a;
-    }, 0.0, 360.0, 1.0);
-    _spriteShield.motions.run(new MotionRepeatForever(rotate));
-  }
+  // void setupActions() {
+  //   MotionTween rotate = new MotionTween<double>((a) {
+  //     _spriteShield.rotation = a;
+  //   }, 0.0, 360.0, 1.0);
+  //   _spriteShield.motions.run(new MotionRepeatForever(rotate));
+  // }
 
-  void update(double dt) {
-    // Update shield
-    if (f.playerState.shieldActive) {
-      if (f.playerState.shieldDeactivating)
-        _spriteShield.visible = !_spriteShield.visible;
-      else
-        _spriteShield.visible = true;
-    } else {
-      _spriteShield.visible = false;
-    }
-  }
+  // void update(double dt) {
+  //   // Update shield
+  //   if (f.playerState.shieldActive) {
+  //     if (f.playerState.shieldDeactivating)
+  //       _spriteShield.visible = !_spriteShield.visible;
+  //     else
+  //       _spriteShield.visible = true;
+  //   } else {
+  //     _spriteShield.visible = false;
+  //   }
+  // }
 }
 
 class Laser extends GameObject {

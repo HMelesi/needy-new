@@ -41,18 +41,23 @@ gamestart(
 
   await _imageMap.load(<String>[
     'lib/game/assets/grass.png',
+    'lib/game/assets/catabove.png',
+    'lib/game/assets/good.png',
+    'lib/game/assets/bad.png',
+    'lib/game/assets/spritesheet.png',
+    'lib/game/assets/game_ui.png',
   ]);
 
   // Load sprite sheets
-  // String json = await rootBundle.loadString('lib/game/assets/sprites.json');
-  // _spriteSheet =
-  //     new SpriteSheet(_imageMap['lib/game/assets/sprites.png'], json);
+  String json = await rootBundle.loadString('lib/game/assets/spritesheet.json');
+  _spriteSheet =
+      new SpriteSheet(_imageMap['lib/game/assets/spritesheet.png'], json);
 
-  // json = await rootBundle.loadString('lib/game/assets/game_ui.json');
-  // _spriteSheetUI =
-  //     new SpriteSheet(_imageMap['lib/game/assets/game_ui.png'], json);
+  json = await rootBundle.loadString('lib/game/assets/game_ui.json');
+  _spriteSheetUI =
+      new SpriteSheet(_imageMap['lib/game/assets/game_ui.png'], json);
 
-  // assert(_spriteSheet.image != null);
+  assert(_spriteSheet.image != null);
 
   // All game assets are loaded - we are good to go!
   runApp(new GamePage(
