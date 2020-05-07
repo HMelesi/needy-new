@@ -12,7 +12,7 @@ typedef void GameOverCallback(int score, int coins, int levelReached);
 
 class GameDemoNode extends NodeWithSize {
   GameDemoNode(this._images, this._spritesGame, this._spritesUI, this._sounds,
-      this._gameState, this._gameOverCallback)
+      this._gameState, petHealth, this._gameOverCallback)
       : super(new Size(320.0, 320.0)) {
     // Add background
     _background = new RepeatedImage(_images["lib/game/assets/grass.png"]);
@@ -39,6 +39,7 @@ class GameDemoNode extends NodeWithSize {
     // Add heads up display
     _playerState = new PlayerState(_spritesUI, _spritesGame, _gameState);
     _playerState.position = Offset(0.0, 20.0);
+    _playerState.score = petHealth * 10;
     addChild(_playerState);
 
     _objectFactory =
@@ -107,15 +108,6 @@ class GameDemoNode extends NodeWithSize {
       _level.ship.applyThrust(_joystick.value, _scroll);
     }
 
-    // Add shots
-    if (_framesToFire == 0 && _joystick.isDown && !_gameOver) {
-      fire();
-      _framesToFire = (_playerState.speedLaserActive)
-          ? _framesBetweenShots ~/ 2
-          : _framesBetweenShots;
-    }
-    if (_framesToFire > 0) _framesToFire--;
-
     // Move game objects
     for (Node node in _level.children) {
       if (node is GameObject) {
@@ -133,39 +125,12 @@ class GameDemoNode extends NodeWithSize {
 
     if (_gameOver) return;
 
-    // Check for collisions between lasers and objects that can take damage
-    List<Laser> lasers = <Laser>[];
-    for (Node node in _level.children) {
-      if (node is Laser) lasers.add(node);
-    }
-
-    List<GameObject> damageables = <GameObject>[];
-    for (Node node in _level.children) {
-      if (node is GameObject && node.canBeDamaged) damageables.add(node);
-    }
-
-    for (Laser laser in lasers) {
-      for (GameObject damageable in damageables) {
-        if (laser.collidingWith(damageable)) {
-          // Hit something that can take damage
-          damageable.addDamage(laser.impact);
-          laser.destroy();
-        }
-      }
-    }
-
     // Check for collsions between ship and objects that can damage the ship
     List<Node> nodes = new List<Node>.from(_level.children);
     for (Node node in nodes) {
       if (node is GameObject && node.canDamageShip) {
         if (node.collidingWith(_level.ship)) {
-          if (_playerState.shieldActive) {
-            // Hit, but saved by the shield!
-            if (!(node is EnemyBoss)) node.destroy();
-          } else {
-            // The ship was hit :(
-            killShip();
-          }
+          hitCat();
         }
       } else if (node is GameObject && node.canBeCollected) {
         if (node.collidingWith(_level.ship)) {
@@ -216,52 +181,48 @@ class GameDemoNode extends NodeWithSize {
     // }
   }
 
-  void fire() {
-    int laserLevel = _objectFactory.playerState.laserLevel;
+  void hitCat() {
+    _playerState.score -= 20;
 
-    Laser shot0 = new Laser(_objectFactory, laserLevel, -90.0);
-    shot0.position = _level.ship.position + new Offset(17.0, -10.0);
-    _level.addChild(shot0);
+    if (_playerState.score <= 0) {
+      _level.ship.visible = false;
 
-    Laser shot1 = new Laser(_objectFactory, laserLevel, -90.0);
-    shot1.position = _level.ship.position + new Offset(-17.0, -10.0);
-    _level.addChild(shot1);
+      Flash flash = new Flash(size, 1.0);
+      addChild(flash);
+      _gameOver = true;
 
-    if (_playerState.sideLaserActive) {
-      Laser shot2 = new Laser(_objectFactory, laserLevel, -45.0);
-      shot2.position = _level.ship.position + new Offset(17.0, -10.0);
-      _level.addChild(shot2);
-
-      Laser shot3 = new Laser(_objectFactory, laserLevel, -135.0);
-      shot3.position = _level.ship.position + new Offset(-17.0, -10.0);
-      _level.addChild(shot3);
+      new Timer(new Duration(seconds: 2), () {
+        _gameOverCallback(
+            _playerState.score, _playerState.coins, _topLevelReached);
+      });
     }
-  }
 
-  void killShip() {
+    print('cat was hit');
+    print(_playerState.score);
+
     // Hide ship
-    _level.ship.visible = false;
+    // _level.ship.visible = false;
 
-    _sounds.play("explosion_player");
+    // _sounds.play("explosion_player");
 
     // Add explosion
-    ExplosionBig explo = new ExplosionBig(_spritesGame);
-    explo.scale = 1.5;
-    explo.position = _level.ship.position;
-    _level.addChild(explo);
+    // ExplosionBig explo = new ExplosionBig(_spritesGame);
+    // explo.scale = 1.5;
+    // explo.position = _level.ship.position;
+    // _level.addChild(explo);
 
     // Add flash
-    Flash flash = new Flash(size, 1.0);
-    addChild(flash);
+    // Flash flash = new Flash(size, 1.0);
+    // addChild(flash);
 
     // Set the state to game over
-    _gameOver = true;
+    // _gameOver = true;
 
     // Return to main scene and report the score back in 2 seconds
-    new Timer(new Duration(seconds: 2), () {
-      _gameOverCallback(
-          _playerState.score, _playerState.coins, _topLevelReached);
-    });
+    // new Timer(new Duration(seconds: 2), () {
+    //   _gameOverCallback(
+    //       _playerState.score, _playerState.coins, _topLevelReached);
+    // });
   }
 }
 
