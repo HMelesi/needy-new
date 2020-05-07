@@ -195,6 +195,7 @@ class _HomePageState extends State<HomePage> {
   Widget _buildGoalListItem(BuildContext context, DocumentSnapshot data) {
     final goalRecord = GoalRecord.fromSnapshot(data);
     final goalName = goalRecord.goalName;
+    final endDate = goalRecord.endDate;
     return Padding(
       key: ValueKey(goalRecord.petName),
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -227,8 +228,11 @@ class _HomePageState extends State<HomePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (BuildContext context) =>
-                      MyHabits(userId: userId, name: name, goalName: goalName),
+                  builder: (BuildContext context) => MyHabits(
+                      userId: userId,
+                      name: name,
+                      goalName: goalName,
+                      endDate: endDate),
                 ),
               );
             }),
