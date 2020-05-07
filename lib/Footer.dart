@@ -77,7 +77,7 @@ class Footer extends StatelessWidget {
                                       height: 50.0,
                                       width: 200.0,
                                       margin:
-                                          const EdgeInsets.only(bottom: 20.0),
+                                          const EdgeInsets.only(bottom: 5.0),
                                       child: FlatButton(
                                         child: Row(
                                           children: <Widget>[
