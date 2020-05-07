@@ -198,6 +198,7 @@ class _HomePageState extends State<HomePage> {
     final outstanding = goalRecord.outstanding;
     final endDatePassed =
         goalRecord.endDate.toDate().difference(DateTime.now()).inSeconds < 0;
+    final endDate = goalRecord.endDate;
 
     return Padding(
       key: ValueKey(goalRecord.petName),
@@ -346,7 +347,10 @@ class _HomePageState extends State<HomePage> {
                   context,
                   MaterialPageRoute(
                     builder: (BuildContext context) => MyHabits(
-                        userId: userId, name: name, goalName: goalName),
+                        userId: userId, 
+                        name: name, 
+                        goalName: goalName, 
+                        endDate: endDate),
                   ),
                 );
               }

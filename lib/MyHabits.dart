@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:needy_new/MyScaffold.dart';
 import 'package:needy_new/NewHabit.dart';
 import 'package:needy_new/Summary.dart';
+import 'package:intl/intl.dart';
 
 class MyHabits extends StatefulWidget {
   MyHabits({Key key, this.userId, this.name, this.goalName, this.endDate})
@@ -48,7 +49,7 @@ class _MyHabits extends State<MyHabits> {
               ),
             ),
             Text(
-              'This goal will end on $endDate',
+              'This goal will end on ${DateFormat.yMMMMEEEEd().format(endDate.toDate())}',
               style: TextStyle(
                 fontFamily: 'Pixelar',
                 fontSize: 18,
