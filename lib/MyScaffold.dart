@@ -7,6 +7,7 @@ import 'package:needy_new/GoalSetter.dart';
 import 'package:needy_new/RootPage.dart';
 import 'package:needy_new/authentication.dart';
 // import 'package:needy_new/Welcome.dart';
+import 'package:needy_new/UserProfile.dart';
 
 class MyScaffold extends StatelessWidget {
   MyScaffold(
@@ -41,6 +42,27 @@ class MyScaffold extends StatelessWidget {
             child: ListView(
               padding: EdgeInsets.zero,
               children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: ListTile(
+                    title: Text(
+                      '$name',
+                      style: TextStyle(
+                        fontFamily: 'PressStart2P',
+                        color: Colors.grey[700],
+                        fontSize: 22,
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => UserProfile(
+                                userId: userId, name: name, auth: Auth()),
+                          ));
+                    },
+                  ),
+                ),
                 ListTile(
                   title: Text(
                     'homepage',
