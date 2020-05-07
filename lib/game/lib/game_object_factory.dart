@@ -10,24 +10,25 @@ class GameObjectFactory {
   Level level;
   PlayerState playerState;
 
-  // void addAsteroids(int level, double yPos) {
-  //   int numAsteroids = 10 + level * 4;
-  //   double distribution = (level * 0.2).clamp(0.0, 0.8);
+  void addBads(int level, double yPos) {
+    int numBads = 10 + level * 4;
+    double distribution = (level * 0.2).clamp(0.0, 0.8);
 
-  //   for (int i = 0; i < numAsteroids; i++) {
-  //     GameObject obj;
-  //     if (i == 0)
-  //       obj = new AsteroidPowerUp(this);
-  //     else if (randomDouble() < distribution)
-  //       obj = new AsteroidBig(this);
-  //     else
-  //       obj = new AsteroidSmall(this);
+    for (int i = 0; i < numBads; i++) {
+      GameObject obj;
+      // if (i == 0)
+      //   obj = new BadPowerUp(this);
+      // else
+      if (randomDouble() < distribution)
+        obj = new BadBig(this);
+      else
+        obj = new BadSmall(this);
 
-  //     Offset pos = new Offset(
-  //         randomSignedDouble() * 160.0, yPos + _chunkSpacing * randomDouble());
-  //     addGameObject(obj, pos);
-  //   }
-  // }
+      Offset pos = new Offset(
+          randomSignedDouble() * 160.0, yPos + _chunkSpacing * randomDouble());
+      addGameObject(obj, pos);
+    }
+  }
 
   // void addEnemyScoutSwarm(int level, double yPos) {
   //   int numEnemies = (3 + level * 3).clamp(0, 12);

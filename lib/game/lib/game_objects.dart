@@ -214,8 +214,8 @@ abstract class Obstacle extends GameObject {
   }
 }
 
-abstract class Asteroid extends Obstacle {
-  Asteroid(GameObjectFactory f) : super(f);
+abstract class Bad extends Obstacle {
+  Bad(GameObjectFactory f) : super(f);
 
   Sprite _sprite;
 
@@ -239,9 +239,9 @@ abstract class Asteroid extends Obstacle {
   }
 }
 
-class AsteroidBig extends Asteroid {
-  AsteroidBig(GameObjectFactory f) : super(f) {
-    _sprite = new Sprite(f.sheet["asteroid_big_${randomInt(3)}.png"]);
+class BadBig extends Bad {
+  BadBig(GameObjectFactory f) : super(f) {
+    _sprite = new Sprite(f.sheet["bad.png"]);
     _sprite.scale = 0.3;
     radius = 25.0;
     maxDamage = 5.0;
@@ -249,9 +249,9 @@ class AsteroidBig extends Asteroid {
   }
 }
 
-class AsteroidSmall extends Asteroid {
-  AsteroidSmall(GameObjectFactory f) : super(f) {
-    _sprite = new Sprite(f.sheet["asteroid_small_${randomInt(3)}.png"]);
+class BadSmall extends Bad {
+  BadSmall(GameObjectFactory f) : super(f) {
+    _sprite = new Sprite(f.sheet["bad.png"]);
     _sprite.scale = 0.3;
     radius = 12.0;
     maxDamage = 3.0;
@@ -259,40 +259,40 @@ class AsteroidSmall extends Asteroid {
   }
 }
 
-class AsteroidPowerUp extends AsteroidBig {
-  PowerUpType _powerUpType;
+// class BadPowerUp extends BadBig {
+//   PowerUpType _powerUpType;
 
-  AsteroidPowerUp(GameObjectFactory f) : super(f) {
-    _powerUpType = nextPowerUpType();
+//   BadPowerUp(GameObjectFactory f) : super(f) {
+//     _powerUpType = nextPowerUpType();
 
-    removeAllChildren();
+//     removeAllChildren();
 
-    Sprite powerUpBg = new Sprite(f.sheet["powerup.png"]);
-    powerUpBg.scale = 0.3;
-    addChild(powerUpBg);
+//     Sprite powerUpBg = new Sprite(f.sheet["powerup.png"]);
+//     powerUpBg.scale = 0.3;
+//     addChild(powerUpBg);
 
-    Sprite powerUpIcon =
-        new Sprite(f.sheet["powerup_${_powerUpType.index}.png"]);
-    powerUpIcon.scale = 0.3;
-    addChild(powerUpIcon);
+//     Sprite powerUpIcon =
+//         new Sprite(f.sheet["powerup_${_powerUpType.index}.png"]);
+//     powerUpIcon.scale = 0.3;
+//     addChild(powerUpIcon);
 
-    _sprite = new Sprite(f.sheet["crystal_${randomInt(2)}.png"]);
-    _sprite.scale = 0.3;
-    addChild(_sprite);
-  }
+//     _sprite = new Sprite(f.sheet["crystal_${randomInt(2)}.png"]);
+//     _sprite.scale = 0.3;
+//     addChild(_sprite);
+//   }
 
-  void setupActions() {}
+//   void setupActions() {}
 
-  Collectable createPowerUp() {
-    return new PowerUp(f, _powerUpType);
-  }
+//   Collectable createPowerUp() {
+//     return new PowerUp(f, _powerUpType);
+//   }
 
-  set damage(double d) {
-    super.damage = d;
-    _sprite.colorOverlay =
-        colorForDamage(d, maxDamage, new Color.fromARGB(255, 200, 200, 255));
-  }
-}
+//   set damage(double d) {
+//     super.damage = d;
+//     _sprite.colorOverlay =
+//         colorForDamage(d, maxDamage, new Color.fromARGB(255, 200, 200, 255));
+//   }
+// }
 
 class EnemyScout extends Obstacle {
   EnemyScout(GameObjectFactory f, int level) : super(f) {
