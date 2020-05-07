@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage> {
                     .collection('users')
                     .document(userId)
                     .collection('goals')
-                    .where('endDate', isGreaterThan: DateTime.now())
+                    .where('expired', isEqualTo: false)
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
@@ -195,11 +195,16 @@ class _HomePageState extends State<HomePage> {
   Widget _buildGoalListItem(BuildContext context, DocumentSnapshot data) {
     final goalRecord = GoalRecord.fromSnapshot(data);
     final goalName = goalRecord.goalName;
+    final outstanding = goalRecord.outstanding;
+    final endDatePassed =
+        goalRecord.endDate.toDate().difference(DateTime.now()).inSeconds < 0;
+
     return Padding(
       key: ValueKey(goalRecord.petName),
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Container(
-        decoration: BoxDecoration(color: Colors.green[300]),
+        decoration: BoxDecoration(
+            color: (endDatePassed) ? Colors.green[900] : Colors.green[300]),
         child: ListTile(
             title: Text(
               goalRecord.goalName,
@@ -217,20 +222,84 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.black,
               ),
             ),
-            trailing: (goalRecord.outstanding == true)
+            trailing: (outstanding == true)
                 ? Icon(
                     Icons.warning,
                     color: Colors.red,
                   )
-                : SizedBox(),
+                : (endDatePassed) ? Image.asset('images/trophy.png') : null,
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) =>
-                      MyHabits(userId: userId, name: name, goalName: goalName),
-                ),
-              );
+              if (endDatePassed) {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        content: Stack(
+                          overflow: Overflow.visible,
+                          children: <Widget>[
+                            Positioned(
+                              right: -40.0,
+                              top: -40.0,
+                              child: InkResponse(
+                                onTap: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: CircleAvatar(
+                                  child: Icon(Icons.close),
+                                  backgroundColor: Colors.red,
+                                ),
+                              ),
+                            ),
+                            Form(
+                              key: Key('randomkey'),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text(
+                                        'Congratulations, you\'ve reached the end of this goal!'),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text(
+                                        'You can extend the goal if you want to carry on, or mark it complete.'),
+                                  ),
+                                  Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        children: <Widget>[
+                                          FlatButton(
+                                            onPressed: () {
+                                              print('extend');
+                                            },
+                                            child: Text('extend'),
+                                          ),
+                                          Spacer(),
+                                          FlatButton(
+                                            onPressed: () {
+                                              print('complete');
+                                            },
+                                            child: Text('complete'),
+                                          ),
+                                        ],
+                                      ))
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    });
+              } else {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => MyHabits(
+                        userId: userId, name: name, goalName: goalName),
+                  ),
+                );
+              }
             }),
       ),
     );
@@ -243,16 +312,19 @@ class GoalRecord {
   final String goalName;
   final bool outstanding;
   final DocumentReference reference;
+  final bool expired;
 
   GoalRecord.fromMap(Map<String, dynamic> map, {this.reference})
       : assert(map['endDate'] != null),
         assert(map['petName'] != null),
         assert(map['goalName'] != null),
         assert(map['outstanding'] != null),
+        assert(map['expired'] != null),
         endDate = map['endDate'],
         petName = map['petName'],
         goalName = map['goalName'],
-        outstanding = map['outstanding'];
+        outstanding = map['outstanding'],
+        expired = map['expired'];
 
   GoalRecord.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data, reference: snapshot.reference);
