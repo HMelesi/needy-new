@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:spritewidget/spritewidget.dart';
 
 import 'game_demo.dart';
@@ -119,11 +119,10 @@ class _GamePage extends State<GamePage> {
               key: _navigatorKey,
               onGenerateRoute: (RouteSettings settings) {
                 switch (settings.name) {
-                  // case '/game':
-                  //   return _buildMainSceneRoute();
-                  // these have been switched over from the original settings by CM!!
-                  default:
+                  case '/game':
                     return _buildGameSceneRoute();
+                  default:
+                    return _buildMainSceneRoute();
                 }
               })),
     );
@@ -145,37 +144,21 @@ class _GamePage extends State<GamePage> {
 
   PageRoute _buildMainSceneRoute() {
     return new MaterialPageRoute(builder: (BuildContext context) {
-      return new MainScene(petName: petName);
-      // gameState: _gameState,
-      //   onUpgradePowerUp: (PowerUpType type) {
-      //     setState(() {
-      //       if (_gameState.upgradePowerUp(type))
-      //         _sounds.play('buy_upgrade');
-      //       else
-      //         _sounds.play('click');
-      //     });
-      //   },
-      //   onUpgradeLaser: () {
-      //     setState(() {
-      //       if (_gameState.upgradeLaser())
-      //         _sounds.play('buy_upgrade');
-      //       else
-      //         _sounds.play('click');
-      //     });
-      //   },
-      //   onStartLevelUp: () {
-      //     setState(() {
-      //       _gameState.currentStartingLevel++;
-      //       _sounds.play('click');
-      //     });
-      //   },
-      //   onStartLevelDown: () {
-      //     setState(() {
-      //       _gameState.currentStartingLevel--;
-      //       _sounds.play('click');
-      //     });
-      //   }
-      // );
+      return new MainScene(
+          petName: petName,
+          gameState: _gameState,
+          onStartLevelUp: () {
+            setState(() {
+              _gameState.currentStartingLevel++;
+              _sounds.play('click');
+            });
+          },
+          onStartLevelDown: () {
+            setState(() {
+              _gameState.currentStartingLevel--;
+              _sounds.play('click');
+            });
+          });
     });
   }
 }
@@ -209,18 +192,14 @@ class GameSceneState extends State<GameScene> {
 }
 
 class MainScene extends StatefulWidget {
-  MainScene(
-      {this.onUpgradeLaser,
-      this.onStartLevelUp,
-      this.onStartLevelDown,
-      this.petName});
+  MainScene({
+    this.onStartLevelUp,
+    this.onStartLevelDown,
+    this.petName,
+    this.gameState,
+  });
 
-  // this.gameState,
-  // this.onUpgradePowerUp,
-
-  // final PersistantGameState gameState;
-  // final UpgradePowerUpCallback onUpgradePowerUp;
-  final VoidCallback onUpgradeLaser;
+  final PersistantGameState gameState;
   final VoidCallback onStartLevelUp;
   final VoidCallback onStartLevelDown;
   final String petName;
@@ -256,32 +235,25 @@ class MainSceneState extends State<MainScene> {
                   MainSceneBackground(),
                   Column(
                     children: <Widget>[
-                      // SizedBox(
-                      //   width: 320.0,
-                      //   height: 98.0,
-                      //   child: TopBar(
-                      //     gameState: widget.gameState,
-                      //   ),
-                      // ),
-                      // Expanded(
-                      //   child: CenterArea(
-                      //     onUpgradeLaser: widget.onUpgradeLaser,
-                      //     onUpgradePowerUp: widget.onUpgradePowerUp,
-                      //     gameState: widget.gameState,
-                      //   ),
-                      // ),
-                      // SizedBox(
-                      //   width: 320.0,
-                      //   height: 93.0,
-                      //   child: BottomBar(
-                      //     onPlay: () {
-                      //       Navigator.pushNamed(context, '/game');
-                      //     },
-                      //     onStartLevelUp: widget.onStartLevelUp,
-                      //     onStartLevelDown: widget.onStartLevelDown,
-                      //     gameState: widget.gameState,
-                      //   ),
-                      // ),
+                      SizedBox(
+                        width: 320.0,
+                        height: 98.0,
+                        child: TopBar(
+                          gameState: widget.gameState,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 320.0,
+                        height: 93.0,
+                        child: BottomBar(
+                          onPlay: () {
+                            Navigator.pushNamed(context, '/game');
+                          },
+                          onStartLevelUp: widget.onStartLevelUp,
+                          onStartLevelDown: widget.onStartLevelDown,
+                          gameState: widget.gameState,
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -294,254 +266,124 @@ class MainSceneState extends State<MainScene> {
   }
 }
 
-// class TopBar extends StatelessWidget {
-//   TopBar({this.selection, this.onSelectTab, this.gameState});
+class TopBar extends StatelessWidget {
+  TopBar({
+    this.selection,
+    this.gameState,
+  });
+// this.onSelectTab,
 
-//   final int selection;
-//   final SelectTabCallback onSelectTab;
-//   final PersistantGameState gameState;
+  final int selection;
+  // final SelectTabCallback onSelectTab;
+  final PersistantGameState gameState;
 
-//   Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
+    TextStyle scoreLabelStyle = new TextStyle(
+        fontFamily: "Pixelar",
+        fontSize: 20.0,
+        fontWeight: FontWeight.w500,
+        color: Colors.black);
 
-//     TextStyle scoreLabelStyle = new TextStyle(
-//       fontFamily: "Orbitron",
-//       fontSize: 20.0,
-//       fontWeight: FontWeight.w500,
-//       color: _darkTextColor
-//     );
+    return new Stack(children: <Widget>[
+      new Positioned(
+          left: 18.0,
+          top: 13.0,
+          child: new Text("Last Score", style: scoreLabelStyle)),
+      new Positioned(
+          left: 18.0,
+          top: 39.0,
+          child: new Text("Weekly Best", style: scoreLabelStyle)),
+      new Positioned(
+          right: 18.0,
+          top: 13.0,
+          child: new Text("${gameState.lastScore}", style: scoreLabelStyle)),
+      new Positioned(
+          right: 18.0,
+          top: 39.0,
+          child:
+              new Text("${gameState.weeklyBestScore}", style: scoreLabelStyle)),
+      // new Positioned(
+      //     left: 18.0,
+      //     top: 80.0,
+      //     child: new TextureImage(
+      //         texture: _spriteSheetUI['icn_crystal.png'],
+      //         width: 12.0,
+      //         height: 18.0)),
+      new Positioned(
+          left: 36.0,
+          top: 81.0,
+          child: new Text("${gameState.coins}",
+              style: new TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black)))
+    ]);
+  }
+}
 
-//     return new Stack(
-//       children: <Widget>[
-//         new Positioned(
-//           left: 18.0,
-//           top: 13.0,
-//           child: new Text(
-//             "Last Score",
-//             style: scoreLabelStyle
-//           )
-//         ),
-//         new Positioned(
-//           left: 18.0,
-//           top: 39.0,
-//           child: new Text(
-//             "Weekly Best",
-//             style: scoreLabelStyle
-//           )
-//         ),
-//         new Positioned(
-//           right: 18.0,
-//           top: 13.0,
-//           child: new Text(
-//             "${gameState.lastScore}",
-//             style: scoreLabelStyle
-//           )
-//         ),
-//         new Positioned(
-//           right: 18.0,
-//           top: 39.0,
-//           child: new Text(
-//             "${gameState.weeklyBestScore}",
-//             style: scoreLabelStyle
-//           )
-//         ),
-//         new Positioned(
-//           left: 18.0,
-//           top: 80.0,
-//           child: new TextureImage(
-//             texture: _spriteSheetUI['icn_crystal.png'],
-//             width: 12.0,
-//             height: 18.0
-//           )
-//         ),
-//         new Positioned(
-//           left: 36.0,
-//           top: 81.0,
-//           child: new Text(
-//             "${gameState.coins}",
-//             style: new TextStyle(
-//               fontSize: 16.0,
-//               fontWeight: FontWeight.w500,
-//               color: _darkTextColor
-//             )
-//           )
-//         )
-//       ]
-//     );
-//   }
-// }
+class BottomBar extends StatelessWidget {
+  BottomBar(
+      {this.onPlay,
+      this.gameState,
+      this.onStartLevelUp,
+      this.onStartLevelDown});
 
-// class CenterArea extends StatelessWidget {
-//   CenterArea({
-//     this.selection,
-//     this.onUpgradeLaser,
-//     this.gameState,
-//     this.onUpgradePowerUp
-//   });
+  final VoidCallback onPlay;
+  final VoidCallback onStartLevelUp;
+  final VoidCallback onStartLevelDown;
+  final PersistantGameState gameState;
 
-//   final int selection;
-//   final VoidCallback onUpgradeLaser;
-//   final UpgradePowerUpCallback onUpgradePowerUp;
-//   final PersistantGameState gameState;
-
-//   Widget build(BuildContext context) {
-//     return _buildCenterArea();
-//   }
-
-//   Widget _buildCenterArea() {
-//     return _buildUpgradePanel();
-//   }
-
-//   Widget _buildUpgradePanel() {
-//     return new Column(
-//       children: <Widget>[
-//         new Text("Upgrade Laser"),
-//         _buildLaserUpgradeButton(),
-//         new Text("Upgrade Power-Ups"),
-//         new Row(
-//           children: <Widget>[
-//             _buildPowerUpButton(PowerUpType.shield),
-//             _buildPowerUpButton(PowerUpType.sideLaser),
-//             _buildPowerUpButton(PowerUpType.speedBoost),
-//             _buildPowerUpButton(PowerUpType.speedLaser),
-//           ],
-//         mainAxisAlignment: MainAxisAlignment.center)
-//       ],
-//       mainAxisAlignment: MainAxisAlignment.center,
-//       key: new Key("upgradePanel")
-//     );
-//   }
-
-//   Widget _buildPowerUpButton(PowerUpType type) {
-//     return new Padding(
-//       padding: new EdgeInsets.all(8.0),
-//       child: new Column(
-//         children: <Widget>[
-//         new TextureButton(
-//           texture: _spriteSheetUI['btn_powerup_${type.index}.png'],
-//           width: 57.0,
-//           height: 57.0,
-//           label: "${gameState.powerUpUpgradePrice(type)}",
-//           labelOffset: new Offset(3.0, 18.5),
-//           textStyle: new TextStyle(
-//             fontFamily: "Orbitron",
-//             fontSize: 11.0,
-//             color: _darkTextColor
-//           ),
-//           textAlign: TextAlign.center,
-//           onPressed: () => onUpgradePowerUp(type)
-//         ),
-//         new Padding(
-//           padding: new EdgeInsets.all(5.0),
-//           child: new Text(
-//             "Lvl ${gameState.powerupLevel(type) + 1}",
-//             style: new TextStyle(fontSize: 12.0)
-//           )
-//         )
-//       ])
-//     );
-//   }
-
-//   Widget _buildLaserUpgradeButton() {
-//     return new Padding(
-//       padding: new EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 18.0),
-//       child: new Stack(
-//         children: <Widget>[
-//           new TextureButton(
-//             texture: _spriteSheetUI['btn_laser_upgrade.png'],
-//             width: 137.0,
-//             height: 63.0,
-//             label: "${gameState.laserUpgradePrice()}",
-//             labelOffset: new Offset(2.0, 18.0),
-//             textStyle: new TextStyle(
-//               fontFamily: "Orbitron",
-//               fontSize: 12.0,
-//               color: _darkTextColor
-//             ),
-//             textAlign: TextAlign.center,
-//             onPressed: onUpgradeLaser
-//           ),
-//           new Positioned(
-//             child: new LaserDisplay(level: gameState.laserLevel),
-//             left: 19.5,
-//             top: 14.0
-//           ),
-//           new Positioned(
-//             child: new LaserDisplay(level: gameState.laserLevel + 1),
-//             right: 19.5,
-//             top: 14.0
-//           )
-//         ]
-//       )
-//     );
-//   }
-// }
-
-// class BottomBar extends StatelessWidget {
-//   BottomBar({this.onPlay, this.gameState, this.onStartLevelUp, this.onStartLevelDown});
-
-//   final VoidCallback onPlay;
-//   final VoidCallback onStartLevelUp;
-//   final VoidCallback onStartLevelDown;
-//   final PersistantGameState gameState;
-
-//   Widget build(BuildContext context) {
-//     return new Stack(
-//       children: <Widget>[
-//         new Positioned(
-//           left: 18.0,
-//           top: 14.0,
-//           child: new TextureImage(
-//             texture: _spriteSheetUI['level_display.png'],
-//             width: 62.0,
-//             height: 62.0
-//           )
-//         ),
-//         new Positioned(
-//           left: 18.0,
-//           top: 14.0,
-//           child: new TextureImage(
-//             texture: _spriteSheetUI['level_display_${gameState.currentStartingLevel + 1}.png'],
-//             width: 62.0,
-//             height: 62.0
-//           )
-//         ),
-//         new Positioned(
-//           left: 85.0,
-//           top: 14.0,
-//           child: new TextureButton(
-//             texture: _spriteSheetUI['btn_level_up.png'],
-//             width: 30.0,
-//             height: 30.0,
-//             onPressed: onStartLevelUp
-//           )
-//         ),
-//         new Positioned(
-//           left: 85.0,
-//           top: 46.0,
-//           child: new TextureButton(
-//             texture: _spriteSheetUI['btn_level_down.png'],
-//             width: 30.0,
-//             height: 30.0,
-//             onPressed: onStartLevelDown
-//           )
-//         ),
-//         new Positioned(
-//           left: 120.0,
-//           top: 14.0,
-//           child: new TextureButton(
-//             onPressed: onPlay,
-//             texture: _spriteSheetUI['btn_play.png'],
-//             label: "PLAY",
-//             textStyle: new TextStyle(fontFamily: "Orbitron", fontSize: 28.0, letterSpacing: 3.0),
-//             textAlign: TextAlign.center,
-//             width: 181.0,
-//             height: 62.0
-//           )
-//         )
-//       ]
-//     );
-//   }
-// }
+  Widget build(BuildContext context) {
+    return new Stack(children: <Widget>[
+      // new Positioned(
+      //     left: 18.0,
+      //     top: 14.0,
+      //     child: new TextureImage(
+      //         texture: _spriteSheetUI['level_display.png'],
+      //         width: 62.0,
+      //         height: 62.0)),
+      // new Positioned(
+      //     left: 18.0,
+      //     top: 14.0,
+      //     child: new TextureImage(
+      //         texture: _spriteSheetUI[
+      //             'level_display_${gameState.currentStartingLevel + 1}.png'],
+      //         width: 62.0,
+      //         height: 62.0)),
+      // new Positioned(
+      //     left: 85.0,
+      //     top: 14.0,
+      //     child: new TextureButton(
+      //         texture: _spriteSheetUI['btn_level_up.png'],
+      //         width: 30.0,
+      //         height: 30.0,
+      //         onPressed: onStartLevelUp)),
+      // new Positioned(
+      //     left: 85.0,
+      //     top: 46.0,
+      //     child: new TextureButton(
+      //         texture: _spriteSheetUI['btn_level_down.png'],
+      //         width: 30.0,
+      //         height: 30.0,
+      //         onPressed: onStartLevelDown)),
+      new Positioned(
+          left: 120.0,
+          top: 14.0,
+          child: new TextureButton(
+              onPressed: onPlay,
+              texture: _spriteSheetUI['btn_play.png'],
+              label: "PLAY",
+              textStyle: new TextStyle(
+                  fontFamily: "Press Start 2P",
+                  fontSize: 28.0,
+                  letterSpacing: 3.0,
+                  color: Colors.yellow),
+              textAlign: TextAlign.center,
+              width: 181.0,
+              height: 62.0))
+    ]);
+  }
+}
 
 class MainSceneBackground extends StatefulWidget {
   MainSceneBackgroundState createState() => new MainSceneBackgroundState();

@@ -53,7 +53,7 @@ class GameDemoNode extends NodeWithSize {
     _gameScreen.addChild(_joystick);
 
     // Add initial game objects
-    // addObjects();
+    addObjects();
   }
 
   final PersistantGameState _gameState;
@@ -179,42 +179,43 @@ class GameDemoNode extends NodeWithSize {
 
   int _chunk = 0;
 
-  // void addObjects() {
-  //   while (_scroll + _chunkSpacing >= _chunk * _chunkSpacing) {
-  //     addLevelChunk(_chunk, -_chunk * _chunkSpacing - _chunkSpacing);
+  void addObjects() {
+    while (_scroll + _chunkSpacing >= _chunk * _chunkSpacing) {
+      addLevelChunk(_chunk, -_chunk * _chunkSpacing - _chunkSpacing);
 
-  //     _chunk += 1;
-  //   }
-  // }
+      _chunk += 1;
+    }
+  }
 
-  // void addLevelChunk(int chunk, double yPos) {
-  //   int level = chunk ~/ _chunksPerLevel + _gameState.currentStartingLevel;
-  //   int part = chunk % _chunksPerLevel;
+  void addLevelChunk(int chunk, double yPos) {
+    int level = chunk ~/ _chunksPerLevel + _gameState.currentStartingLevel;
+    int part = chunk % _chunksPerLevel;
 
-  //   if (part == 0) {
-  //     LevelLabel lbl = new LevelLabel(_objectFactory, level + 1);
-  //     lbl.position = new Offset(0.0, yPos + _chunkSpacing / 2.0 - 150.0);
+    if (part == 0) {
+      LevelLabel lbl = new LevelLabel(_objectFactory, level + 1);
+      lbl.position = new Offset(0.0, yPos + _chunkSpacing / 2.0 - 150.0);
 
-  //     _topLevelReached = level;
-  //     _level.addChild(lbl);
-  //   } else if (part == 1) {
-  //     _objectFactory.addAsteroids(level, yPos);
-  //   } else if (part == 2) {
-  //     _objectFactory.addEnemyScoutSwarm(level, yPos);
-  //   } else if (part == 3) {
-  //     _objectFactory.addAsteroids(level, yPos);
-  //   } else if (part == 4) {
-  //     _objectFactory.addEnemyDestroyerSwarm(level, yPos);
-  //   } else if (part == 5) {
-  //     _objectFactory.addAsteroids(level, yPos);
-  //   } else if (part == 6) {
-  //     _objectFactory.addEnemyScoutSwarm(level, yPos);
-  //   } else if (part == 7) {
-  //     _objectFactory.addAsteroids(level, yPos);
-  //   } else if (part == 8) {
-  //     _objectFactory.addBossFight(level, yPos);
-  //   }
-  // }
+      _topLevelReached = level;
+      _level.addChild(lbl);
+    } else if (part == 1) {
+      _objectFactory.addBads(level, yPos);
+      // } else if (part == 2) {
+      //   _objectFactory.addEnemyScoutSwarm(level, yPos);
+    } else if (part == 3) {
+      _objectFactory.addBads(level, yPos);
+      // } else if (part == 4) {
+      //   _objectFactory.addEnemyDestroyerSwarm(level, yPos);
+    } else if (part == 5) {
+      _objectFactory.addBads(level, yPos);
+      // } else if (part == 6) {
+      //   _objectFactory.addEnemyScoutSwarm(level, yPos);
+    } else if (part == 7) {
+      _objectFactory.addBads(level, yPos);
+    }
+    // else if (part == 8) {
+    //   _objectFactory.addBossFight(level, yPos);
+    // }
+  }
 
   void fire() {
     int laserLevel = _objectFactory.playerState.laserLevel;
