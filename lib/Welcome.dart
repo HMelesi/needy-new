@@ -263,27 +263,35 @@ class _HomePageState extends State<HomePage> {
                                   Padding(
                                     padding: EdgeInsets.all(8.0),
                                     child: Text(
-                                        'You can extend the goal if you want to carry on, or mark it complete.'),
+                                        'Extend the goal if you want to carry on, or mark it complete.'),
                                   ),
                                   Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        children: <Widget>[
-                                          FlatButton(
-                                            onPressed: () {
-                                              print('extend');
-                                            },
-                                            child: Text('extend'),
-                                          ),
-                                          Spacer(),
-                                          FlatButton(
-                                            onPressed: () {
-                                              print('complete');
-                                            },
-                                            child: Text('complete'),
-                                          ),
-                                        ],
-                                      ))
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      children: <Widget>[
+                                        FlatButton(
+                                          onPressed: () {
+                                            showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime.now(),
+                                              firstDate: DateTime(2001),
+                                              lastDate: DateTime(2222),
+                                            ).then((date) {
+                                              extendGoal(goalName, date);
+                                            });
+                                          },
+                                          child: Text('extend'),
+                                        ),
+                                        Spacer(),
+                                        FlatButton(
+                                          onPressed: () {
+                                            completeGoal(goalName);
+                                          },
+                                          child: Text('complete'),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
@@ -303,6 +311,54 @@ class _HomePageState extends State<HomePage> {
             }),
       ),
     );
+  }
+
+  void completeGoal(goalName) async {
+    final dbRef = Firestore.instance;
+    await dbRef
+        .collection('users')
+        .document(userId)
+        .collection('goals')
+        .document(goalName)
+        .updateData({
+      'expired': true,
+    }).then((res) {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Goal completed!'),
+        ),
+      );
+    }).catchError((err) {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text(err),
+        ),
+      );
+    });
+  }
+
+  void extendGoal(goalName, updatedEndDate) async {
+    final dbRef = Firestore.instance;
+    await dbRef
+        .collection('users')
+        .document(userId)
+        .collection('goals')
+        .document(goalName)
+        .updateData({
+      'endDate': updatedEndDate,
+    }).then((res) {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Goal extended!'),
+        ),
+      );
+    }).catchError((err) {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text(err),
+        ),
+      );
+    });
   }
 }
 
