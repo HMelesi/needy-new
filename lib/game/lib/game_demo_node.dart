@@ -74,7 +74,6 @@ class GameDemoNode extends NodeWithSize {
   GameObjectFactory _objectFactory;
   Level _level;
   int _topLevelReached = 0;
-  StarField _starField;
   RepeatedImage _background;
   RepeatedImage _nebula;
   PlayerState _playerState;
@@ -101,7 +100,7 @@ class GameDemoNode extends NodeWithSize {
     // _nebula.move(_playerState.scrollSpeed);
 
     // Add objects
-    // addObjects();
+    addObjects();
 
     // Move the ship
     if (!_gameOver) {

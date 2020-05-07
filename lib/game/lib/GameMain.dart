@@ -9,6 +9,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:spritewidget/spritewidget.dart';
+import 'package:needy_new/RootPage.dart';
+import 'package:needy_new/authentication.dart';
 
 import 'game_demo.dart';
 
@@ -35,6 +37,8 @@ gamestart(
   // Load game state
   _gameState = new PersistantGameState();
   await _gameState.load();
+
+  _gameState.coins = petHealth * 10;
 
   // Load images
   _imageMap = new ImageMap(rootBundle);
@@ -146,6 +150,7 @@ class _GamePage extends State<GamePage> {
     return new MaterialPageRoute(builder: (BuildContext context) {
       return new MainScene(
           petName: petName,
+          userId: userId,
           gameState: _gameState,
           onStartLevelUp: () {
             setState(() {
@@ -197,23 +202,27 @@ class MainScene extends StatefulWidget {
     this.onStartLevelDown,
     this.petName,
     this.gameState,
+    this.userId,
   });
 
   final PersistantGameState gameState;
   final VoidCallback onStartLevelUp;
   final VoidCallback onStartLevelDown;
   final String petName;
+  final String userId;
 
-  State<MainScene> createState() => new MainSceneState(petName: petName);
+  State<MainScene> createState() =>
+      new MainSceneState(petName: petName, userId: userId);
 }
 
 class MainSceneState extends State<MainScene> {
-  MainSceneState({this.petName});
+  MainSceneState({this.petName, this.userId});
   void initState() {
     super.initState();
   }
 
   final String petName;
+  final String userId;
 
   Widget build(BuildContext context) {
     var notchOffset = MediaQuery.of(context).padding.top;
@@ -244,8 +253,10 @@ class MainSceneState extends State<MainScene> {
                       ),
                       SizedBox(
                         width: 320.0,
-                        height: 93.0,
+                        height: 500.0,
                         child: BottomBar(
+                          userId: userId,
+                          petName: petName,
                           onPlay: () {
                             Navigator.pushNamed(context, '/game');
                           },
@@ -278,40 +289,15 @@ class TopBar extends StatelessWidget {
   final PersistantGameState gameState;
 
   Widget build(BuildContext context) {
-    TextStyle scoreLabelStyle = new TextStyle(
-        fontFamily: "Pixelar",
-        fontSize: 20.0,
-        fontWeight: FontWeight.w500,
-        color: Colors.black);
-
     return new Stack(children: <Widget>[
       new Positioned(
           left: 18.0,
-          top: 13.0,
-          child: new Text("Last Score", style: scoreLabelStyle)),
+          top: 20.0,
+          child: new TextureImage(
+              texture: _spriteSheetUI['heart.png'], width: 18.0, height: 18.0)),
       new Positioned(
-          left: 18.0,
-          top: 39.0,
-          child: new Text("Weekly Best", style: scoreLabelStyle)),
-      new Positioned(
-          right: 18.0,
-          top: 13.0,
-          child: new Text("${gameState.lastScore}", style: scoreLabelStyle)),
-      new Positioned(
-          right: 18.0,
-          top: 39.0,
-          child:
-              new Text("${gameState.weeklyBestScore}", style: scoreLabelStyle)),
-      // new Positioned(
-      //     left: 18.0,
-      //     top: 80.0,
-      //     child: new TextureImage(
-      //         texture: _spriteSheetUI['icn_crystal.png'],
-      //         width: 12.0,
-      //         height: 18.0)),
-      new Positioned(
-          left: 36.0,
-          top: 81.0,
+          left: 46.0,
+          top: 20.0,
           child: new Text("${gameState.coins}",
               style: new TextStyle(
                   fontSize: 16.0,
@@ -326,61 +312,76 @@ class BottomBar extends StatelessWidget {
       {this.onPlay,
       this.gameState,
       this.onStartLevelUp,
-      this.onStartLevelDown});
+      this.onStartLevelDown,
+      this.petName,
+      this.userId});
 
   final VoidCallback onPlay;
   final VoidCallback onStartLevelUp;
   final VoidCallback onStartLevelDown;
   final PersistantGameState gameState;
+  final String petName;
+  final String userId;
 
   Widget build(BuildContext context) {
     return new Stack(children: <Widget>[
-      // new Positioned(
-      //     left: 18.0,
-      //     top: 14.0,
-      //     child: new TextureImage(
-      //         texture: _spriteSheetUI['level_display.png'],
-      //         width: 62.0,
-      //         height: 62.0)),
-      // new Positioned(
-      //     left: 18.0,
-      //     top: 14.0,
-      //     child: new TextureImage(
-      //         texture: _spriteSheetUI[
-      //             'level_display_${gameState.currentStartingLevel + 1}.png'],
-      //         width: 62.0,
-      //         height: 62.0)),
-      // new Positioned(
-      //     left: 85.0,
-      //     top: 14.0,
-      //     child: new TextureButton(
-      //         texture: _spriteSheetUI['btn_level_up.png'],
-      //         width: 30.0,
-      //         height: 30.0,
-      //         onPressed: onStartLevelUp)),
-      // new Positioned(
-      //     left: 85.0,
-      //     top: 46.0,
-      //     child: new TextureButton(
-      //         texture: _spriteSheetUI['btn_level_down.png'],
-      //         width: 30.0,
-      //         height: 30.0,
-      //         onPressed: onStartLevelDown)),
-      new Positioned(
-          left: 120.0,
-          top: 14.0,
-          child: new TextureButton(
-              onPressed: onPlay,
-              texture: _spriteSheetUI['btn_play.png'],
-              label: "PLAY",
-              textStyle: new TextStyle(
-                  fontFamily: "Press Start 2P",
-                  fontSize: 28.0,
-                  letterSpacing: 3.0,
-                  color: Colors.yellow),
-              textAlign: TextAlign.center,
-              width: 181.0,
-              height: 62.0))
+      Container(
+          child: Column(children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Text(
+            'Welcome! Help $petName navigate through the field, avoiding the bads and hitting the goods to score points!',
+            style: TextStyle(color: Colors.pink),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Image.asset('images/pixil-cat.png'),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Align(
+              alignment: Alignment.bottomCenter,
+              child: new TextureButton(
+                  onPressed: onPlay,
+                  texture: _spriteSheetUI['btn_play.png'],
+                  label: "START",
+                  textStyle: new TextStyle(
+                      fontFamily: "PressStart2P",
+                      fontSize: 24.0,
+                      letterSpacing: 3.0,
+                      color: Colors.yellow),
+                  textAlign: TextAlign.center,
+                  width: 181.0,
+                  height: 62.0)),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Align(
+              alignment: Alignment.bottomCenter,
+              child: new TextureButton(
+                  onPressed: () {
+                    String userId;
+                    // TODO: this doesn't currently kill the game, it really really should
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              RootPage(userId: userId, auth: Auth()),
+                        ));
+                  },
+                  texture: _spriteSheetUI['btn_exit.png'],
+                  label: "EXIT",
+                  textStyle: new TextStyle(
+                      fontFamily: "PressStart2P",
+                      fontSize: 24.0,
+                      letterSpacing: 3.0,
+                      color: Colors.grey[400]),
+                  textAlign: TextAlign.center,
+                  width: 181.0,
+                  height: 62.0)),
+        )
+      ]))
     ]);
   }
 }
@@ -409,18 +410,11 @@ class MainSceneBackgroundNode extends NodeWithSize {
   RepeatedImage _nebula;
 
   MainSceneBackgroundNode() : super(new Size(320.0, 320.0)) {
-    // assert(_spriteSheet.image != null);
+    assert(_spriteSheet.image != null);
 
     // Add background
     _background = new RepeatedImage(_imageMap['lib/game/assets/grass.png']);
     addChild(_background);
-
-    // StarField starField = new StarField(_spriteSheet, 200, true);
-    // addChild(starField);
-
-    // Add nebula
-    // _nebula = new RepeatedImage(_imageMap["assets/nebula.png"], BlendMode.plus);
-    // addChild(_nebula);
 
     // _bgTop = new Sprite.fromImage(_imageMap["assets/ui_bg_top.png"]);
     // _bgTop.pivot = Offset.zero;

@@ -26,7 +26,6 @@ part 'player_state.dart';
 part 'power_bar.dart';
 part 'repeated_image.dart';
 part 'sound_assets.dart';
-part 'star_field.dart';
 
 part 'coordinate_system.dart';
 part 'render_coordinate_system.dart';
