@@ -43,14 +43,15 @@ class Footer extends StatelessWidget {
                           height: 25.0,
                           width: 600.0,
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Icon(Icons.arrow_left),
-                              Text('play with your pets',
+                              // Icon(Icons.arrow_left),
+                              Text('<   play with your pets   >',
                                   style: TextStyle(
                                     fontFamily: 'Pixelar',
                                     fontSize: 24,
                                   )),
-                              Icon(Icons.arrow_right),
+                              // Icon(Icons.arrow_right),
                             ],
                           )),
                       Container(
