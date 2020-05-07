@@ -278,6 +278,8 @@ class _HomePageState extends State<HomePage> {
                                               lastDate: DateTime(2222),
                                             ).then((date) {
                                               extendGoal(goalName, date);
+                                            }).then((res) {
+                                              Navigator.of(context).pop();
                                             });
                                           },
                                           child: Text('extend'),
@@ -285,7 +287,9 @@ class _HomePageState extends State<HomePage> {
                                         Spacer(),
                                         FlatButton(
                                           onPressed: () {
-                                            completeGoal(goalName);
+                                            completeGoal(goalName).then((res) {
+                                              Navigator.of(context).pop();
+                                            });
                                           },
                                           child: Text('complete'),
                                         ),
@@ -313,7 +317,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void completeGoal(goalName) async {
+  completeGoal(goalName) async {
     final dbRef = Firestore.instance;
     await dbRef
         .collection('users')
@@ -337,7 +341,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void extendGoal(goalName, updatedEndDate) async {
+  extendGoal(goalName, updatedEndDate) async {
     final dbRef = Firestore.instance;
     await dbRef
         .collection('users')
