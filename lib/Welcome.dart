@@ -204,7 +204,7 @@ class _HomePageState extends State<HomePage> {
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Container(
         decoration: BoxDecoration(
-            color: (endDatePassed) ? Colors.green[900] : Colors.green[300]),
+            color: (endDatePassed) ? Colors.yellow[400] : Colors.green[300]),
         child: ListTile(
             title: Text(
               goalRecord.goalName,
@@ -234,6 +234,7 @@ class _HomePageState extends State<HomePage> {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
+                        backgroundColor: Colors.yellow,
                         content: Stack(
                           overflow: Overflow.visible,
                           children: <Widget>[
@@ -258,12 +259,35 @@ class _HomePageState extends State<HomePage> {
                                   Padding(
                                     padding: EdgeInsets.all(8.0),
                                     child: Text(
-                                        'Congratulations, you\'ve reached the end of this goal!'),
+                                      'Congratulations!',
+                                      style: TextStyle(
+                                        fontFamily: 'Pixelar',
+                                        fontSize: 26,
+                                        color: Colors.black,
+                                      ),
+                                    ),
                                   ),
                                   Padding(
                                     padding: EdgeInsets.all(8.0),
                                     child: Text(
-                                        'Extend the goal if you want to carry on, or mark it complete.'),
+                                      'You\'ve reached the end of this goal!',
+                                      style: TextStyle(
+                                        fontFamily: 'Pixelar',
+                                        fontSize: 22,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text(
+                                      'Extend the goal to carry on, or mark it complete.',
+                                      style: TextStyle(
+                                        fontFamily: 'Pixelar',
+                                        fontSize: 22,
+                                        color: Colors.black,
+                                      ),
+                                    ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
@@ -282,7 +306,14 @@ class _HomePageState extends State<HomePage> {
                                               Navigator.of(context).pop();
                                             });
                                           },
-                                          child: Text('extend'),
+                                          child: Text(
+                                            'Extend',
+                                            style: TextStyle(
+                                              fontFamily: 'Pixelar',
+                                              fontSize: 26,
+                                              color: Colors.black,
+                                            ),
+                                          ),
                                         ),
                                         Spacer(),
                                         FlatButton(
@@ -291,7 +322,14 @@ class _HomePageState extends State<HomePage> {
                                               Navigator.of(context).pop();
                                             });
                                           },
-                                          child: Text('complete'),
+                                          child: Text(
+                                            'Complete',
+                                            style: TextStyle(
+                                              fontFamily: 'Pixelar',
+                                              fontSize: 26,
+                                              color: Colors.black,
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -342,6 +380,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   extendGoal(goalName, updatedEndDate) async {
+    if (updatedEndDate == null) {
+      updatedEndDate = DateTime.now().add(new Duration(days: 30));
+    }
     final dbRef = Firestore.instance;
     await dbRef
         .collection('users')
