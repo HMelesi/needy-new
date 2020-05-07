@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:needy_new/MarqueeWidget.dart';
 import 'package:needy_new/MyScaffold.dart';
 import 'package:needy_new/NewHabit.dart';
 import 'package:needy_new/Summary.dart';
@@ -40,11 +41,14 @@ class _MyHabits extends State<MyHabits> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(20.0),
-              child: Text(
-                goalName,
-                style: TextStyle(
-                  fontFamily: 'PressStart2P',
-                  fontSize: 24,
+              child: MarqueeWidget(
+                direction: Axis.horizontal,
+                child: Text(
+                  goalName,
+                  style: TextStyle(
+                    fontFamily: 'PressStart2P',
+                    fontSize: 24,
+                  ),
                 ),
               ),
             ),
