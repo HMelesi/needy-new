@@ -5,6 +5,7 @@ import 'package:needy_new/GoalSetter.dart';
 import 'package:needy_new/authentication.dart';
 import 'package:needy_new/MyScaffold.dart';
 import 'package:needy_new/MyHabits.dart';
+import 'package:fading_edge_scrollview/fading_edge_scrollview.dart';
 
 class HomePage extends StatefulWidget {
   HomePage(
@@ -185,10 +186,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildGoalList(BuildContext context, List<DocumentSnapshot> snapshot) {
-    return ListView(
-      padding: const EdgeInsets.only(top: 20.0),
-      children:
-          snapshot.map((data) => _buildGoalListItem(context, data)).toList(),
+    final _controller = ScrollController();
+    return FadingEdgeScrollView.fromScrollView(
+      child: ListView(
+        controller: _controller,
+        padding: const EdgeInsets.only(top: 20.0),
+        children:
+            snapshot.map((data) => _buildGoalListItem(context, data)).toList(),
+      ),
     );
   }
 
@@ -347,9 +352,9 @@ class _HomePageState extends State<HomePage> {
                   context,
                   MaterialPageRoute(
                     builder: (BuildContext context) => MyHabits(
-                        userId: userId, 
-                        name: name, 
-                        goalName: goalName, 
+                        userId: userId,
+                        name: name,
+                        goalName: goalName,
                         endDate: endDate),
                   ),
                 );
