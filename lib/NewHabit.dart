@@ -146,7 +146,7 @@ class MyCustomFormState extends State<MyCustomForm> {
               min: 1,
               max: 7,
               value: _frequency,
-              divisions: 7,
+              divisions: 6,
               label: '${_frequency.round()} days',
               onChanged: (value) {
                 setState(() {

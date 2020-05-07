@@ -16,14 +16,18 @@ dependencies:
   firebase_messaging: ^6.0.13
   carousel_slider: ^2.0.0
   background_fetch: ^0.5.1
+
   spritewidget: ^0.9.24
   path_provider: ^1.6.7
+
+  fading_edge_scrollview: ^1.1.0
+  firebase_auth: ^0.16.0 # new
+  firebase_database: ^3.1.5 # new
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  firebase_auth: ^0.16.0 # new
-  firebase_database: ^3.1.5 # new
 
 flutter:
   uses-material-design: true
@@ -42,6 +46,7 @@ flutter:
     - images/pixil-axolotl.png
     - images/pixil-sloth.png
     - images/catgif.gif
+
     - images/grass.png
     - lib/game/assets/grass.png
     - lib/game/assets/sprites.json
@@ -55,3 +60,7 @@ flutter:
     - lib/game/assets/bad.png
     - lib/game/assets/game_ui.png
     - lib/game/assets/game_ui.json
+
+    - images/cobweb.png
+    - images/trophy.png
+

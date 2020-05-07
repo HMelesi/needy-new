@@ -5,6 +5,7 @@ import 'package:needy_new/GoalSetter.dart';
 import 'package:needy_new/authentication.dart';
 import 'package:needy_new/MyScaffold.dart';
 import 'package:needy_new/MyHabits.dart';
+import 'package:fading_edge_scrollview/fading_edge_scrollview.dart';
 
 class HomePage extends StatefulWidget {
   HomePage(
@@ -23,7 +24,7 @@ class HomePage extends StatefulWidget {
   final bool logout;
 
   @override
-  State<StatefulWidget> createState() => new _HomePageState(
+  _HomePageState createState() => new _HomePageState(
       userId: userId,
       name: name,
       logoutCallback: logoutCallback,
@@ -69,6 +70,7 @@ class _HomePageState extends State<HomePage> {
                     .collection('users')
                     .document(userId)
                     .collection('goals')
+                    .where('expired', isEqualTo: false)
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
@@ -143,7 +145,7 @@ class _HomePageState extends State<HomePage> {
                           },
                         ),
                         Text(
-                          'here are your goals',
+                          'Currently open goals:',
                           style: TextStyle(
                             fontFamily: 'Pixelar',
                             color: Colors.black,
@@ -184,21 +186,31 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildGoalList(BuildContext context, List<DocumentSnapshot> snapshot) {
-    return ListView(
-      padding: const EdgeInsets.only(top: 20.0),
-      children:
-          snapshot.map((data) => _buildGoalListItem(context, data)).toList(),
+    final _controller = ScrollController();
+    return FadingEdgeScrollView.fromScrollView(
+      child: ListView(
+        controller: _controller,
+        padding: const EdgeInsets.only(top: 20.0),
+        children:
+            snapshot.map((data) => _buildGoalListItem(context, data)).toList(),
+      ),
     );
   }
 
   Widget _buildGoalListItem(BuildContext context, DocumentSnapshot data) {
     final goalRecord = GoalRecord.fromSnapshot(data);
     final goalName = goalRecord.goalName;
+    final outstanding = goalRecord.outstanding;
+    final endDatePassed =
+        goalRecord.endDate.toDate().difference(DateTime.now()).inSeconds < 0;
+    final endDate = goalRecord.endDate;
+
     return Padding(
       key: ValueKey(goalRecord.petName),
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Container(
-        decoration: BoxDecoration(color: Colors.green[300]),
+        decoration: BoxDecoration(
+            color: (endDatePassed) ? Colors.yellow[400] : Colors.green[300]),
         child: ListTile(
             title: Text(
               goalRecord.goalName,
@@ -216,23 +228,191 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.black,
               ),
             ),
-            trailing: (goalRecord.outstanding == true)
+            trailing: (outstanding == true)
                 ? Icon(
                     Icons.warning,
                     color: Colors.red,
                   )
-                : SizedBox(),
+                : (endDatePassed) ? Image.asset('images/trophy.png') : null,
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) =>
-                      MyHabits(userId: userId, name: name, goalName: goalName),
-                ),
-              );
+              if (endDatePassed) {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        backgroundColor: Colors.yellow,
+                        content: Stack(
+                          overflow: Overflow.visible,
+                          children: <Widget>[
+                            Positioned(
+                              right: -40.0,
+                              top: -40.0,
+                              child: InkResponse(
+                                onTap: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: CircleAvatar(
+                                  child: Icon(Icons.close),
+                                  backgroundColor: Colors.red,
+                                ),
+                              ),
+                            ),
+                            Form(
+                              key: Key('randomkey'),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text(
+                                      'Congratulations!',
+                                      style: TextStyle(
+                                        fontFamily: 'Pixelar',
+                                        fontSize: 26,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text(
+                                      'You\'ve reached the end of this goal!',
+                                      style: TextStyle(
+                                        fontFamily: 'Pixelar',
+                                        fontSize: 22,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text(
+                                      'Extend the goal to carry on, or mark it complete.',
+                                      style: TextStyle(
+                                        fontFamily: 'Pixelar',
+                                        fontSize: 22,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      children: <Widget>[
+                                        FlatButton(
+                                          onPressed: () {
+                                            showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime.now(),
+                                              firstDate: DateTime(2001),
+                                              lastDate: DateTime(2222),
+                                            ).then((date) {
+                                              extendGoal(goalName, date);
+                                            }).then((res) {
+                                              Navigator.of(context).pop();
+                                            });
+                                          },
+                                          child: Text(
+                                            'Extend',
+                                            style: TextStyle(
+                                              fontFamily: 'Pixelar',
+                                              fontSize: 26,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ),
+                                        Spacer(),
+                                        FlatButton(
+                                          onPressed: () {
+                                            completeGoal(goalName).then((res) {
+                                              Navigator.of(context).pop();
+                                            });
+                                          },
+                                          child: Text(
+                                            'Complete',
+                                            style: TextStyle(
+                                              fontFamily: 'Pixelar',
+                                              fontSize: 26,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    });
+              } else {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => MyHabits(
+                        userId: userId,
+                        name: name,
+                        goalName: goalName,
+                        endDate: endDate),
+                  ),
+                );
+              }
             }),
       ),
     );
+  }
+
+  completeGoal(goalName) async {
+    final dbRef = Firestore.instance;
+    await dbRef
+        .collection('users')
+        .document(userId)
+        .collection('goals')
+        .document(goalName)
+        .updateData({
+      'expired': true,
+    }).then((res) {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Goal completed!'),
+        ),
+      );
+    }).catchError((err) {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text(err),
+        ),
+      );
+    });
+  }
+
+  extendGoal(goalName, updatedEndDate) async {
+    if (updatedEndDate == null) {
+      updatedEndDate = DateTime.now().add(new Duration(days: 30));
+    }
+    final dbRef = Firestore.instance;
+    await dbRef
+        .collection('users')
+        .document(userId)
+        .collection('goals')
+        .document(goalName)
+        .updateData({
+      'endDate': updatedEndDate,
+    }).then((res) {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Goal extended!'),
+        ),
+      );
+    }).catchError((err) {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text(err),
+        ),
+      );
+    });
   }
 }
 
@@ -242,16 +422,19 @@ class GoalRecord {
   final String goalName;
   final bool outstanding;
   final DocumentReference reference;
+  final bool expired;
 
   GoalRecord.fromMap(Map<String, dynamic> map, {this.reference})
       : assert(map['endDate'] != null),
         assert(map['petName'] != null),
         assert(map['goalName'] != null),
         assert(map['outstanding'] != null),
+        assert(map['expired'] != null),
         endDate = map['endDate'],
         petName = map['petName'],
         goalName = map['goalName'],
-        outstanding = map['outstanding'];
+        outstanding = map['outstanding'],
+        expired = map['expired'];
 
   GoalRecord.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data, reference: snapshot.reference);

@@ -36,13 +36,13 @@ class _SummaryState extends State<Summary> {
     return MyScaffold(
       userId: userId,
       body: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.only(left:10, top: 125, right: 10, bottom: 0),
         child: Container(
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Container(
-                height: 670,
+                height: 420,
                 child:  SfCircularChart(
                         annotations: <CircularChartAnnotation>[
                          CircularChartAnnotation(

@@ -10,6 +10,7 @@ class Footer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.green[200],
       body: (userId == null)
           ? Container(
               height: 70,
@@ -42,14 +43,15 @@ class Footer extends StatelessWidget {
                           height: 25.0,
                           width: 600.0,
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Icon(Icons.arrow_left),
-                              Text('play with your pets',
+                              // Icon(Icons.arrow_left),
+                              Text('<   play with your pets   >',
                                   style: TextStyle(
                                     fontFamily: 'Pixelar',
                                     fontSize: 24,
                                   )),
-                              Icon(Icons.arrow_right),
+                              // Icon(Icons.arrow_right),
                             ],
                           )),
                       Container(
@@ -75,7 +77,7 @@ class Footer extends StatelessWidget {
                                       height: 50.0,
                                       width: 200.0,
                                       margin:
-                                          const EdgeInsets.only(bottom: 20.0),
+                                          const EdgeInsets.only(bottom: 5.0),
                                       child: FlatButton(
                                         child: Row(
                                           children: <Widget>[
