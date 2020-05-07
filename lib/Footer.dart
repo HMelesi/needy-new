@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:needy_new/GamePage.dart';
+import 'package:needy_new/game/lib/GameMain.dart';
 
 class Footer extends StatelessWidget {
   Footer({this.userId});
@@ -100,19 +100,13 @@ class Footer extends StatelessWidget {
                                               ? print(
                                                   'this pet is dead, you canot play with dead pets')
                                               : (petHealth > 5)
-                                                  ? Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (BuildContext
-                                                                context) =>
-                                                            GamePage(
-                                                          userId: userId,
-                                                          goalName: goalName,
-                                                          petHealth: petHealth,
-                                                          petType: petType,
-                                                          petName: petName,
-                                                        ),
-                                                      ))
+                                                  ? gamestart(
+                                                      userId,
+                                                      goalName,
+                                                      petHealth,
+                                                      petType,
+                                                      petName,
+                                                    )
                                                   : print(
                                                       'this pet is not healthy enough to play right now');
                                         },
