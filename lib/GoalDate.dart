@@ -154,7 +154,8 @@ class _GoalDateFormState extends State<GoalDateForm> {
       "petName": petName,
       "petType": petType,
       "petHealth": 10,
-      "outstanding": false
+      "outstanding": false,
+      "expired": false,
     }).then((res) {
       Scaffold.of(context).showSnackBar(
         SnackBar(
