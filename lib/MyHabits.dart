@@ -53,7 +53,9 @@ class _MyHabits extends State<MyHabits> {
             ),
           ),
           Text(
-            'This goal will end on ${DateFormat.yMMMMEEEEd().format(endDate.toDate())}',
+            endDate == null
+                ? ' '
+                : 'This goal will end on ${DateFormat.yMMMMEEEEd().format(endDate.toDate())}',
             style: TextStyle(
               fontFamily: 'Pixelar',
               fontSize: 18,
