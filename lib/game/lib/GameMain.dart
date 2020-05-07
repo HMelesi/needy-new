@@ -135,6 +135,7 @@ class _GamePage extends State<GamePage> {
   PageRoute _buildGameSceneRoute() {
     return new MaterialPageRoute(builder: (BuildContext context) {
       return new GameScene(
+          petHealth: petHealth,
           onGameOver: (int lastScore, int coins, int levelReached) {
             setState(() {
               _gameState.lastScore = lastScore;
@@ -169,23 +170,26 @@ class _GamePage extends State<GamePage> {
 }
 
 class GameScene extends StatefulWidget {
-  GameScene({this.onGameOver, this.gameState});
+  GameScene({this.onGameOver, this.gameState, this.petHealth});
 
   final GameOverCallback onGameOver;
   final PersistantGameState gameState;
+  final int petHealth;
 
-  State<GameScene> createState() => new GameSceneState();
+  State<GameScene> createState() => new GameSceneState(petHealth: petHealth);
 }
 
 class GameSceneState extends State<GameScene> {
+  GameSceneState({this.petHealth});
+  final int petHealth;
+
   NodeWithSize _game;
 
   void initState() {
     super.initState();
 
-    _game = new GameDemoNode(
-        _imageMap, _spriteSheet, _spriteSheetUI, _sounds, widget.gameState,
-        (int score, int coins, int levelReached) {
+    _game = new GameDemoNode(_imageMap, _spriteSheet, _spriteSheetUI, _sounds,
+        widget.gameState, petHealth, (int score, int coins, int levelReached) {
       Navigator.pop(context);
       widget.onGameOver(score, coins, levelReached);
     });
@@ -329,9 +333,15 @@ class BottomBar extends StatelessWidget {
           child: Column(children: <Widget>[
         Padding(
           padding: const EdgeInsets.all(20.0),
-          child: Text(
-            'Welcome! Help $petName navigate through the field, avoiding the bads and hitting the goods to score points!',
-            style: TextStyle(color: Colors.pink),
+          child: DecoratedBox(
+            decoration: BoxDecoration(color: Colors.yellow),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Welcome! Help $petName navigate through the field, avoiding the bads and hitting the goods to score points!',
+                style: TextStyle(color: Colors.pink),
+              ),
+            ),
           ),
         ),
         Padding(

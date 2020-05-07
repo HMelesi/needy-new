@@ -52,6 +52,10 @@ abstract class GameObject extends Node {
     removeFromParent();
   }
 
+  void losePoints(num) {
+    f.playerState.score -= num;
+  }
+
   void addDamage(double d) {
     if (!canBeDamaged) return;
 
@@ -634,11 +638,5 @@ class PowerUp extends Collectable {
       _sprite.opacity = a;
     }, 0.0, 1.0, 0.6);
     motions.run(fadeIn);
-  }
-
-  void collect() {
-    f.sounds.play("buy_upgrade");
-    f.playerState.activatePowerUp(type);
-    super.collect();
   }
 }

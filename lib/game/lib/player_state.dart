@@ -3,7 +3,7 @@ part of game;
 class PlayerState extends Node {
   PlayerState(this._sheetUI, this._sheetGame, this._gameState) {
     // Score display
-    _spriteBackgroundScore = new Sprite(_sheetUI["scoreboard.png"]);
+    _spriteBackgroundScore = new Sprite(_sheetUI["btn_play.png"]);
     _spriteBackgroundScore.pivot = new Offset(1.0, 0.0);
     _spriteBackgroundScore.scale = 0.35;
     _spriteBackgroundScore.position = new Offset(240.0, 10.0);
@@ -14,7 +14,7 @@ class PlayerState extends Node {
     _spriteBackgroundScore.addChild(_scoreDisplay);
 
     // Coin display
-    _spriteBackgroundCoins = new Sprite(_sheetUI["coinboard.png"]);
+    _spriteBackgroundCoins = new Sprite(_sheetUI["btn_exit.png"]);
     _spriteBackgroundCoins.pivot = new Offset(1.0, 0.0);
     _spriteBackgroundCoins.scale = 0.35;
     _spriteBackgroundCoins.position = new Offset(105.0, 10.0);
@@ -90,33 +90,33 @@ class PlayerState extends Node {
     addChild(sprite);
   }
 
-  void activatePowerUp(PowerUpType type) {
-    if (type == PowerUpType.shield) {
-      _shieldFrames += _gameState.powerUpFrames(type);
-    } else if (type == PowerUpType.sideLaser) {
-      _sideLaserFrames += _gameState.powerUpFrames(type);
-    } else if (type == PowerUpType.speedLaser) {
-      _speedLaserFrames += _gameState.powerUpFrames(type);
-    } else if (type == PowerUpType.speedBoost) {
-      _speedBoostFrames += _gameState.powerUpFrames(type);
-      _shieldFrames += _gameState.powerUpFrames(type) + 60;
-    }
-  }
+  // void activatePowerUp(PowerUpType type) {
+  //   if (type == PowerUpType.shield) {
+  //     _shieldFrames += _gameState.powerUpFrames(type);
+  //   } else if (type == PowerUpType.sideLaser) {
+  //     _sideLaserFrames += _gameState.powerUpFrames(type);
+  //   } else if (type == PowerUpType.speedLaser) {
+  //     _speedLaserFrames += _gameState.powerUpFrames(type);
+  //   } else if (type == PowerUpType.speedBoost) {
+  //     _speedBoostFrames += _gameState.powerUpFrames(type);
+  //     _shieldFrames += _gameState.powerUpFrames(type) + 60;
+  //   }
+  // }
 
-  int _shieldFrames = 0;
-  bool get shieldActive => _shieldFrames > 0 || _speedBoostFrames > 0;
-  bool get shieldDeactivating =>
-      math.max(_shieldFrames, _speedBoostFrames) > 0 &&
-      math.max(_shieldFrames, _speedBoostFrames) < 60;
+  // int _shieldFrames = 0;
+  // bool get shieldActive => _shieldFrames > 0 || _speedBoostFrames > 0;
+  // bool get shieldDeactivating =>
+  //     math.max(_shieldFrames, _speedBoostFrames) > 0 &&
+  //     math.max(_shieldFrames, _speedBoostFrames) < 60;
 
-  int _sideLaserFrames = 0;
-  bool get sideLaserActive => _sideLaserFrames > 0;
+  // int _sideLaserFrames = 0;
+  // bool get sideLaserActive => _sideLaserFrames > 0;
 
-  int _speedLaserFrames = 0;
-  bool get speedLaserActive => _speedLaserFrames > 0;
+  // int _speedLaserFrames = 0;
+  // bool get speedLaserActive => _speedLaserFrames > 0;
 
-  int _speedBoostFrames = 0;
-  bool get speedBoostActive => _speedBoostFrames > 0;
+  // int _speedBoostFrames = 0;
+  // bool get speedBoostActive => _speedBoostFrames > 0;
 
   void flashBackgroundSprite(Sprite sprite) {
     sprite.motions.stopAll();
@@ -126,28 +126,28 @@ class PlayerState extends Node {
     sprite.motions.run(flash);
   }
 
-  void update(double dt) {
-    if (_shieldFrames > 0) _shieldFrames--;
-    if (_sideLaserFrames > 0) _sideLaserFrames--;
-    if (_speedLaserFrames > 0) _speedLaserFrames--;
-    if (_speedBoostFrames > 0) _speedBoostFrames--;
+  // void update(double dt) {
+  //   if (_shieldFrames > 0) _shieldFrames--;
+  //   if (_sideLaserFrames > 0) _sideLaserFrames--;
+  //   if (_speedLaserFrames > 0) _speedLaserFrames--;
+  //   if (_speedBoostFrames > 0) _speedBoostFrames--;
 
-    // Update speed
-    if (boss != null) {
-      Offset globalBossPos = boss.convertPointToBoxSpace(Offset.zero);
-      if (globalBossPos.dy > (_gameSizeHeight - 400.0))
-        _scrollSpeedTarget = 0.0;
-      else
-        _scrollSpeedTarget = normalScrollSpeed;
-    } else {
-      if (speedBoostActive)
-        _scrollSpeedTarget = normalScrollSpeed * 6.0;
-      else
-        _scrollSpeedTarget = normalScrollSpeed;
-    }
+  //   // Update speed
+  //   if (boss != null) {
+  //     Offset globalBossPos = boss.convertPointToBoxSpace(Offset.zero);
+  //     if (globalBossPos.dy > (_gameSizeHeight - 400.0))
+  //       _scrollSpeedTarget = 0.0;
+  //     else
+  //       _scrollSpeedTarget = normalScrollSpeed;
+  //   } else {
+  //     if (speedBoostActive)
+  //       _scrollSpeedTarget = normalScrollSpeed * 6.0;
+  //     else
+  //       _scrollSpeedTarget = normalScrollSpeed;
+  //   }
 
-    scrollSpeed = GameMath.filter(scrollSpeed, _scrollSpeedTarget, 0.1);
-  }
+  //   scrollSpeed = GameMath.filter(scrollSpeed, _scrollSpeedTarget, 0.1);
+  // }
 }
 
 class ScoreDisplay extends Node {
@@ -169,16 +169,16 @@ class ScoreDisplay extends Node {
   void update(double dt) {
     if (_dirtyScore) {
       removeAllChildren();
-
-      String scoreStr = _score.toString();
-      double xPos = -37.0;
-      for (int i = scoreStr.length - 1; i >= 0; i--) {
-        String numStr = scoreStr.substring(i, i + 1);
-        Sprite numSprite = new Sprite(_sheetUI["number_$numStr.png"]);
-        numSprite.position = new Offset(xPos, 0.0);
-        addChild(numSprite);
-        xPos -= 37.0;
-      }
+      print(_score);
+      // String scoreStr = _score.toString();
+      // double xPos = -37.0;
+      // for (int i = scoreStr.length - 1; i >= 0; i--) {
+      //   String numStr = scoreStr.substring(i, i + 1);
+      //   Sprite numSprite = new Sprite(_sheetUI["number_$numStr.png"]);
+      //   numSprite.position = new Offset(xPos, 0.0);
+      //   addChild(numSprite);
+      //   xPos -= 37.0;
+      // }
       _dirtyScore = false;
     }
   }

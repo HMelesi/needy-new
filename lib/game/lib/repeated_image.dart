@@ -6,12 +6,12 @@ class RepeatedImage extends Node {
 
   RepeatedImage(ui.Image image, [ui.BlendMode mode]) {
     _sprite0 = new Sprite.fromImage(image);
-    _sprite0.size = new Size(1024.0, 1024.0);
+    _sprite0.size = new Size(600.0, 600.0);
     _sprite0.pivot = Offset.zero;
     _sprite1 = new Sprite.fromImage(image);
-    _sprite1.size = new Size(1024.0, 1024.0);
+    _sprite1.size = new Size(600.0, 600.0);
     _sprite1.pivot = Offset.zero;
-    _sprite1.position = new Offset(0.0, -1024.0);
+    _sprite1.position = new Offset(0.0, -600.0);
 
     if (mode != null) {
       _sprite0.transferMode = mode;
@@ -23,7 +23,7 @@ class RepeatedImage extends Node {
   }
 
   void move(double dy) {
-    double yPos = (position.dy + dy) % 1024.0;
+    double yPos = (position.dy + dy) % 200.0;
     position = new Offset(0.0, yPos);
   }
 }
