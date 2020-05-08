@@ -40,10 +40,6 @@ class PersistantGameState {
 
   List<int> _powerupLevels = <int>[0, 0, 0, 0];
 
-  int powerupLevel(PowerUpType type) {
-    return _powerupLevels[type.index];
-  }
-
   int maxPowerUpLevel = 8;
 
   int _currentStartingLevel = 0;
@@ -71,33 +67,6 @@ class PersistantGameState {
   }
 
   int weeklyBestScore = 0;
-
-  int powerUpUpgradePrice(PowerUpType type) {
-    int level = powerupLevel(type) + 1;
-    return level * 50 + 50;
-  }
-
-  int powerUpFrames(PowerUpType type) {
-    int level = powerupLevel(type);
-
-    if (type == PowerUpType.speedBoost)
-      return 150 + 25 * level;
-    else
-      return 300 + 50 * level;
-  }
-
-  bool upgradePowerUp(PowerUpType type) {
-    int price = powerUpUpgradePrice(type);
-
-    if (coins >= price && _powerupLevels[type.index] < maxPowerUpLevel) {
-      coins -= price;
-      _powerupLevels[type.index] += 1;
-      store();
-      return true;
-    } else {
-      return false;
-    }
-  }
 
   int laserUpgradePrice() {
     return laserLevel * 100 + 200;

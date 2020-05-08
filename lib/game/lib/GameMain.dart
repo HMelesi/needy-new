@@ -38,8 +38,6 @@ gamestart(
   _gameState = new PersistantGameState();
   await _gameState.load();
 
-  _gameState.coins = petHealth * 10;
-
   // Load images
   _imageMap = new ImageMap(rootBundle);
 

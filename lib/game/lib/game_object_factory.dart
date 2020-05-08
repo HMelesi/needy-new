@@ -16,13 +16,11 @@ class GameObjectFactory {
 
     for (int i = 0; i < numBads; i++) {
       GameObject obj;
-      // if (i == 0)
-      //   obj = new BadPowerUp(this);
-      // else
+
       if (randomDouble() < distribution)
-        obj = new BadBig(this);
+        obj = new Molehill(this);
       else
-        obj = new BadSmall(this);
+        obj = new Rock(this);
 
       Offset pos = new Offset(
           randomSignedDouble() * 160.0, yPos + _chunkSpacing * randomDouble());
@@ -30,110 +28,49 @@ class GameObjectFactory {
     }
   }
 
-  // void addEnemyScoutSwarm(int level, double yPos) {
-  //   int numEnemies = (3 + level * 3).clamp(0, 12);
-  //   List<int> types;
-  //   int swarmLevel = level % _maxLevel;
+  void addHeart(int level, double yPos) {
+    int numHearts = 1;
+    double distribution = (level * 0.2).clamp(0.0, 0.8);
 
-  //   if (swarmLevel == 0)
-  //     types = [0, 0, 0];
-  //   else if (swarmLevel == 1)
-  //     types = [0, 1, 0];
-  //   else if (swarmLevel == 2)
-  //     types = [1, 0, 1];
-  //   else if (swarmLevel == 3)
-  //     types = [1, 1, 1];
-  //   else if (swarmLevel == 4)
-  //     types = [0, 1, 2];
-  //   else if (swarmLevel == 5)
-  //     types = [1, 2, 1];
-  //   else if (swarmLevel == 6)
-  //     types = [2, 1, 2];
-  //   else if (swarmLevel == 7)
-  //     types = [2, 1, 2];
-  //   else if (swarmLevel == 8) types = [2, 2, 2];
+    for (int i = 0; i < numHearts; i++) {
+      GameObject obj;
 
-  //   for (int i = 0; i < numEnemies; i++) {
-  //     int type = types[i % 3];
-  //     double spacing = math.max(_chunkSpacing / (numEnemies + 1.0), 80.0);
-  //     double y = yPos +
-  //         _chunkSpacing / 2.0 -
-  //         (numEnemies - 1) * spacing / 2.0 +
-  //         i * spacing;
-  //     addGameObject(new EnemyScout(this, type), new Offset(0.0, y));
-  //   }
-  // }
+      if (randomDouble() < distribution)
+        obj = new Medi(this);
+      else
+        obj = new Medi(this);
 
-  // void addEnemyDestroyerSwarm(int level, double yPos) {
-  //   int numEnemies = (2 + level).clamp(2, 10);
-  //   List<int> types;
-  //   int swarmLevel = level % _maxLevel;
+      Offset pos = new Offset(
+          randomSignedDouble() * 160.0, yPos + _chunkSpacing * randomDouble());
+      addGameObject(obj, pos);
+    }
+  }
 
-  //   if (swarmLevel == 0)
-  //     types = [0, 0, 0];
-  //   else if (swarmLevel == 1)
-  //     types = [0, 1, 0];
-  //   else if (swarmLevel == 2)
-  //     types = [1, 0, 1];
-  //   else if (swarmLevel == 3)
-  //     types = [1, 1, 1];
-  //   else if (swarmLevel == 4)
-  //     types = [0, 1, 2];
-  //   else if (swarmLevel == 5)
-  //     types = [1, 2, 1];
-  //   else if (swarmLevel == 6)
-  //     types = [2, 1, 2];
-  //   else if (swarmLevel == 7)
-  //     types = [2, 1, 2];
-  //   else if (swarmLevel == 8) types = [2, 2, 2];
+  void addCoins(int level, double yPos) {
+    int numCoins = 10 + level * 4;
 
-  //   for (int i = 0; i < numEnemies; i++) {
-  //     int type = types[i % 3];
-  //     addGameObject(
-  //         new EnemyDestroyer(this, type),
-  //         new Offset(randomSignedDouble() * 120.0,
-  //             yPos + _chunkSpacing * randomDouble()));
-  //   }
-  // }
+    // double distribution = (level * 0.4).clamp(0.0, 0.8);
+
+    for (int i = 0; i < numCoins; i++) {
+      GameObject obj;
+      if (i < numCoins / 5)
+        obj = new GoldCoin(this);
+      else if (i < numCoins / 2 && i >= numCoins / 5)
+        obj = new SilverCoin(this);
+      else
+        obj = new BronzeCoin(this);
+
+      Offset pos = new Offset(
+          randomSignedDouble() * 160.0, yPos + _chunkSpacing * randomDouble());
+      addGameObject(obj, pos);
+    }
+  }
 
   void addGameObject(GameObject obj, Offset pos) {
     obj.position = pos;
     obj.setupActions();
 
     level.addChild(obj);
-  }
-
-  void addBossFight(int level, double yPos) {
-    // Add boss
-    EnemyBoss boss = new EnemyBoss(this, level);
-    Offset pos = new Offset(0.0, yPos + _chunkSpacing / 2.0);
-
-    addGameObject(boss, pos);
-
-    playerState.boss = boss;
-
-    int destroyerLevel = (level - 1 ~/ 3).clamp(0, 2);
-
-    // Add boss's helpers
-    if (level >= 1) {
-      EnemyDestroyer destroyer0 = new EnemyDestroyer(this, destroyerLevel);
-      addGameObject(
-          destroyer0, new Offset(-80.0, yPos + _chunkSpacing / 2.0 + 70.0));
-
-      EnemyDestroyer destroyer1 = new EnemyDestroyer(this, destroyerLevel);
-      addGameObject(
-          destroyer1, new Offset(80.0, yPos + _chunkSpacing / 2.0 + 70.0));
-
-      if (level >= 2) {
-        EnemyDestroyer destroyer0 = new EnemyDestroyer(this, destroyerLevel);
-        addGameObject(
-            destroyer0, new Offset(-80.0, yPos + _chunkSpacing / 2.0 - 70.0));
-
-        EnemyDestroyer destroyer1 = new EnemyDestroyer(this, destroyerLevel);
-        addGameObject(
-            destroyer1, new Offset(80.0, yPos + _chunkSpacing / 2.0 - 70.0));
-      }
-    }
   }
 }
 

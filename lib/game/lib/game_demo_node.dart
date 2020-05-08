@@ -18,15 +18,6 @@ class GameDemoNode extends NodeWithSize {
     _background = new RepeatedImage(_images["lib/game/assets/grass.png"]);
     addChild(_background);
 
-    // Create starfield
-    // _starField = new StarField(_spritesGame, 200);
-    // addChild(_starField);
-
-    // Add nebula
-    // _nebula =
-    //     new RepeatedImage(_images["assets/nebula.png"], ui.BlendMode.plus);
-    // addChild(_nebula);
-
     // Setup game screen, it will always be anchored to the bottom of the screen
     _gameScreen = new Node();
     addChild(_gameScreen);
@@ -76,7 +67,6 @@ class GameDemoNode extends NodeWithSize {
   Level _level;
   int _topLevelReached = 0;
   RepeatedImage _background;
-  RepeatedImage _nebula;
   PlayerState _playerState;
 
   // Game properties
@@ -129,9 +119,12 @@ class GameDemoNode extends NodeWithSize {
     List<Node> nodes = new List<Node>.from(_level.children);
     for (Node node in nodes) {
       if (node is GameObject && node.canDamageShip) {
-        if (node.collidingWith(_level.ship)) {
-          hitCat();
+        if (node.collidingWith(_level.ship) && node is Bad) {
+          hitCatBad();
         }
+        // else if (node.collidingWith(_level.ship) && node is HeartLove) {
+        //   hitHeart();
+        // }
       } else if (node is GameObject && node.canBeCollected) {
         if (node.collidingWith(_level.ship)) {
           // The ship ran over something collectable
@@ -163,26 +156,37 @@ class GameDemoNode extends NodeWithSize {
       _level.addChild(lbl);
     } else if (part == 1) {
       _objectFactory.addBads(level, yPos);
-      // } else if (part == 2) {
-      //   _objectFactory.addEnemyScoutSwarm(level, yPos);
+      _objectFactory.addCoins(level, yPos);
+    } else if (part == 2) {
+      _objectFactory.addBads(level, yPos);
+      _objectFactory.addCoins(level, yPos);
+      _objectFactory.addHeart(level, yPos);
     } else if (part == 3) {
       _objectFactory.addBads(level, yPos);
-      // } else if (part == 4) {
-      //   _objectFactory.addEnemyDestroyerSwarm(level, yPos);
+      _objectFactory.addCoins(level, yPos);
+    } else if (part == 4) {
+      _objectFactory.addBads(level, yPos);
+      _objectFactory.addCoins(level, yPos);
+      _objectFactory.addHeart(level, yPos);
     } else if (part == 5) {
       _objectFactory.addBads(level, yPos);
-      // } else if (part == 6) {
-      //   _objectFactory.addEnemyScoutSwarm(level, yPos);
+      _objectFactory.addCoins(level, yPos);
+    } else if (part == 6) {
+      _objectFactory.addBads(level, yPos);
+      _objectFactory.addCoins(level, yPos);
+      _objectFactory.addHeart(level, yPos);
     } else if (part == 7) {
       _objectFactory.addBads(level, yPos);
+      _objectFactory.addCoins(level, yPos);
+    } else if (part == 8) {
+      _objectFactory.addBads(level, yPos);
+      _objectFactory.addCoins(level, yPos);
+      _objectFactory.addHeart(level, yPos);
     }
-    // else if (part == 8) {
-    //   _objectFactory.addBossFight(level, yPos);
-    // }
   }
 
-  void hitCat() {
-    _playerState.score -= 20;
+  void hitCatBad() {
+    _playerState.score -= 5;
 
     if (_playerState.score <= 0) {
       _level.ship.visible = false;
@@ -224,6 +228,13 @@ class GameDemoNode extends NodeWithSize {
     //       _playerState.score, _playerState.coins, _topLevelReached);
     // });
   }
+
+  // void hitHeart() {
+  //   _playerState.score += 50;
+
+  //   print('cat got a heart <3');
+  //   print(_playerState.score);
+  // }
 }
 
 class Level extends Node {
