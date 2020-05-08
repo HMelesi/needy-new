@@ -36,9 +36,9 @@ class GameObjectFactory {
       GameObject obj;
 
       if (randomDouble() < distribution)
-        obj = new HeartLove(this);
+        obj = new Medi(this);
       else
-        obj = new HeartLove(this);
+        obj = new Medi(this);
 
       Offset pos = new Offset(
           randomSignedDouble() * 160.0, yPos + _chunkSpacing * randomDouble());
@@ -47,15 +47,18 @@ class GameObjectFactory {
   }
 
   void addCoins(int level, double yPos) {
-    int numBads = 10 + level * 4;
-    double distribution = (level * 0.2).clamp(0.0, 0.8);
+    int numCoins = 10 + level * 4;
 
-    for (int i = 0; i < numBads; i++) {
+    // double distribution = (level * 0.4).clamp(0.0, 0.8);
+
+    for (int i = 0; i < numCoins; i++) {
       GameObject obj;
-      if (randomDouble() < distribution)
-        obj = new Coin(this);
+      if (i < numCoins / 5)
+        obj = new GoldCoin(this);
+      else if (i < numCoins / 2 && i >= numCoins / 5)
+        obj = new SilverCoin(this);
       else
-        obj = new Coin(this);
+        obj = new BronzeCoin(this);
 
       Offset pos = new Offset(
           randomSignedDouble() * 160.0, yPos + _chunkSpacing * randomDouble());

@@ -53,7 +53,7 @@ class PlayerState extends Node {
 
   int get coins => _coinDisplay.score;
 
-  void addCoin(Coin c) {
+  void addGoldCoin(GoldCoin c) {
     // Animate coin to the top of the screen
     Offset startPos = convertPointFromNode(Offset.zero, c);
     Offset finalPos = new Offset(30.0, 30.0);
@@ -62,7 +62,77 @@ class PlayerState extends Node {
 
     List<Offset> path = <Offset>[startPos, middlePos, finalPos];
 
-    Sprite sprite = new Sprite(_sheetGame["good.png"]);
+    Sprite sprite = new Sprite(_sheetGame["coin_gold.png"]);
+    sprite.scale = 0.7;
+
+    MotionSpline spline = new MotionSpline((Offset a) {
+      sprite.position = a;
+    }, path, 0.5);
+    spline.tension = 0.25;
+    MotionTween rotate = new MotionTween<double>((a) {
+      sprite.rotation = a;
+    }, 0.0, 360.0, 0.5);
+    MotionTween scale = new MotionTween<double>((a) {
+      sprite.scale = a;
+    }, 0.7, 1.2, 0.5);
+    MotionGroup group = new MotionGroup(<Motion>[spline, rotate, scale]);
+    sprite.motions.run(new MotionSequence(<Motion>[
+      group,
+      new MotionRemoveNode(sprite),
+      new MotionCallFunction(() {
+        _coinDisplay.score += 5;
+        flashBackgroundSprite(_spriteBackgroundCoins);
+      })
+    ]));
+    print(_coinDisplay.score);
+    addChild(sprite);
+  }
+
+  void addSilverCoin(SilverCoin c) {
+    // Animate coin to the top of the screen
+    Offset startPos = convertPointFromNode(Offset.zero, c);
+    Offset finalPos = new Offset(30.0, 30.0);
+    Offset middlePos = new Offset((startPos.dx + finalPos.dx) / 2.0 + 50.0,
+        (startPos.dy + finalPos.dy) / 2.0);
+
+    List<Offset> path = <Offset>[startPos, middlePos, finalPos];
+
+    Sprite sprite = new Sprite(_sheetGame["coin_silver.png"]);
+    sprite.scale = 0.7;
+
+    MotionSpline spline = new MotionSpline((Offset a) {
+      sprite.position = a;
+    }, path, 0.5);
+    spline.tension = 0.25;
+    MotionTween rotate = new MotionTween<double>((a) {
+      sprite.rotation = a;
+    }, 0.0, 360.0, 0.5);
+    MotionTween scale = new MotionTween<double>((a) {
+      sprite.scale = a;
+    }, 0.7, 1.2, 0.5);
+    MotionGroup group = new MotionGroup(<Motion>[spline, rotate, scale]);
+    sprite.motions.run(new MotionSequence(<Motion>[
+      group,
+      new MotionRemoveNode(sprite),
+      new MotionCallFunction(() {
+        _coinDisplay.score += 3;
+        flashBackgroundSprite(_spriteBackgroundCoins);
+      })
+    ]));
+    print(_coinDisplay.score);
+    addChild(sprite);
+  }
+
+  void addBronzeCoin(BronzeCoin c) {
+    // Animate coin to the top of the screen
+    Offset startPos = convertPointFromNode(Offset.zero, c);
+    Offset finalPos = new Offset(30.0, 30.0);
+    Offset middlePos = new Offset((startPos.dx + finalPos.dx) / 2.0 + 50.0,
+        (startPos.dy + finalPos.dy) / 2.0);
+
+    List<Offset> path = <Offset>[startPos, middlePos, finalPos];
+
+    Sprite sprite = new Sprite(_sheetGame["coin_bronze.png"]);
     sprite.scale = 0.7;
 
     MotionSpline spline = new MotionSpline((Offset a) {

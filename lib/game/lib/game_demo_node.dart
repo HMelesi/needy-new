@@ -121,9 +121,10 @@ class GameDemoNode extends NodeWithSize {
       if (node is GameObject && node.canDamageShip) {
         if (node.collidingWith(_level.ship) && node is Bad) {
           hitCatBad();
-        } else if (node.collidingWith(_level.ship) && node is HeartLove) {
-          hitHeart();
         }
+        // else if (node.collidingWith(_level.ship) && node is HeartLove) {
+        //   hitHeart();
+        // }
       } else if (node is GameObject && node.canBeCollected) {
         if (node.collidingWith(_level.ship)) {
           // The ship ran over something collectable
@@ -185,7 +186,7 @@ class GameDemoNode extends NodeWithSize {
   }
 
   void hitCatBad() {
-    _playerState.score -= 20;
+    _playerState.score -= 5;
 
     if (_playerState.score <= 0) {
       _level.ship.visible = false;
@@ -228,12 +229,12 @@ class GameDemoNode extends NodeWithSize {
     // });
   }
 
-  void hitHeart() {
-    _playerState.score += 50;
+  // void hitHeart() {
+  //   _playerState.score += 50;
 
-    print('cat got a heart <3');
-    print(_playerState.score);
-  }
+  //   print('cat got a heart <3');
+  //   print(_playerState.score);
+  // }
 }
 
 class Level extends Node {

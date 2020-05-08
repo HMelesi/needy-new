@@ -222,22 +222,6 @@ class Rock extends Bad {
   }
 }
 
-abstract class Heart extends Obstacle {
-  Heart(GameObjectFactory f) : super(f);
-
-  Sprite _sprite;
-}
-
-class HeartLove extends Heart {
-  HeartLove(GameObjectFactory f) : super(f) {
-    _sprite = new Sprite(f.sheet["medi.png"]);
-    _sprite.scale = 1;
-    radius = 50.0;
-    // maxDamage = 5.0;
-    addChild(_sprite);
-  }
-}
-
 class Collectable extends GameObject {
   Collectable(GameObjectFactory f) : super(f) {
     canDamageShip = false;
@@ -248,8 +232,26 @@ class Collectable extends GameObject {
   }
 }
 
-class Coin extends Collectable {
-  Coin(GameObjectFactory f) : super(f) {
+class Medi extends Collectable {
+  Medi(GameObjectFactory f) : super(f) {
+    _sprite = new Sprite(f.sheet["medi.png"]);
+    _sprite.scale = 1;
+    radius = 50.0;
+    // maxDamage = 5.0;
+    addChild(_sprite);
+  }
+
+  Sprite _sprite;
+
+  void collect() {
+    // f.sounds.play("pickup_0");
+    f.playerState.score += 50;
+    super.collect();
+  }
+}
+
+class GoldCoin extends Collectable {
+  GoldCoin(GameObjectFactory f) : super(f) {
     _sprite = new Sprite(f.sheet["coin_gold.png"]);
     _sprite.scale = 0.3;
     addChild(_sprite);
@@ -275,7 +277,71 @@ class Coin extends Collectable {
 
   void collect() {
     // f.sounds.play("pickup_0");
-    f.playerState.addCoin(this);
+    f.playerState.addGoldCoin(this);
+    super.collect();
+  }
+}
+
+class SilverCoin extends Collectable {
+  SilverCoin(GameObjectFactory f) : super(f) {
+    _sprite = new Sprite(f.sheet["coin_silver.png"]);
+    _sprite.scale = 0.3;
+    addChild(_sprite);
+
+    radius = 7.5;
+  }
+
+  void setupActions() {
+    // Rotate
+    MotionTween rotate = new MotionTween<double>((a) {
+      _sprite.rotation = a;
+    }, 0.0, 360.0, 1.0);
+    motions.run(new MotionRepeatForever(rotate));
+
+    // Fade in
+    MotionTween fadeIn = new MotionTween<double>((a) {
+      _sprite.opacity = a;
+    }, 0.0, 1.0, 0.6);
+    motions.run(fadeIn);
+  }
+
+  Sprite _sprite;
+
+  void collect() {
+    // f.sounds.play("pickup_0");
+    f.playerState.addSilverCoin(this);
+    super.collect();
+  }
+}
+
+class BronzeCoin extends Collectable {
+  BronzeCoin(GameObjectFactory f) : super(f) {
+    _sprite = new Sprite(f.sheet["coin_bronze.png"]);
+    _sprite.scale = 0.3;
+    addChild(_sprite);
+
+    radius = 7.5;
+  }
+
+  void setupActions() {
+    // Rotate
+    MotionTween rotate = new MotionTween<double>((a) {
+      _sprite.rotation = a;
+    }, 0.0, 360.0, 1.0);
+    motions.run(new MotionRepeatForever(rotate));
+
+    // Fade in
+    MotionTween fadeIn = new MotionTween<double>((a) {
+      _sprite.opacity = a;
+    }, 0.0, 1.0, 0.6);
+    motions.run(fadeIn);
+  }
+
+  Sprite _sprite;
+
+  void collect() {
+    // f.sounds.play("pickup_0");
+    f.playerState.addBronzeCoin(this);
     super.collect();
   }
 }
