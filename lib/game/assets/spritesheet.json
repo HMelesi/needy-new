@@ -1,8 +1,17 @@
 {
   "frames": [
     {
-      "filename": "bad.png",
-      "frame": { "x": 0, "y": 0, "w": 50, "h": 50 },
+      "filename": "catabove.png",
+      "frame": { "x": 0, "y": 173, "w": 80, "h": 85 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 85 },
+      "sourceSize": { "w": 80, "h": 85 },
+      "pivot": { "x": 0.0, "y": 0.0 }
+    },
+    {
+      "filename": "coin_bronze.png",
+      "frame": { "x": 0, "y": 23, "w": 50, "h": 50 },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": { "x": 0, "y": 0, "w": 50, "h": 50 },
@@ -10,17 +19,62 @@
       "pivot": { "x": 0.0, "y": 0.0 }
     },
     {
-      "filename": "catabove.png",
-      "frame": { "x": 0, "y": 50, "w": 80, "h": 85 },
+      "filename": "coin_gold.png",
+      "frame": { "x": 50, "y": 23, "w": 50, "h": 50 },
       "rotated": false,
       "trimmed": false,
-      "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 85 },
-      "sourceSize": { "w": 80, "h": 85 },
-      "pivot": { "x": 0.5, "y": 0.5 }
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 50, "h": 50 },
+      "sourceSize": { "w": 50, "h": 50 },
+      "pivot": { "x": 0.0, "y": 0.0 }
     },
     {
-      "filename": "good.png",
-      "frame": { "x": 50, "y": 0, "w": 50, "h": 50 },
+      "filename": "coin_silver.png",
+      "frame": { "x": 0, "y": 73, "w": 50, "h": 50 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 50, "h": 50 },
+      "sourceSize": { "w": 50, "h": 50 },
+      "pivot": { "x": 0.0, "y": 0.0 }
+    },
+    {
+      "filename": "heartnew.png",
+      "frame": { "x": 50, "y": 73, "w": 50, "h": 50 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 50, "h": 50 },
+      "sourceSize": { "w": 50, "h": 50 },
+      "pivot": { "x": 0.0, "y": 0.0 }
+    },
+    {
+      "filename": "medi.png",
+      "frame": { "x": 0, "y": 123, "w": 50, "h": 50 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 50, "h": 50 },
+      "sourceSize": { "w": 50, "h": 50 },
+      "pivot": { "x": 0.0, "y": 0.0 }
+    },
+    {
+      "filename": "molehill.png",
+      "frame": { "x": 0, "y": 0, "w": 50, "h": 23 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 50, "h": 23 },
+      "sourceSize": { "w": 50, "h": 23 },
+      "pivot": { "x": 0.0, "y": 0.0 }
+    },
+    {
+      "filename": "rock.png",
+      "frame": { "x": 50, "y": 0, "w": 50, "h": 23 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 50, "h": 23 },
+      "sourceSize": { "w": 50, "h": 23 },
+      "pivot": { "x": 0.0, "y": 0.0 }
+    },
+    {
+      "filename": "star.png",
+      "frame": { "x": 50, "y": 123, "w": 50, "h": 50 },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": { "x": 0, "y": 0, "w": 50, "h": 50 },
@@ -33,8 +87,8 @@
     "version": "1.0",
     "image": "spritesheet2.png",
     "format": "RGBA8888",
-    "size": { "w": 100, "h": 135 },
+    "size": { "w": 100, "h": 258 },
     "scale": "1",
-    "smartupdate": "$TexturePacker:SmartUpdate:95c2b27684439674f7c50ed8cddd4e71:a4a49e58f28b690037f8ee8db2a21798:bc5e4c3e253241b36d5edc96e79f938b$"
+    "smartupdate": "$TexturePacker:SmartUpdate:8d642aa9cc5b1a00c97a0512ccf50754:5334da39ef8671702f819bd83b58c889:bc5e4c3e253241b36d5edc96e79f938b$"
   }
 }

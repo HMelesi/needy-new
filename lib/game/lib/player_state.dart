@@ -39,8 +39,6 @@ class PlayerState extends Node {
 
   double _scrollSpeedTarget = normalScrollSpeed;
 
-  EnemyBoss boss;
-
   Sprite _spriteBackgroundScore;
   ScoreDisplay _scoreDisplay;
   Sprite _spriteBackgroundCoins;
@@ -64,7 +62,7 @@ class PlayerState extends Node {
 
     List<Offset> path = <Offset>[startPos, middlePos, finalPos];
 
-    Sprite sprite = new Sprite(_sheetGame["coin.png"]);
+    Sprite sprite = new Sprite(_sheetGame["good.png"]);
     sprite.scale = 0.7;
 
     MotionSpline spline = new MotionSpline((Offset a) {
@@ -86,37 +84,9 @@ class PlayerState extends Node {
         flashBackgroundSprite(_spriteBackgroundCoins);
       })
     ]));
-
+    print(_coinDisplay.score);
     addChild(sprite);
   }
-
-  // void activatePowerUp(PowerUpType type) {
-  //   if (type == PowerUpType.shield) {
-  //     _shieldFrames += _gameState.powerUpFrames(type);
-  //   } else if (type == PowerUpType.sideLaser) {
-  //     _sideLaserFrames += _gameState.powerUpFrames(type);
-  //   } else if (type == PowerUpType.speedLaser) {
-  //     _speedLaserFrames += _gameState.powerUpFrames(type);
-  //   } else if (type == PowerUpType.speedBoost) {
-  //     _speedBoostFrames += _gameState.powerUpFrames(type);
-  //     _shieldFrames += _gameState.powerUpFrames(type) + 60;
-  //   }
-  // }
-
-  // int _shieldFrames = 0;
-  // bool get shieldActive => _shieldFrames > 0 || _speedBoostFrames > 0;
-  // bool get shieldDeactivating =>
-  //     math.max(_shieldFrames, _speedBoostFrames) > 0 &&
-  //     math.max(_shieldFrames, _speedBoostFrames) < 60;
-
-  // int _sideLaserFrames = 0;
-  // bool get sideLaserActive => _sideLaserFrames > 0;
-
-  // int _speedLaserFrames = 0;
-  // bool get speedLaserActive => _speedLaserFrames > 0;
-
-  // int _speedBoostFrames = 0;
-  // bool get speedBoostActive => _speedBoostFrames > 0;
 
   void flashBackgroundSprite(Sprite sprite) {
     sprite.motions.stopAll();
@@ -125,29 +95,6 @@ class PlayerState extends Node {
     }, new Color(0x66ccfff0), new Color(0x00ccfff0), 0.3);
     sprite.motions.run(flash);
   }
-
-  // void update(double dt) {
-  //   if (_shieldFrames > 0) _shieldFrames--;
-  //   if (_sideLaserFrames > 0) _sideLaserFrames--;
-  //   if (_speedLaserFrames > 0) _speedLaserFrames--;
-  //   if (_speedBoostFrames > 0) _speedBoostFrames--;
-
-  //   // Update speed
-  //   if (boss != null) {
-  //     Offset globalBossPos = boss.convertPointToBoxSpace(Offset.zero);
-  //     if (globalBossPos.dy > (_gameSizeHeight - 400.0))
-  //       _scrollSpeedTarget = 0.0;
-  //     else
-  //       _scrollSpeedTarget = normalScrollSpeed;
-  //   } else {
-  //     if (speedBoostActive)
-  //       _scrollSpeedTarget = normalScrollSpeed * 6.0;
-  //     else
-  //       _scrollSpeedTarget = normalScrollSpeed;
-  //   }
-
-  //   scrollSpeed = GameMath.filter(scrollSpeed, _scrollSpeedTarget, 0.1);
-  // }
 }
 
 class ScoreDisplay extends Node {
