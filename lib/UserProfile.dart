@@ -25,11 +25,15 @@ class _UserProfileState extends State<UserProfile> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   String name;
   Timestamp userSince;
+  int goalCount = 0;
+  int completedGoals = 0;
 
   @override
   Widget build(BuildContext context) {
     getUsername(userId);
     getUserSince(userId);
+    getGoalCount(userId);
+    getCompletedGoals(userId);
     print('user profile for $userId');
     updateToken();
 
@@ -85,7 +89,7 @@ class _UserProfileState extends State<UserProfile> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            'Total number of goals:',
+                            'Total number of goals: $goalCount',
                             style: TextStyle(
                               fontFamily: 'Pixelar',
                               fontSize: 26,
@@ -96,7 +100,7 @@ class _UserProfileState extends State<UserProfile> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            'Goals completed:',
+                            'Goals completed: $completedGoals',
                             style: TextStyle(
                               fontFamily: 'Pixelar',
                               fontSize: 26,
@@ -131,6 +135,29 @@ class _UserProfileState extends State<UserProfile> {
   Future getUsername(userId) async {
     Firestore.instance.collection('users').document(userId).get().then((res) {
       name = (res['username']);
+    });
+  }
+
+  Future getGoalCount(userId) async {
+    Firestore.instance
+        .collection('users')
+        .document(userId)
+        .collection('goals')
+        .getDocuments()
+        .then((res) {
+      goalCount = res.documents.length;
+    });
+  }
+
+  Future getCompletedGoals(userId) async {
+    Firestore.instance
+        .collection('users')
+        .document(userId)
+        .collection('goals')
+        .where('expired', isEqualTo: true)
+        .getDocuments()
+        .then((res) {
+      completedGoals = res.documents.length;
     });
   }
 
