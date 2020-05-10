@@ -21,6 +21,7 @@ SpriteSheet _spriteSheet;
 SpriteSheet _spriteSheetUI;
 
 SoundAssets _sounds;
+int badges = 0;
 
 gamestart(
   userId,
@@ -42,12 +43,10 @@ gamestart(
   _imageMap = new ImageMap(rootBundle);
 
   await _imageMap.load(<String>[
-    'lib/game/assets/grass.png',
-    'lib/game/assets/catabove.png',
-    'lib/game/assets/good.png',
-    'lib/game/assets/bad.png',
     'lib/game/assets/spritesheet.png',
     'lib/game/assets/game_ui.png',
+    'lib/game/assets/sky.png',
+    'lib/game/assets/catfly.gif'
   ]);
 
   // Load sprite sheets
@@ -135,11 +134,14 @@ class _GamePage extends State<GamePage> {
       return new GameScene(
           petHealth: petHealth,
           onGameOver: (int lastScore, int coins, int levelReached) {
+            int coinsForBadges = (_gameState.coins / 100).floor() * 100;
             setState(() {
               _gameState.lastScore = lastScore;
-              _gameState.coins += coins;
+              _gameState.coins = coins;
               _gameState.reachedLevel(levelReached);
             });
+            // TODO: on game over it should make a calculation based on your coins for badges?
+            badges = (_gameState.coins / 100).floor();
           },
           gameState: _gameState);
     });
@@ -296,11 +298,26 @@ class TopBar extends StatelessWidget {
           left: 18.0,
           top: 20.0,
           child: new TextureImage(
-              texture: _spriteSheetUI['heart.png'], width: 18.0, height: 18.0)),
+              texture: _spriteSheet['coin_gold.png'],
+              width: 18.0,
+              height: 18.0)),
       new Positioned(
           left: 46.0,
           top: 20.0,
           child: new Text("${gameState.coins}",
+              style: new TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black))),
+      new Positioned(
+          left: 80.0,
+          top: 20.0,
+          child: new TextureImage(
+              texture: _spriteSheet['star.png'], width: 18.0, height: 18.0)),
+      new Positioned(
+          left: 108.0,
+          top: 20.0,
+          child: new Text('$badges',
               style: new TextStyle(
                   fontSize: 16.0,
                   fontWeight: FontWeight.w500,
@@ -412,27 +429,14 @@ class MainSceneBackgroundState extends State<MainSceneBackground> {
 }
 
 class MainSceneBackgroundNode extends NodeWithSize {
-  Sprite _bgTop;
-  Sprite _bgBottom;
   RepeatedImage _background;
-  RepeatedImage _nebula;
 
   MainSceneBackgroundNode() : super(new Size(320.0, 320.0)) {
     assert(_spriteSheet.image != null);
 
     // Add background
-    _background = new RepeatedImage(_imageMap['lib/game/assets/grass.png']);
+    _background = new RepeatedImage(_imageMap['lib/game/assets/sky.png']);
     addChild(_background);
-
-    // _bgTop = new Sprite.fromImage(_imageMap["assets/ui_bg_top.png"]);
-    // _bgTop.pivot = Offset.zero;
-    // _bgTop.size = new Size(320.0, 108.0);
-    // addChild(_bgTop);
-
-    // _bgBottom = new Sprite.fromImage(_imageMap["assets/ui_bg_bottom.png"]);
-    // _bgBottom.pivot = new Offset(0.0, 1.0);
-    // _bgBottom.size = new Size(320.0, 97.0);
-    // addChild(_bgBottom);
   }
 
   void paint(Canvas canvas) {
@@ -441,36 +445,7 @@ class MainSceneBackgroundNode extends NodeWithSize {
     super.paint(canvas);
   }
 
-  void spriteBoxPerformedLayout() {
-    _bgBottom.position = new Offset(0.0, spriteBox.visibleArea.size.height);
-  }
-
   void update(double dt) {
     _background.move(10.0 * dt);
-    _nebula.move(100.0 * dt);
-  }
-}
-
-class LaserDisplay extends StatelessWidget {
-  LaserDisplay({this.level});
-
-  final int level;
-
-  Widget build(BuildContext context) {
-    return new IgnorePointer(
-        child: new SizedBox(
-            child: new SpriteWidget(new LaserDisplayNode(level)),
-            width: 26.0,
-            height: 26.0));
-  }
-}
-
-class LaserDisplayNode extends NodeWithSize {
-  LaserDisplayNode(int level) : super(new Size(16.0, 16.0)) {
-    Node placementNode = new Node();
-    placementNode.position = new Offset(8.0, 8.0);
-    placementNode.scale = 0.7;
-    addChild(placementNode);
-    addLaserSprites(placementNode, level, 0.0, _spriteSheet);
   }
 }

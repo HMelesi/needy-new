@@ -5,8 +5,8 @@ abstract class GameObject extends Node {
 
   double radius = 0.0;
   double removeLimit = 1280.0;
-  bool canDamageShip = true;
-  bool canBeDamaged = true;
+  bool canDamageShip = false;
+  bool canBeDamaged = false;
   bool canBeCollected = false;
   double maxDamage = 3.0;
   double damage = 0.0;
@@ -31,23 +31,6 @@ abstract class GameObject extends Node {
     }
   }
 
-  // void destroy() {
-  //   if (parent != null) {
-  //     Explosion explo = createExplosion();
-  //     if (explo != null) {
-  //       explo.position = position;
-  //       parent.addChild(explo);
-  //     }
-
-  //     Collectable powerUp = createPowerUp();
-  //     if (powerUp != null) {
-  //       f.addGameObject(powerUp, position);
-  //     }
-
-  //     removeFromParent();
-  //   }
-  // }
-
   void collect() {
     removeFromParent();
   }
@@ -68,14 +51,6 @@ abstract class GameObject extends Node {
     }
   }
 
-  // Explosion createExplosion() {
-  //   return null;
-  // }
-
-  // Collectable createPowerUp() {
-  //   return null;
-  // }
-
   void paint(Canvas canvas) {
     if (_drawDebug) {
       canvas.drawCircle(Offset.zero, radius, _paintDebug);
@@ -88,15 +63,12 @@ abstract class GameObject extends Node {
 
 class LevelLabel extends GameObject {
   LevelLabel(GameObjectFactory f, int level) : super(f) {
-    canDamageShip = false;
-    canBeDamaged = false;
-
     Label lbl = new Label("LEVEL $level",
         textAlign: TextAlign.center,
         textStyle: new TextStyle(
-            fontFamily: "Orbitron",
-            letterSpacing: 10.0,
-            color: new Color(0xffffffff),
+            fontFamily: "PressPlay2P",
+            letterSpacing: 0.0,
+            color: new Color(0xFFEE91E63),
             fontSize: 24.0,
             fontWeight: FontWeight.w600));
     addChild(lbl);
@@ -104,11 +76,15 @@ class LevelLabel extends GameObject {
 }
 
 class Ship extends GameObject {
+  bool canDamageShip = false;
+  bool canBeDamaged = false;
+  bool canBeCollected = false;
+
   Ship(GameObjectFactory f) : super(f) {
     // Add main ship sprite
-    _sprite = new Sprite(f.sheet["catabove.png"]);
-    _sprite.scale = 0.3;
-    _sprite.rotation = -90.0;
+    _sprite = new Sprite(f.sheet["catfly_1.png"]);
+    _sprite.scale = 0.9;
+    _sprite.rotation = 0.0;
     addChild(_sprite);
 
     // Set start position
@@ -127,25 +103,6 @@ class Ship extends GameObject {
     position = new Offset(GameMath.filter(oldPos.dx, target.dx, filterFactor),
         GameMath.filter(oldPos.dy, target.dy, filterFactor));
   }
-
-  // void setupActions() {
-  //   MotionTween rotate = new MotionTween<double>((a) {
-  //     _spriteShield.rotation = a;
-  //   }, 0.0, 360.0, 1.0);
-  //   _spriteShield.motions.run(new MotionRepeatForever(rotate));
-  // }
-
-  // void update(double dt) {
-  //   // Update shield
-  //   if (f.playerState.shieldActive) {
-  //     if (f.playerState.shieldDeactivating)
-  //       _spriteShield.visible = !_spriteShield.visible;
-  //     else
-  //       _spriteShield.visible = true;
-  //   } else {
-  //     _spriteShield.visible = false;
-  //   }
-  // }
 }
 
 Color colorForDamage(double damage, double maxDamage, [Color toColor]) {
@@ -167,57 +124,64 @@ Color colorForDamage(double damage, double maxDamage, [Color toColor]) {
 abstract class Obstacle extends GameObject {
   Obstacle(GameObjectFactory f) : super(f);
 
+  bool canDamageShip = true;
+  bool canBeCollected = false;
   double explosionScale = 1.0;
 
-  Explosion createExplosion() {
-    f.sounds.play("explosion_${randomInt(3)}");
-    Explosion explo = new ExplosionBig(f.sheet);
-    explo.scale = explosionScale;
-    return explo;
-  }
+  // Explosion createExplosion() {
+  //   f.sounds.play("explosion_${randomInt(3)}");
+  //   Explosion explo = new ExplosionBig(f.sheet);
+  //   explo.scale = explosionScale;
+  //   return explo;
+  // }
 }
 
 abstract class Bad extends Obstacle {
   Bad(GameObjectFactory f) : super(f);
 
+  bool canDamageShip = true;
+  bool canBeCollected = false;
+  double explosionScale = 1.0;
   Sprite _sprite;
 
-  // void setupActions() {
-  //   Rotate obstacle
-  //   int direction = 1;
-  //   if (randomBool()) direction = -1;
-  //   MotionTween rotate = new MotionTween<double>((a) {
-  //     _sprite.rotation = a;
-  //   }, 0.0, 360.0 * direction, 5.0 + 5.0 * randomDouble());
-  //   _sprite.motions.run(new MotionRepeatForever(rotate));
-  // }
+  void setupActions() {
+    // move clouds
+
+    // MotionTween(SetterCallback setter, T startVal, T endVal, double duration, [Curve curve])
+    // double direction = randomDouble();
+
+    // if (randomBool()) direction *= -1;
+    // MotionTween move = new MotionTween<Offset>((a) {
+    //   _sprite.position = a;
+    // }, Offset.zero, Offset(1000 * direction, 0.0), 8);
+    // _sprite.motions.run(new MotionRepeat(move, 3));
+
+    MotionTween fadeIn = new MotionTween<double>((a) {
+      _sprite.opacity = a;
+    }, 0.0, 1.0, 8);
+    motions.run(fadeIn);
+  }
 
   set damage(double d) {
     super.damage = d;
     _sprite.colorOverlay = colorForDamage(d, maxDamage);
   }
-
-  // Collectable createPowerUp() {
-  //   return new Coin(f);
-  // }
 }
 
-class Molehill extends Bad {
-  Molehill(GameObjectFactory f) : super(f) {
-    _sprite = new Sprite(f.sheet["molehill.png"]);
+class GreyCloud extends Bad {
+  GreyCloud(GameObjectFactory f) : super(f) {
+    _sprite = new Sprite(f.sheet["cloud_grey.png"]);
     _sprite.scale = 0.8;
     radius = 30.0;
-    // maxDamage = 5.0;
     addChild(_sprite);
   }
 }
 
-class Rock extends Bad {
-  Rock(GameObjectFactory f) : super(f) {
-    _sprite = new Sprite(f.sheet["rock.png"]);
+class WhiteCloud extends Bad {
+  WhiteCloud(GameObjectFactory f) : super(f) {
+    _sprite = new Sprite(f.sheet["cloud_white.png"]);
     _sprite.scale = 0.8;
     radius = 30.0;
-    // maxDamage = 3.0;
     addChild(_sprite);
   }
 }
@@ -237,7 +201,6 @@ class Medi extends Collectable {
     _sprite = new Sprite(f.sheet["medi.png"]);
     _sprite.scale = 1;
     radius = 50.0;
-    // maxDamage = 5.0;
     addChild(_sprite);
   }
 
@@ -253,18 +216,17 @@ class Medi extends Collectable {
 class GoldCoin extends Collectable {
   GoldCoin(GameObjectFactory f) : super(f) {
     _sprite = new Sprite(f.sheet["coin_gold.png"]);
-    _sprite.scale = 0.3;
+    _sprite.scale = 0.5;
+    radius = 10;
     addChild(_sprite);
-
-    radius = 7.5;
   }
 
   void setupActions() {
     // Rotate
-    MotionTween rotate = new MotionTween<double>((a) {
-      _sprite.rotation = a;
-    }, 0.0, 360.0, 1.0);
-    motions.run(new MotionRepeatForever(rotate));
+    // MotionTween rotate = new MotionTween<double>((a) {
+    //   _sprite.rotation = a;
+    // }, 0.0, 360.0, 5.0);
+    // motions.run(new MotionRepeatForever(rotate));
 
     // Fade in
     MotionTween fadeIn = new MotionTween<double>((a) {
@@ -285,18 +247,17 @@ class GoldCoin extends Collectable {
 class SilverCoin extends Collectable {
   SilverCoin(GameObjectFactory f) : super(f) {
     _sprite = new Sprite(f.sheet["coin_silver.png"]);
-    _sprite.scale = 0.3;
+    _sprite.scale = 0.5;
+    radius = 10;
     addChild(_sprite);
-
-    radius = 7.5;
   }
 
   void setupActions() {
     // Rotate
-    MotionTween rotate = new MotionTween<double>((a) {
-      _sprite.rotation = a;
-    }, 0.0, 360.0, 1.0);
-    motions.run(new MotionRepeatForever(rotate));
+    // MotionTween rotate = new MotionTween<double>((a) {
+    //   _sprite.rotation = a;
+    // }, 0.0, 360.0, 5.0);
+    // motions.run(new MotionRepeatForever(rotate));
 
     // Fade in
     MotionTween fadeIn = new MotionTween<double>((a) {
@@ -317,18 +278,17 @@ class SilverCoin extends Collectable {
 class BronzeCoin extends Collectable {
   BronzeCoin(GameObjectFactory f) : super(f) {
     _sprite = new Sprite(f.sheet["coin_bronze.png"]);
-    _sprite.scale = 0.3;
+    _sprite.scale = 0.5;
+    radius = 10;
     addChild(_sprite);
-
-    radius = 7.5;
   }
 
   void setupActions() {
     // Rotate
-    MotionTween rotate = new MotionTween<double>((a) {
-      _sprite.rotation = a;
-    }, 0.0, 360.0, 1.0);
-    motions.run(new MotionRepeatForever(rotate));
+    // MotionTween rotate = new MotionTween<double>((a) {
+    //   _sprite.rotation = a;
+    // }, 0.0, 360.0, 5.0);
+    // motions.run(new MotionRepeatForever(rotate));
 
     // Fade in
     MotionTween fadeIn = new MotionTween<double>((a) {
