@@ -19,17 +19,11 @@ PersistantGameState _gameState;
 ImageMap _imageMap;
 SpriteSheet _spriteSheet;
 SpriteSheet _spriteSheetUI;
-
+bool exit = false;
 SoundAssets _sounds;
 int badges = 0;
 
-gamestart(
-  userId,
-  goalName,
-  petHealth,
-  petType,
-  petName,
-) async {
+gamestart(userId, goalName, petHealth, petType, petName, addBadges) async {
   // We need to call ensureInitialized if we are loading images before runApp
   // is called.
   // TODO: This should be refactored to use a loading screen
@@ -66,18 +60,25 @@ gamestart(
       goalName: goalName,
       petHealth: petHealth,
       petType: petType,
-      petName: petName));
+      petName: petName,
+      addBadges: addBadges));
 }
 
 class GamePage extends StatefulWidget {
   GamePage(
-      {this.userId, this.petName, this.goalName, this.petType, this.petHealth});
+      {this.userId,
+      this.petName,
+      this.goalName,
+      this.petType,
+      this.petHealth,
+      this.addBadges});
 
   final String userId;
   final String petName;
   final String goalName;
   final String petType;
   final int petHealth;
+  final Function(int) addBadges;
 
   @override
   _GamePage createState() {
@@ -86,7 +87,8 @@ class GamePage extends StatefulWidget {
         petName: petName,
         goalName: goalName,
         petType: petType,
-        petHealth: petHealth);
+        petHealth: petHealth,
+        addBadges: addBadges);
   }
 }
 
@@ -94,12 +96,18 @@ class _GamePage extends State<GamePage> {
   NodeWithSize rootNode;
 
   _GamePage(
-      {this.userId, this.petName, this.goalName, this.petType, this.petHealth});
+      {this.userId,
+      this.petName,
+      this.goalName,
+      this.petType,
+      this.petHealth,
+      this.addBadges});
 
   final String userId;
   final String petName;
   final String goalName;
   final String petType;
+  final Function(int) addBadges;
   int petHealth;
 
   @override
@@ -122,6 +130,8 @@ class _GamePage extends State<GamePage> {
                 switch (settings.name) {
                   case '/game':
                     return _buildGameSceneRoute();
+                  case '/over':
+                    return _buildOverSceneRoute();
                   default:
                     return _buildMainSceneRoute();
                 }
@@ -134,14 +144,16 @@ class _GamePage extends State<GamePage> {
       return new GameScene(
           petHealth: petHealth,
           onGameOver: (int lastScore, int coins, int levelReached) {
-            int coinsForBadges = (_gameState.coins / 100).floor() * 100;
+            int coinsForBadges = (coins / 10).floor() * 10;
+            badges = (coinsForBadges / 10).floor();
             setState(() {
               _gameState.lastScore = lastScore;
-              _gameState.coins = coins;
+              _gameState.coins = coins - coinsForBadges;
               _gameState.reachedLevel(levelReached);
             });
             // TODO: on game over it should make a calculation based on your coins for badges?
-            badges = (_gameState.coins / 100).floor();
+            addBadges(badges);
+            Navigator.pushNamed(context, '/over');
           },
           gameState: _gameState);
     });
@@ -150,6 +162,27 @@ class _GamePage extends State<GamePage> {
   PageRoute _buildMainSceneRoute() {
     return new MaterialPageRoute(builder: (BuildContext context) {
       return new MainScene(
+          petName: petName,
+          userId: userId,
+          gameState: _gameState,
+          onStartLevelUp: () {
+            setState(() {
+              _gameState.currentStartingLevel++;
+              _sounds.play('click');
+            });
+          },
+          onStartLevelDown: () {
+            setState(() {
+              _gameState.currentStartingLevel--;
+              _sounds.play('click');
+            });
+          });
+    });
+  }
+
+  PageRoute _buildOverSceneRoute() {
+    return new MaterialPageRoute(builder: (BuildContext context) {
+      return new OverScene(
           petName: petName,
           userId: userId,
           gameState: _gameState,
@@ -313,7 +346,9 @@ class TopBar extends StatelessWidget {
           left: 80.0,
           top: 20.0,
           child: new TextureImage(
-              texture: _spriteSheet['star.png'], width: 18.0, height: 18.0)),
+              texture: _spriteSheet['pixil-badge.png'],
+              width: 18.0,
+              height: 18.0)),
       new Positioned(
           left: 108.0,
           top: 20.0,
@@ -353,7 +388,7 @@ class BottomBar extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'Welcome! Help $petName navigate through the field, avoiding the bads and hitting the goods to score points!',
+                'Help $petName fly through the sky, avoiding the clouds and gathering coins to score points! Every 50 points earns a badge for your profile!',
                 style: TextStyle(color: Colors.pink),
               ),
             ),
@@ -432,6 +467,243 @@ class MainSceneBackgroundNode extends NodeWithSize {
   RepeatedImage _background;
 
   MainSceneBackgroundNode() : super(new Size(320.0, 320.0)) {
+    assert(_spriteSheet.image != null);
+
+    // Add background
+    _background = new RepeatedImage(_imageMap['lib/game/assets/sky.png']);
+    addChild(_background);
+  }
+
+  void paint(Canvas canvas) {
+    canvas.drawRect(new Rect.fromLTWH(0.0, 0.0, 320.0, 320.0),
+        new Paint()..color = new Color(0xff000000));
+    super.paint(canvas);
+  }
+
+  void update(double dt) {
+    _background.move(10.0 * dt);
+  }
+}
+
+class OverScene extends StatefulWidget {
+  OverScene({
+    this.onStartLevelUp,
+    this.onStartLevelDown,
+    this.petName,
+    this.gameState,
+    this.userId,
+  });
+
+  final PersistantGameState gameState;
+  final VoidCallback onStartLevelUp;
+  final VoidCallback onStartLevelDown;
+  final String petName;
+  final String userId;
+
+  State<OverScene> createState() =>
+      new OverSceneState(petName: petName, userId: userId);
+}
+
+class OverSceneState extends State<OverScene> {
+  OverSceneState({this.petName, this.userId});
+  void initState() {
+    super.initState();
+  }
+
+  final String petName;
+  final String userId;
+
+  Widget build(BuildContext context) {
+    var notchOffset = MediaQuery.of(context).padding.top;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.max,
+      children: <Widget>[
+        Container(
+          height: notchOffset,
+        ),
+        Expanded(
+          child: CoordinateSystem(
+            systemSize: Size(320.0, 320.0),
+            child: DefaultTextStyle(
+              style: TextStyle(fontFamily: "Pixelar", fontSize: 20.0),
+              child: Stack(
+                children: <Widget>[
+                  MainSceneBackground(),
+                  Column(
+                    children: <Widget>[
+                      SizedBox(
+                        width: 320.0,
+                        height: 98.0,
+                        child: HighBar(
+                          gameState: widget.gameState,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 320.0,
+                        height: 500.0,
+                        child: BaseBar(
+                          userId: userId,
+                          petName: petName,
+                          onPlay: () {
+                            Navigator.pushNamed(context, '/game');
+                          },
+                          onStartLevelUp: widget.onStartLevelUp,
+                          onStartLevelDown: widget.onStartLevelDown,
+                          gameState: widget.gameState,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class HighBar extends StatelessWidget {
+  HighBar({
+    this.selection,
+    this.gameState,
+  });
+// this.onSelectTab,
+
+  final int selection;
+  // final SelectTabCallback onSelectTab;
+  final PersistantGameState gameState;
+
+  Widget build(BuildContext context) {
+    return new Stack(children: <Widget>[
+      new Positioned(
+          left: 18.0,
+          top: 20.0,
+          child: new TextureImage(
+              texture: _spriteSheet['coin_gold.png'],
+              width: 18.0,
+              height: 18.0)),
+      new Positioned(
+          left: 46.0,
+          top: 20.0,
+          child: new Text("${gameState.coins}",
+              style: new TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black))),
+      new Positioned(
+          left: 80.0,
+          top: 20.0,
+          child: new TextureImage(
+              texture: _spriteSheet['pixil-badge.png'],
+              width: 18.0,
+              height: 18.0)),
+      new Positioned(
+          left: 108.0,
+          top: 20.0,
+          child: new Text('$badges',
+              style: new TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black)))
+    ]);
+  }
+}
+
+class BaseBar extends StatelessWidget {
+  BaseBar({
+    this.onPlay,
+    this.gameState,
+    this.onStartLevelUp,
+    this.onStartLevelDown,
+    this.petName,
+    this.userId,
+  });
+
+  final VoidCallback onPlay;
+  final VoidCallback onStartLevelUp;
+  final VoidCallback onStartLevelDown;
+  final PersistantGameState gameState;
+  final String petName;
+  final String userId;
+
+  Widget build(BuildContext context) {
+    return new Stack(children: <Widget>[
+      Container(
+          child: Column(children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: DecoratedBox(
+            decoration: BoxDecoration(color: Colors.yellow),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Looks like $petName has died. Dark times.',
+                style: TextStyle(color: Colors.pink),
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Image.asset('images/pixil-cat.png'),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Align(
+              alignment: Alignment.bottomCenter,
+              child: new TextureButton(
+                  onPressed: () {
+                    badges = 0;
+                    // exit = true;
+                    // TODO: this doesn't currently kill the game, it really really should
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              RootPage(userId: userId, auth: Auth()),
+                        ));
+                  },
+                  texture: _spriteSheetUI['btn_exit.png'],
+                  label: "EXIT",
+                  textStyle: new TextStyle(
+                      fontFamily: "PressStart2P",
+                      fontSize: 24.0,
+                      letterSpacing: 3.0,
+                      color: Colors.grey[400]),
+                  textAlign: TextAlign.center,
+                  width: 181.0,
+                  height: 62.0)),
+        )
+      ]))
+    ]);
+  }
+}
+
+class OverSceneBackground extends StatefulWidget {
+  MainSceneBackgroundState createState() => new MainSceneBackgroundState();
+}
+
+class OverSceneBackgroundState extends State<MainSceneBackground> {
+  MainSceneBackgroundNode _backgroundNode;
+
+  void initState() {
+    super.initState();
+    _backgroundNode = new MainSceneBackgroundNode();
+  }
+
+  Widget build(BuildContext context) {
+    return new SpriteWidget(_backgroundNode, SpriteBoxTransformMode.fixedWidth);
+  }
+}
+
+class OverSceneBackgroundNode extends NodeWithSize {
+  RepeatedImage _background;
+
+  OverSceneBackgroundNode() : super(new Size(320.0, 320.0)) {
     assert(_spriteSheet.image != null);
 
     // Add background

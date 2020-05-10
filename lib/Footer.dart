@@ -3,9 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:needy_new/game/lib/GameMain.dart';
 
 class Footer extends StatelessWidget {
-  Footer({this.userId});
+  Footer({this.userId, this.addBadges});
 
   final String userId;
+  final Function(int) addBadges;
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +107,7 @@ class Footer extends StatelessWidget {
                                                       petHealth,
                                                       petType,
                                                       petName,
-                                                    )
+                                                      addBadges)
                                                   : print(
                                                       'this pet is not healthy enough to play right now');
                                         },
