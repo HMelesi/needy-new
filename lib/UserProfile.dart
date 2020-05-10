@@ -127,8 +127,10 @@ class _UserProfileState extends State<UserProfile> {
                                   crossAxisCount: 3,
                                   children: List.generate(badgeCount, (index) {
                                     return Center(
-                                      child:
-                                          Image.asset('images/pixil-badge.png'),
+                                      child: Image.asset(
+                                        'images/pixil-badge.png',
+                                        width: 70,
+                                      ),
                                     );
                                   }),
                                 ),
