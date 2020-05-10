@@ -51,11 +51,9 @@ class _UserProfileState extends State<UserProfile> {
                   .where('expired', isEqualTo: false)
                   .snapshots(),
               builder: (context, snapshot) {
-                return Center(
-                  child: SingleChildScrollView(
+                if (!snapshot.hasData) {
+                  return Center(
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Padding(
                           padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
@@ -65,83 +63,119 @@ class _UserProfileState extends State<UserProfile> {
                             child: Image.asset('images/catgif.gif'),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Text(
-                            '$name',
-                            style: TextStyle(
-                              fontFamily: 'PressStart2P',
-                              fontSize: 24,
-                            ),
+                        Text(
+                          'Loading profile...',
+                          style: TextStyle(
+                            fontFamily: 'PressStart2P',
+                            fontSize: 24,
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'User since: ${DateFormat.yMMMMEEEEd().format(userSince.toDate())}',
-                            style: TextStyle(
-                              fontFamily: 'Pixelar',
-                              fontSize: 26,
-                              color: Colors.grey[800],
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'Total number of goals: $goalCount',
-                            style: TextStyle(
-                              fontFamily: 'Pixelar',
-                              fontSize: 26,
-                              color: Colors.grey[800],
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'Goals completed: $completedGoals',
-                            style: TextStyle(
-                              fontFamily: 'Pixelar',
-                              fontSize: 26,
-                              color: Colors.grey[800],
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Text(
-                            'Badges',
-                            style: TextStyle(
-                              fontFamily: 'PressStart2P',
-                              fontSize: 22,
-                            ),
-                          ),
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: SizedBox(
-                                height: 200.0,
-                                child: GridView.count(
-                                  crossAxisCount: 3,
-                                  children: List.generate(badgeCount, (index) {
-                                    return Center(
-                                      child: Image.asset(
-                                        'images/pixil-badge.png',
-                                        width: 70,
-                                      ),
-                                    );
-                                  }),
-                                ),
-                              ),
-                            ),
-                          ],
                         ),
                       ],
                     ),
-                  ),
-                );
+                  );
+                } else {
+                  return Center(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
+                            child: CircleAvatar(
+                              backgroundColor: Colors.transparent,
+                              radius: 48.0,
+                              child: Image.asset('images/catgif.gif'),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Text(
+                              '$name',
+                              style: TextStyle(
+                                fontFamily: 'PressStart2P',
+                                fontSize: 24,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: (userSince == null)
+                                ? Text(
+                                    'User since: Loading...',
+                                    style: TextStyle(
+                                      fontFamily: 'Pixelar',
+                                      fontSize: 26,
+                                      color: Colors.grey[800],
+                                    ),
+                                  )
+                                : Text(
+                                    'User since: ${DateFormat.yMMMMEEEEd().format(userSince.toDate())}',
+                                    style: TextStyle(
+                                      fontFamily: 'Pixelar',
+                                      fontSize: 26,
+                                      color: Colors.grey[800],
+                                    ),
+                                  ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'Total number of goals: $goalCount',
+                              style: TextStyle(
+                                fontFamily: 'Pixelar',
+                                fontSize: 26,
+                                color: Colors.grey[800],
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'Goals completed: $completedGoals',
+                              style: TextStyle(
+                                fontFamily: 'Pixelar',
+                                fontSize: 26,
+                                color: Colors.grey[800],
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Text(
+                              'Badges',
+                              style: TextStyle(
+                                fontFamily: 'PressStart2P',
+                                fontSize: 22,
+                              ),
+                            ),
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: SizedBox(
+                                  height: 200.0,
+                                  child: GridView.count(
+                                    crossAxisCount: 3,
+                                    children:
+                                        List.generate(badgeCount, (index) {
+                                      return Center(
+                                        child: Image.asset(
+                                          'images/pixil-badge.png',
+                                          width: 70,
+                                        ),
+                                      );
+                                    }),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }
               }),
     );
   }
