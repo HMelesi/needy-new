@@ -168,9 +168,14 @@ class MyScaffold extends StatelessWidget {
         child: Container(
           height: 70.0,
           color: Colors.green,
-          child: Footer(userId: userId),
+          child: Footer(userId: userId, addBadges: addBadges),
         ),
       ),
     );
+  }
+
+  void addBadges(num) {
+    print('number of badges: $num');
+    print('change the pet health to zero');
   }
 }

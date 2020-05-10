@@ -2,7 +2,7 @@
   "frames": [
     {
       "filename": "catfly.gif",
-      "frame": { "x": 0, "y": 0, "w": 72, "h": 110 },
+      "frame": { "x": 100, "y": 80, "w": 72, "h": 110 },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": { "x": 0, "y": 0, "w": 72, "h": 110 },
@@ -11,7 +11,7 @@
     },
     {
       "filename": "catfly_1.png",
-      "frame": { "x": 72, "y": 0, "w": 72, "h": 110 },
+      "frame": { "x": 172, "y": 80, "w": 72, "h": 110 },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": { "x": 0, "y": 0, "w": 72, "h": 110 },
@@ -20,7 +20,7 @@
     },
     {
       "filename": "catfly_2.png",
-      "frame": { "x": 144, "y": 0, "w": 72, "h": 110 },
+      "frame": { "x": 244, "y": 80, "w": 72, "h": 110 },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": { "x": 0, "y": 0, "w": 72, "h": 110 },
@@ -29,7 +29,7 @@
     },
     {
       "filename": "catfly_3.png",
-      "frame": { "x": 0, "y": 110, "w": 72, "h": 110 },
+      "frame": { "x": 316, "y": 80, "w": 72, "h": 110 },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": { "x": 0, "y": 0, "w": 72, "h": 110 },
@@ -38,7 +38,7 @@
     },
     {
       "filename": "catfly_4.png",
-      "frame": { "x": 72, "y": 110, "w": 72, "h": 110 },
+      "frame": { "x": 388, "y": 80, "w": 72, "h": 110 },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": { "x": 0, "y": 0, "w": 72, "h": 110 },
@@ -47,7 +47,7 @@
     },
     {
       "filename": "cloud_grey.png",
-      "frame": { "x": 144, "y": 110, "w": 80, "h": 80 },
+      "frame": { "x": 300, "y": 0, "w": 80, "h": 80 },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 80 },
@@ -56,7 +56,7 @@
     },
     {
       "filename": "cloud_white.png",
-      "frame": { "x": 0, "y": 220, "w": 80, "h": 80 },
+      "frame": { "x": 380, "y": 0, "w": 80, "h": 80 },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 80 },
@@ -65,7 +65,7 @@
     },
     {
       "filename": "coin_bronze.png",
-      "frame": { "x": 80, "y": 220, "w": 50, "h": 50 },
+      "frame": { "x": 0, "y": 0, "w": 50, "h": 50 },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": { "x": 0, "y": 0, "w": 50, "h": 50 },
@@ -74,7 +74,7 @@
     },
     {
       "filename": "coin_gold.png",
-      "frame": { "x": 130, "y": 220, "w": 50, "h": 50 },
+      "frame": { "x": 50, "y": 0, "w": 50, "h": 50 },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": { "x": 0, "y": 0, "w": 50, "h": 50 },
@@ -83,7 +83,7 @@
     },
     {
       "filename": "coin_silver.png",
-      "frame": { "x": 0, "y": 300, "w": 50, "h": 50 },
+      "frame": { "x": 100, "y": 0, "w": 50, "h": 50 },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": { "x": 0, "y": 0, "w": 50, "h": 50 },
@@ -92,7 +92,7 @@
     },
     {
       "filename": "heartnew.png",
-      "frame": { "x": 50, "y": 300, "w": 50, "h": 50 },
+      "frame": { "x": 150, "y": 0, "w": 50, "h": 50 },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": { "x": 0, "y": 0, "w": 50, "h": 50 },
@@ -101,7 +101,7 @@
     },
     {
       "filename": "medi.png",
-      "frame": { "x": 100, "y": 300, "w": 50, "h": 50 },
+      "frame": { "x": 200, "y": 0, "w": 50, "h": 50 },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": { "x": 0, "y": 0, "w": 50, "h": 50 },
@@ -109,8 +109,17 @@
       "pivot": { "x": 0.0, "y": 0.0 }
     },
     {
+      "filename": "pixil-badge.png",
+      "frame": { "x": 0, "y": 80, "w": 100, "h": 100 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 100, "h": 100 },
+      "sourceSize": { "w": 100, "h": 100 },
+      "pivot": { "x": 0.0, "y": 0.0 }
+    },
+    {
       "filename": "star.png",
-      "frame": { "x": 150, "y": 300, "w": 50, "h": 50 },
+      "frame": { "x": 250, "y": 0, "w": 50, "h": 50 },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": { "x": 0, "y": 0, "w": 50, "h": 50 },
@@ -123,8 +132,8 @@
     "version": "1.0",
     "image": "spritesheet2.png",
     "format": "RGBA8888",
-    "size": { "w": 224, "h": 350 },
+    "size": { "w": 460, "h": 190 },
     "scale": "1",
-    "smartupdate": "$TexturePacker:SmartUpdate:9923cbb80aa91647c2ebfe4c919ef1f3:40901c033dd7e36cfc3d37f9b4de6aa3:bc5e4c3e253241b36d5edc96e79f938b$"
+    "smartupdate": "$TexturePacker:SmartUpdate:079d070b583a2fc6c17d148321096617:9a335777151068ae4ccde6f1df0c84da:bc5e4c3e253241b36d5edc96e79f938b$"
   }
 }

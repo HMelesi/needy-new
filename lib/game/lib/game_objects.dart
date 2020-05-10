@@ -66,7 +66,7 @@ class LevelLabel extends GameObject {
     Label lbl = new Label("LEVEL $level",
         textAlign: TextAlign.center,
         textStyle: new TextStyle(
-            fontFamily: "PressPlay2P",
+            fontFamily: "PressStart2P",
             letterSpacing: 0.0,
             color: new Color(0xFFEE91E63),
             fontSize: 24.0,
@@ -160,6 +160,12 @@ abstract class Bad extends Obstacle {
       _sprite.opacity = a;
     }, 0.0, 1.0, 8);
     motions.run(fadeIn);
+
+    // Fade out
+    MotionTween fadeOut = new MotionTween<double>((a) {
+      _sprite.opacity = a;
+    }, 1.0, 0.0, 0.6);
+    motions.run(fadeOut);
   }
 
   set damage(double d) {
