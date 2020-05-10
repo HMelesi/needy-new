@@ -12,15 +12,16 @@ class GameObjectFactory {
 
   void addBads(int level, double yPos) {
     int numBads = 10 + level * 4;
-    double distribution = (level * 0.2).clamp(0.0, 0.8);
+    // double distribution = (level * 0.2).clamp(0.0, 0.8);
+    double distribution = 0.6;
 
     for (int i = 0; i < numBads; i++) {
       GameObject obj;
 
       if (randomDouble() < distribution)
-        obj = new Molehill(this);
+        obj = new WhiteCloud(this);
       else
-        obj = new Rock(this);
+        obj = new GreyCloud(this);
 
       Offset pos = new Offset(
           randomSignedDouble() * 160.0, yPos + _chunkSpacing * randomDouble());
@@ -47,7 +48,7 @@ class GameObjectFactory {
   }
 
   void addCoins(int level, double yPos) {
-    int numCoins = 10 + level * 4;
+    int numCoins = 3 + level * 4;
 
     // double distribution = (level * 0.4).clamp(0.0, 0.8);
 
@@ -71,39 +72,5 @@ class GameObjectFactory {
     obj.setupActions();
 
     level.addChild(obj);
-  }
-}
-
-final List<Color> laserColors = <Color>[
-  new Color(0xff95f4fb),
-  new Color(0xff5bff35),
-  new Color(0xffff886c),
-  new Color(0xffffd012),
-  new Color(0xfffd7fff)
-];
-
-void addLaserSprites(Node node, int level, double r, SpriteSheet sheet) {
-  int numLasers = level % 3 + 1;
-  Color laserColor = laserColors[(level ~/ 3) % laserColors.length];
-
-  // Add sprites
-  List<Sprite> sprites = <Sprite>[];
-  for (int i = 0; i < numLasers; i++) {
-    Sprite sprite = new Sprite(sheet["explosion_particle.png"]);
-    sprite.scale = 0.5;
-    sprite.colorOverlay = laserColor;
-    sprite.transferMode = ui.BlendMode.plus;
-    node.addChild(sprite);
-    sprites.add(sprite);
-  }
-
-  // Position the individual sprites
-  if (numLasers == 2) {
-    sprites[0].position = new Offset(-3.0, 0.0);
-    sprites[1].position = new Offset(3.0, 0.0);
-  } else if (numLasers == 3) {
-    sprites[0].position = new Offset(-4.0, 0.0);
-    sprites[1].position = new Offset(4.0, 0.0);
-    sprites[2].position = new Offset(0.0, -2.0);
   }
 }

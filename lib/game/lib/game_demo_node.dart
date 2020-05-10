@@ -15,7 +15,7 @@ class GameDemoNode extends NodeWithSize {
       this._gameState, petHealth, this._gameOverCallback)
       : super(new Size(320.0, 320.0)) {
     // Add background
-    _background = new RepeatedImage(_images["lib/game/assets/grass.png"]);
+    _background = new RepeatedImage(_images["lib/game/assets/sky.png"]);
     addChild(_background);
 
     // Setup game screen, it will always be anchored to the bottom of the screen
@@ -87,7 +87,7 @@ class GameDemoNode extends NodeWithSize {
     _scroll = _level.scroll(_playerState.scrollSpeed);
     // _starField.move(0.0, _playerState.scrollSpeed);
 
-    _background.move(_playerState.scrollSpeed * 0.2);
+    _background.move(_playerState.scrollSpeed * 0.3);
     // _nebula.move(_playerState.scrollSpeed);
 
     // Add objects
@@ -115,16 +115,13 @@ class GameDemoNode extends NodeWithSize {
 
     if (_gameOver) return;
 
-    // Check for collsions between ship and objects that can damage the ship
+    // Check for collsions between ship and objects that can hit the ship
     List<Node> nodes = new List<Node>.from(_level.children);
     for (Node node in nodes) {
       if (node is GameObject && node.canDamageShip) {
         if (node.collidingWith(_level.ship) && node is Bad) {
           hitCatBad();
         }
-        // else if (node.collidingWith(_level.ship) && node is HeartLove) {
-        //   hitHeart();
-        // }
       } else if (node is GameObject && node.canBeCollected) {
         if (node.collidingWith(_level.ship)) {
           // The ship ran over something collectable

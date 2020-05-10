@@ -24,7 +24,6 @@ dependencies:
   firebase_auth: ^0.16.0 # new
   firebase_database: ^3.1.5 # new
 
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -48,7 +47,7 @@ flutter:
     - images/catgif.gif
 
     - images/grass.png
-    - lib/game/assets/grass.png
+    - lib/game/assets/sky.png
     - lib/game/assets/sprites.json
     - lib/game/assets/sprites.png
     - lib/game/assets/game_uiold.png
@@ -56,11 +55,9 @@ flutter:
     - lib/game/assets/catabove.png
     - lib/game/assets/spritesheet.json
     - lib/game/assets/spritesheet.png
-    - lib/game/assets/good.png
-    - lib/game/assets/bad.png
     - lib/game/assets/game_ui.png
     - lib/game/assets/game_ui.json
+    - lib/game/assets/catfly.gif
 
     - images/cobweb.png
     - images/trophy.png
-
