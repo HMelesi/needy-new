@@ -45,14 +45,23 @@ class MyScaffold extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: ListTile(
-                    title: Text(
-                      '$name',
-                      style: TextStyle(
-                        fontFamily: 'PressStart2P',
-                        color: Colors.grey[700],
-                        fontSize: 22,
-                      ),
-                    ),
+                    title: (name == null)
+                        ? Text(
+                            'Profile',
+                            style: TextStyle(
+                              fontFamily: 'PressStart2P',
+                              color: Colors.grey[700],
+                              fontSize: 22,
+                            ),
+                          )
+                        : Text(
+                            '$name',
+                            style: TextStyle(
+                              fontFamily: 'PressStart2P',
+                              color: Colors.grey[700],
+                              fontSize: 22,
+                            ),
+                          ),
                     onTap: () {
                       Navigator.push(
                           context,
