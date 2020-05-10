@@ -27,11 +27,11 @@ class _UserProfileState extends State<UserProfile> {
   Timestamp userSince;
   int goalCount = 0;
   int completedGoals = 0;
+  int badgeCount = 0;
 
   @override
   Widget build(BuildContext context) {
-    getUsername(userId);
-    getUserSince(userId);
+    getUserInfo(userId);
     getGoalCount(userId);
     getCompletedGoals(userId);
     print('user profile for $userId');
@@ -118,6 +118,24 @@ class _UserProfileState extends State<UserProfile> {
                             ),
                           ),
                         ),
+                        Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: SizedBox(
+                                height: 200.0,
+                                child: GridView.count(
+                                  crossAxisCount: 3,
+                                  children: List.generate(badgeCount, (index) {
+                                    return Center(
+                                      child:
+                                          Image.asset('images/pixil-badge.png'),
+                                    );
+                                  }),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
@@ -126,15 +144,11 @@ class _UserProfileState extends State<UserProfile> {
     );
   }
 
-  Future getUserSince(userId) async {
-    Firestore.instance.collection('users').document(userId).get().then((res) {
-      userSince = (res['userSince']);
-    });
-  }
-
-  Future getUsername(userId) async {
+  Future getUserInfo(userId) async {
     Firestore.instance.collection('users').document(userId).get().then((res) {
       name = (res['username']);
+      userSince = (res['userSince']);
+      badgeCount = (res['badges']);
     });
   }
 
@@ -171,31 +185,4 @@ class _UserProfileState extends State<UserProfile> {
       print('fcm token update');
     });
   }
-}
-
-class GoalRecord {
-  final Timestamp endDate;
-  final String petName;
-  final String goalName;
-  final bool outstanding;
-  final DocumentReference reference;
-  final bool expired;
-
-  GoalRecord.fromMap(Map<String, dynamic> map, {this.reference})
-      : assert(map['endDate'] != null),
-        assert(map['petName'] != null),
-        assert(map['goalName'] != null),
-        assert(map['outstanding'] != null),
-        assert(map['expired'] != null),
-        endDate = map['endDate'],
-        petName = map['petName'],
-        goalName = map['goalName'],
-        outstanding = map['outstanding'],
-        expired = map['expired'];
-
-  GoalRecord.fromSnapshot(DocumentSnapshot snapshot)
-      : this.fromMap(snapshot.data, reference: snapshot.reference);
-
-  @override
-  String toString() => "goalRecord<$endDate$petName$goalName$outstanding>";
 }

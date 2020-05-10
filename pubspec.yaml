@@ -4,7 +4,7 @@ description: A new Flutter project.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: '>=2.1.0 <3.0.0'
 
 dependencies:
   flutter:
@@ -23,7 +23,6 @@ dependencies:
   fading_edge_scrollview: ^1.1.0
   firebase_auth: ^0.16.0 # new
   firebase_database: ^3.1.5 # new
-
 
 dev_dependencies:
   flutter_test:
@@ -46,7 +45,7 @@ flutter:
     - images/pixil-axolotl.png
     - images/pixil-sloth.png
     - images/catgif.gif
-
+    - images/pixil-badge.png
     - images/grass.png
     - lib/game/assets/grass.png
     - lib/game/assets/sprites.json
@@ -63,4 +62,3 @@ flutter:
 
     - images/cobweb.png
     - images/trophy.png
-
