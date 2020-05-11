@@ -30,9 +30,11 @@ class _MyHabits extends State<MyHabits> {
   final String name;
   final String goalName;
   final Timestamp endDate;
+  int petHealth = 0;
 
   @override
   Widget build(BuildContext context) {
+    getPetHealth();
     print('myhabits: $userId $name $goalName');
     return MyScaffold(
       userId: userId,
@@ -159,7 +161,9 @@ class _MyHabits extends State<MyHabits> {
           onTap: (habitrecord.outstanding == true)
               ? () => habitrecord.reference.updateData({
                     'outstanding': !habitrecord.outstanding,
-                    'time': DateTime.now()
+                    'time': DateTime.now(),
+                  }).then((res) {
+                    updatePetHealth();
                   })
               : null,
           trailing: Icon(
@@ -171,6 +175,37 @@ class _MyHabits extends State<MyHabits> {
         ),
       ),
     );
+  }
+
+  Future getPetHealth() async {
+    Firestore.instance
+        .collection('users')
+        .document(userId)
+        .collection('goals')
+        .document(goalName)
+        .get()
+        .then((res) {
+      petHealth = (res['petHealth']);
+    });
+  }
+
+  Future updatePetHealth() async {
+    Firestore.instance
+        .collection('users')
+        .document(userId)
+        .collection('goals')
+        .document(goalName)
+        .updateData({'petHealth': FieldValue.increment(1)}).then((res) {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(content: Text("Your pet's health increased!")),
+      );
+    }).catchError((err) {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text(err),
+        ),
+      );
+    });
   }
 }
 
