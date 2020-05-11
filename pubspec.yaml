@@ -27,6 +27,11 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_native_splash: ^0.1.9
+
+flutter_native_splash:
+  image: images/splash-screen-cat.png
+  color: '#66bb6a'
 
 flutter:
   uses-material-design: true
@@ -61,3 +66,4 @@ flutter:
 
     - images/cobweb.png
     - images/trophy.png
+    - images/splash-screen-cat.png
