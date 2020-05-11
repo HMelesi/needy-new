@@ -26,6 +26,7 @@ class MyScaffold extends StatelessWidget {
     return Scaffold(
         backgroundColor: Colors.green[200],
         appBar: AppBar(
+          centerTitle: true,
           title: Text(
             'KEEPER',
             style: TextStyle(
@@ -35,7 +36,6 @@ class MyScaffold extends StatelessWidget {
           ),
           backgroundColor: Colors.green,
         ),
-
         body: body,
         drawer: Theme(
           data: Theme.of(context).copyWith(canvasColor: Colors.green[400]),
@@ -74,7 +74,6 @@ class MyScaffold extends StatelessWidget {
                         color: Colors.white,
                       ),
                     ),
-
                     onTap: () {
                       Navigator.push(
                           context,
@@ -119,26 +118,6 @@ class MyScaffold extends StatelessWidget {
                           ));
                     },
                   ),
-                  // ListTile(
-                  //     title: Text('create a new habit'),
-                  //     onTap: () {
-                  //       Navigator.push(
-                  //           context,
-                  //           MaterialPageRoute(
-                  //             builder: (BuildContext context) =>
-                  //                 NewHabit(userId: userId, name: name),
-                  //           ));
-                  //     }),
-                  // ListTile(
-                  //     title: Text('my habits'),
-                  //     onTap: () {
-                  //       Navigator.push(
-                  //           context,
-                  //           MaterialPageRoute(
-                  //             builder: (BuildContext context) =>
-                  //                 MyHabits(userId: userId, name: name),
-                  //           ));
-                  //     }),
                   RaisedButton(
                     textColor: Colors.white,
                     color: Colors.pink,
@@ -168,9 +147,8 @@ class MyScaffold extends StatelessWidget {
         ),
         bottomNavigationBar: BottomAppBar(
           color: Colors.green,
-
           child: Container(
-            height: 70.0,
+            height: 60.0,
             color: Colors.green,
             child: Footer(userId: userId, addBadges: addBadges),
           ),
@@ -189,11 +167,5 @@ class MyScaffold extends StatelessWidget {
     //     .collection('goals')
     //     .document(goal)
     //     .updateData({'petHealth': 0});
-
-  }
-
-  void addBadges(num) {
-    print('number of badges: $num');
-    print('change the pet health to zero');
   }
 }

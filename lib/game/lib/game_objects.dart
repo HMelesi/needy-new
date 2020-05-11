@@ -145,27 +145,10 @@ abstract class Bad extends Obstacle {
   Sprite _sprite;
 
   void setupActions() {
-    // move clouds
-
-    // MotionTween(SetterCallback setter, T startVal, T endVal, double duration, [Curve curve])
-    // double direction = randomDouble();
-
-    // if (randomBool()) direction *= -1;
-    // MotionTween move = new MotionTween<Offset>((a) {
-    //   _sprite.position = a;
-    // }, Offset.zero, Offset(1000 * direction, 0.0), 8);
-    // _sprite.motions.run(new MotionRepeat(move, 3));
-
     MotionTween fadeIn = new MotionTween<double>((a) {
       _sprite.opacity = a;
     }, 0.0, 1.0, 8);
     motions.run(fadeIn);
-
-    // Fade out
-    MotionTween fadeOut = new MotionTween<double>((a) {
-      _sprite.opacity = a;
-    }, 1.0, 0.0, 0.6);
-    motions.run(fadeOut);
   }
 
   set damage(double d) {
@@ -206,7 +189,7 @@ class Medi extends Collectable {
   Medi(GameObjectFactory f) : super(f) {
     _sprite = new Sprite(f.sheet["medi.png"]);
     _sprite.scale = 1;
-    radius = 50.0;
+    radius = 40.0;
     addChild(_sprite);
   }
 
