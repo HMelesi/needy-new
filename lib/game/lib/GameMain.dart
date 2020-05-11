@@ -298,7 +298,7 @@ class MainSceneState extends State<MainScene> {
                       ),
                       SizedBox(
                         width: 320.0,
-                        height: 500.0,
+                        height: 400.0,
                         child: BottomBar(
                           userId: userId,
                           petName: petName,
