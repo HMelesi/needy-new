@@ -6,7 +6,9 @@ class Footer extends StatelessWidget {
   Footer({this.userId, this.addBadges});
 
   final String userId;
-  final Function(int) addBadges;
+
+  final Function(int, String) addBadges;
+
 
   @override
   Widget build(BuildContext context) {

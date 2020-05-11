@@ -56,58 +56,73 @@ gamestart(userId, goalName, petHealth, petType, petName, addBadges) async {
 
   // All game assets are loaded - we are good to go!
   runApp(new GamePage(
-      userId: userId,
-      goalName: goalName,
-      petHealth: petHealth,
-      petType: petType,
-      petName: petName,
-      addBadges: addBadges));
+
+    userId: userId,
+    goalName: goalName,
+    petHealth: petHealth,
+    petType: petType,
+    petName: petName,
+    addBadges: addBadges,
+  ));
 }
 
 class GamePage extends StatefulWidget {
-  GamePage(
-      {this.userId,
-      this.petName,
-      this.goalName,
-      this.petType,
-      this.petHealth,
-      this.addBadges});
+  GamePage({
+    this.userId,
+    this.petName,
+    this.goalName,
+    this.petType,
+    this.petHealth,
+    this.addBadges,
+  });
+
 
   final String userId;
   final String petName;
   final String goalName;
   final String petType;
   final int petHealth;
-  final Function(int) addBadges;
+
+  final Function addBadges;
+
 
   @override
   _GamePage createState() {
     return _GamePage(
-        userId: userId,
-        petName: petName,
-        goalName: goalName,
-        petType: petType,
-        petHealth: petHealth,
-        addBadges: addBadges);
+
+      userId: userId,
+      petName: petName,
+      goalName: goalName,
+      petType: petType,
+      petHealth: petHealth,
+      addBadges: addBadges,
+    );
+
   }
 }
 
 class _GamePage extends State<GamePage> {
   NodeWithSize rootNode;
 
-  _GamePage(
-      {this.userId,
-      this.petName,
-      this.goalName,
-      this.petType,
-      this.petHealth,
-      this.addBadges});
+
+  _GamePage({
+    this.userId,
+    this.petName,
+    this.goalName,
+    this.petType,
+    this.petHealth,
+    this.addBadges,
+  });
+
 
   final String userId;
   final String petName;
   final String goalName;
   final String petType;
-  final Function(int) addBadges;
+
+  final Function addBadges;
+
+
   int petHealth;
 
   @override
@@ -151,8 +166,10 @@ class _GamePage extends State<GamePage> {
               _gameState.coins = coins - coinsForBadges;
               _gameState.reachedLevel(levelReached);
             });
-            // TODO: on game over it should make a calculation based on your coins for badges?
-            addBadges(badges);
+
+            addBadges(badges, goalName);
+
+
             Navigator.pushNamed(context, '/over');
           },
           gameState: _gameState);
@@ -641,7 +658,9 @@ class BaseBar extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'Looks like $petName has died. Dark times.',
+
+                'Looks like $petName has died. Dark times. You earnt $badges badge! This has been added to your profile.',
+
                 style: TextStyle(color: Colors.pink),
               ),
             ),

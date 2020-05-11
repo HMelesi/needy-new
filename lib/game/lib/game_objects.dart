@@ -5,7 +5,7 @@ abstract class GameObject extends Node {
 
   double radius = 0.0;
   double removeLimit = 1280.0;
-  bool canDamageShip = false;
+  bool canDamageAnimal = false;
   bool canBeDamaged = false;
   bool canBeCollected = false;
   double maxDamage = 3.0;
@@ -75,13 +75,13 @@ class LevelLabel extends GameObject {
   }
 }
 
-class Ship extends GameObject {
-  bool canDamageShip = false;
+class Animal extends GameObject {
+  bool canDamageAnimal = false;
   bool canBeDamaged = false;
   bool canBeCollected = false;
 
-  Ship(GameObjectFactory f) : super(f) {
-    // Add main ship sprite
+  Animal(GameObjectFactory f) : super(f) {
+    // Add main animal sprite
     _sprite = new Sprite(f.sheet["catfly_1.png"]);
     _sprite.scale = 0.9;
     _sprite.rotation = 0.0;
@@ -124,7 +124,7 @@ Color colorForDamage(double damage, double maxDamage, [Color toColor]) {
 abstract class Obstacle extends GameObject {
   Obstacle(GameObjectFactory f) : super(f);
 
-  bool canDamageShip = true;
+  bool canDamageAnimal = true;
   bool canBeCollected = false;
   double explosionScale = 1.0;
 
@@ -139,7 +139,7 @@ abstract class Obstacle extends GameObject {
 abstract class Bad extends Obstacle {
   Bad(GameObjectFactory f) : super(f);
 
-  bool canDamageShip = true;
+  bool canDamageAnimal = true;
   bool canBeCollected = false;
   double explosionScale = 1.0;
   Sprite _sprite;
@@ -194,7 +194,7 @@ class WhiteCloud extends Bad {
 
 class Collectable extends GameObject {
   Collectable(GameObjectFactory f) : super(f) {
-    canDamageShip = false;
+    canDamageAnimal = false;
     canBeDamaged = false;
     canBeCollected = true;
 
