@@ -100,7 +100,6 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       RaisedButton(
-                        textColor: Colors.white,
                         color: Colors.pink,
                         child: Text(
                           'Create a new goal',
