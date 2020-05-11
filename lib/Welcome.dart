@@ -83,49 +83,47 @@ class _HomePageState extends State<HomePage> {
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
-                    if (snapshot.data.toString().length == 0) {
-                      return Column(children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: (name == null)
-                              ? null
-                              : Text(
-                                  'hi $name, welcome to Keeper!',
-                                  style: TextStyle(
-                                    fontFamily: 'Pixelar',
-                                    color: Colors.black,
-                                    fontSize: 26,
-                                  ),
+                    return CircularProgressIndicator();
+                  } else if (snapshot.data.documents.length == 0) {
+                    return Column(children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: (name == null)
+                            ? null
+                            : Text(
+                                'hi $name, welcome to Keeper!',
+                                style: TextStyle(
+                                  fontFamily: 'Pixelar',
+                                  color: Colors.black,
+                                  fontSize: 26,
                                 ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'hmmm it looks like you have no goals at the moment, would you like to set one up?',
-                            style: TextStyle(
-                              fontFamily: 'Pixelar',
-                              color: Colors.black,
-                              fontSize: 26,
-                            ),
+                              ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'hmmm it looks like you have no goals at the moment, would you like to set one up?',
+                          style: TextStyle(
+                            fontFamily: 'Pixelar',
+                            color: Colors.black,
+                            fontSize: 26,
                           ),
                         ),
-                        RaisedButton(
-                          color: Colors.pink,
-                          child: Text(
-                            'Create a new goal',
-                            style: TextStyle(
-                              fontFamily: 'PressStart2P',
-                              color: Colors.yellow,
-                            ),
+                      ),
+                      RaisedButton(
+                        color: Colors.pink,
+                        child: Text(
+                          'Create a new goal',
+                          style: TextStyle(
+                            fontFamily: 'PressStart2P',
+                            color: Colors.yellow,
                           ),
-                          onPressed: () {
-                            toGoalSetter(context);
-                          },
-                        )
-                      ]);
-                    } else {
-                      return CircularProgressIndicator();
-                    }
+                        ),
+                        onPressed: () {
+                          toGoalSetter(context);
+                        },
+                      )
+                    ]);
                   } else {
                     return Column(
                       children: <Widget>[
