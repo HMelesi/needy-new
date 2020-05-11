@@ -153,6 +153,7 @@ class Footer extends StatelessWidget {
                                                                 ),
                                                               ),
                                                               Container(
+
                                                                 height: 190.0,
                                                                 child: Column(
                                                                   children: <
@@ -166,6 +167,8 @@ class Footer extends StatelessWidget {
                                                                           .asset(
                                                                               'images/pixil-$petType.png'),
                                                                     ),
+
+
                                                                     Padding(
                                                                       padding: const EdgeInsets
                                                                               .all(
@@ -223,17 +226,21 @@ class Footer extends StatelessWidget {
                                                                   ),
                                                                   Container(
                                                                     height:
+
                                                                         230.0,
+
                                                                     child:
                                                                         Column(
                                                                       children: <
                                                                           Widget>[
+
                                                                         Padding(
                                                                           padding:
                                                                               const EdgeInsets.only(top: 10.0),
                                                                           child:
                                                                               Image.asset('images/pixil-$petType.png'),
                                                                         ),
+
                                                                         Padding(
                                                                           padding:
                                                                               const EdgeInsets.all(20.0),
@@ -305,22 +312,28 @@ class Footer extends StatelessWidget {
                                                                   ),
                                                                   Container(
                                                                     height:
+
                                                                         240.0,
+
                                                                     child:
                                                                         Column(
                                                                       children: <
                                                                           Widget>[
+
                                                                         Padding(
                                                                           padding:
                                                                               const EdgeInsets.only(top: 10.0),
                                                                           child:
                                                                               Image.asset('images/pixil-$petType.png'),
                                                                         ),
+
                                                                         Padding(
                                                                           padding:
                                                                               const EdgeInsets.all(20.0),
                                                                           child: Text(
+
                                                                               '$petName is not healthy enough to play a game right now. Stick to your habits to improve $petName\'s health.',
+
                                                                               style: TextStyle(
                                                                                 fontFamily: 'Pixelar',
                                                                                 fontSize: 26,

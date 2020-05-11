@@ -165,7 +165,9 @@ class Medi extends Collectable {
   Medi(GameObjectFactory f) : super(f) {
     _sprite = new Sprite(f.sheet["medi.png"]);
     _sprite.scale = 1;
+
     radius = 30.0;
+
     addChild(_sprite);
   }
 
