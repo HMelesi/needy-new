@@ -14,7 +14,8 @@ class HomePage extends StatefulWidget {
       this.userId,
       this.logoutCallback,
       this.name,
-      this.logout})
+      this.logout,
+      this.isLoading})
       : super(key: key);
 
   final BaseAuth auth;
@@ -22,6 +23,7 @@ class HomePage extends StatefulWidget {
   final String userId;
   final String name;
   final bool logout;
+  final bool isLoading;
 
   @override
   _HomePageState createState() => new _HomePageState(
@@ -29,7 +31,8 @@ class HomePage extends StatefulWidget {
       name: name,
       logoutCallback: logoutCallback,
       auth: auth,
-      logout: logout);
+      logout: logout,
+      isLoading: true);
 }
 
 class _HomePageState extends State<HomePage> {
@@ -39,7 +42,8 @@ class _HomePageState extends State<HomePage> {
       this.userId,
       this.logoutCallback,
       this.name,
-      this.logout});
+      this.logout,
+      this.isLoading});
 
   final BaseAuth auth;
   final VoidCallback logoutCallback;
@@ -47,14 +51,19 @@ class _HomePageState extends State<HomePage> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   String name;
   final bool logout;
+  bool isLoading;
 
   void logoutplease() {
     logoutCallback();
   }
 
+  initState() {
+    super.initState();
+    getUsername(userId);
+  }
+
   @override
   Widget build(BuildContext context) {
-    getUsername(userId);
     print('welcome: $userId');
     updateToken();
 
@@ -63,8 +72,8 @@ class _HomePageState extends State<HomePage> {
         logoutCallback: logoutCallback,
         name: name,
         userId: userId,
-        body: (userId == null)
-            ? Text('you idiot you have not passed the userid')
+        body: (isLoading)
+            ? Center(child: CircularProgressIndicator())
             : StreamBuilder<QuerySnapshot>(
                 stream: Firestore.instance
                     .collection('users')
@@ -74,46 +83,49 @@ class _HomePageState extends State<HomePage> {
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
-                    return Column(children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: (name == null)
-                            ? null
-                            : Text(
-                                'hi $name, welcome to Keeper!',
-                                style: TextStyle(
-                                  fontFamily: 'Pixelar',
-                                  color: Colors.black,
-                                  fontSize: 26,
+                    if (snapshot.data.toString().length == 0) {
+                      return Column(children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: (name == null)
+                              ? null
+                              : Text(
+                                  'hi $name, welcome to Keeper!',
+                                  style: TextStyle(
+                                    fontFamily: 'Pixelar',
+                                    color: Colors.black,
+                                    fontSize: 26,
+                                  ),
                                 ),
-                              ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'hmmm it looks like you have no goals at the moment, would you like to set one up?',
-                          style: TextStyle(
-                            fontFamily: 'Pixelar',
-                            color: Colors.black,
-                            fontSize: 26,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'hmmm it looks like you have no goals at the moment, would you like to set one up?',
+                            style: TextStyle(
+                              fontFamily: 'Pixelar',
+                              color: Colors.black,
+                              fontSize: 26,
+                            ),
                           ),
                         ),
-                      ),
-                      RaisedButton(
-                        textColor: Colors.white,
-                        color: Colors.pink,
-                        child: Text(
-                          'Create a new goal',
-                          style: TextStyle(
-                            fontFamily: 'PressStart2P',
-                            color: Colors.yellow,
+                        RaisedButton(
+                          color: Colors.pink,
+                          child: Text(
+                            'Create a new goal',
+                            style: TextStyle(
+                              fontFamily: 'PressStart2P',
+                              color: Colors.yellow,
+                            ),
                           ),
-                        ),
-                        onPressed: () {
-                          toGoalSetter(context);
-                        },
-                      )
-                    ]);
+                          onPressed: () {
+                            toGoalSetter(context);
+                          },
+                        )
+                      ]);
+                    } else {
+                      return CircularProgressIndicator();
+                    }
                   } else {
                     return Column(
                       children: <Widget>[
@@ -163,7 +175,10 @@ class _HomePageState extends State<HomePage> {
 
   Future getUsername(userId) async {
     Firestore.instance.collection('users').document(userId).get().then((res) {
-      name = (res['username']);
+      setState(() {
+        name = (res['username']);
+        isLoading = false;
+      });
     });
   }
 
