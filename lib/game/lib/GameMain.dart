@@ -39,7 +39,7 @@ gamestart(userId, goalName, petHealth, petType, petName, addBadges) async {
   await _imageMap.load(<String>[
     'lib/game/assets/spritesheet.png',
     'lib/game/assets/game_ui.png',
-    'lib/game/assets/sky.png',
+    'lib/game/assets/skynew.png',
     'lib/game/assets/catfly.gif'
   ]);
 
@@ -56,7 +56,6 @@ gamestart(userId, goalName, petHealth, petType, petName, addBadges) async {
 
   // All game assets are loaded - we are good to go!
   runApp(new GamePage(
-
     userId: userId,
     goalName: goalName,
     petHealth: petHealth,
@@ -76,7 +75,6 @@ class GamePage extends StatefulWidget {
     this.addBadges,
   });
 
-
   final String userId;
   final String petName;
   final String goalName;
@@ -85,11 +83,9 @@ class GamePage extends StatefulWidget {
 
   final Function addBadges;
 
-
   @override
   _GamePage createState() {
     return _GamePage(
-
       userId: userId,
       petName: petName,
       goalName: goalName,
@@ -97,13 +93,11 @@ class GamePage extends StatefulWidget {
       petHealth: petHealth,
       addBadges: addBadges,
     );
-
   }
 }
 
 class _GamePage extends State<GamePage> {
   NodeWithSize rootNode;
-
 
   _GamePage({
     this.userId,
@@ -114,14 +108,12 @@ class _GamePage extends State<GamePage> {
     this.addBadges,
   });
 
-
   final String userId;
   final String petName;
   final String goalName;
   final String petType;
 
   final Function addBadges;
-
 
   int petHealth;
 
@@ -168,7 +160,6 @@ class _GamePage extends State<GamePage> {
             });
 
             addBadges(badges, goalName);
-
 
             Navigator.pushNamed(context, '/over');
           },
@@ -487,7 +478,7 @@ class MainSceneBackgroundNode extends NodeWithSize {
     assert(_spriteSheet.image != null);
 
     // Add background
-    _background = new RepeatedImage(_imageMap['lib/game/assets/sky.png']);
+    _background = new RepeatedImage(_imageMap['lib/game/assets/skynew.png']);
     addChild(_background);
   }
 
@@ -657,12 +648,20 @@ class BaseBar extends StatelessWidget {
             decoration: BoxDecoration(color: Colors.yellow),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(
-
-                'Looks like $petName has died. Dark times. You earnt $badges badge! This has been added to your profile.',
-
-                style: TextStyle(color: Colors.pink),
-              ),
+              child: (badges == 0)
+                  ? Text(
+                      'Looks like $petName has died. Dark times. You didn\'t collect enough coins for a badge today.',
+                      style: TextStyle(color: Colors.pink),
+                    )
+                  : (badges == 1)
+                      ? Text(
+                          'Looks like $petName has died. Dark times. You earnt $badges badge! This has been added to your profile.',
+                          style: TextStyle(color: Colors.pink),
+                        )
+                      : Text(
+                          'Looks like $petName has died. Dark times. You earnt $badges badges! This has been added to your profile.',
+                          style: TextStyle(color: Colors.pink),
+                        ),
             ),
           ),
         ),
@@ -726,7 +725,7 @@ class OverSceneBackgroundNode extends NodeWithSize {
     assert(_spriteSheet.image != null);
 
     // Add background
-    _background = new RepeatedImage(_imageMap['lib/game/assets/sky.png']);
+    _background = new RepeatedImage(_imageMap['lib/game/assets/skynew.png']);
     addChild(_background);
   }
 
