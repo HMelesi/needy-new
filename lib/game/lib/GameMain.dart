@@ -390,11 +390,11 @@ class BottomBar extends StatelessWidget {
       Container(
           child: Column(children: <Widget>[
         Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(15.0),
           child: DecoratedBox(
             decoration: BoxDecoration(color: Colors.yellow),
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(4.0),
               child: Text(
                 'Help $petName fly through the sky, avoiding the clouds and gathering coins to score points! Every 50 points earns a badge for your profile!',
                 style: TextStyle(color: Colors.pink),
@@ -403,11 +403,11 @@ class BottomBar extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(4.0),
           child: Image.asset('images/pixil-cat.png'),
         ),
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(4.0),
           child: Align(
               alignment: Alignment.bottomCenter,
               child: new TextureButton(
@@ -424,7 +424,7 @@ class BottomBar extends StatelessWidget {
                   height: 62.0)),
         ),
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(4.0),
           child: Align(
               alignment: Alignment.bottomCenter,
               child: new TextureButton(
