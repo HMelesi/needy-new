@@ -49,7 +49,9 @@ gamestart(
     'lib/game/assets/good.png',
     'lib/game/assets/bad.png',
     'lib/game/assets/spritesheet.png',
-    'lib/game/assets/game_ui.png',
+    // 'lib/game/assets/game_ui.png',
+    // 'lib/game/assets/game_uiold.png',
+    'lib/game/assets/hanaspritesheet.png'
   ]);
 
   // Load sprite sheets
@@ -57,11 +59,12 @@ gamestart(
   _spriteSheet =
       new SpriteSheet(_imageMap['lib/game/assets/spritesheet.png'], json);
 
-  json = await rootBundle.loadString('lib/game/assets/game_ui.json');
+  json = await rootBundle.loadString('lib/game/assets/hanaspritesheet.json');
   _spriteSheetUI =
-      new SpriteSheet(_imageMap['lib/game/assets/game_ui.png'], json);
+      new SpriteSheet(_imageMap['lib/game/assets/hanaspritesheet.png'], json);
 
   assert(_spriteSheet.image != null);
+
 
   // All game assets are loaded - we are good to go!
   runApp(new GamePage(
