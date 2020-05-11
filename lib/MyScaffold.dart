@@ -161,11 +161,11 @@ class MyScaffold extends StatelessWidget {
         .document(userId)
         .updateData({'badges': FieldValue.increment(number)});
 
-    // Firestore.instance
-    //     .collection('users')
-    //     .document(userId)
-    //     .collection('goals')
-    //     .document(goal)
-    //     .updateData({'petHealth': 0});
+    Firestore.instance
+        .collection('users')
+        .document(userId)
+        .collection('goals')
+        .document(goal)
+        .updateData({'petHealth': 0});
   }
 }
