@@ -1,7 +1,70 @@
 {
   "frames": [
     {
-      "filename": "bad.png",
+      "filename": "catfly.gif",
+      "frame": { "x": 100, "y": 80, "w": 72, "h": 110 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 72, "h": 110 },
+      "sourceSize": { "w": 72, "h": 110 },
+      "pivot": { "x": 0.0, "y": 0.0 }
+    },
+    {
+      "filename": "catfly_1.png",
+      "frame": { "x": 172, "y": 80, "w": 72, "h": 110 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 72, "h": 110 },
+      "sourceSize": { "w": 72, "h": 110 },
+      "pivot": { "x": 0.0, "y": 0.0 }
+    },
+    {
+      "filename": "catfly_2.png",
+      "frame": { "x": 244, "y": 80, "w": 72, "h": 110 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 72, "h": 110 },
+      "sourceSize": { "w": 72, "h": 110 },
+      "pivot": { "x": 0.0, "y": 0.0 }
+    },
+    {
+      "filename": "catfly_3.png",
+      "frame": { "x": 316, "y": 80, "w": 72, "h": 110 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 72, "h": 110 },
+      "sourceSize": { "w": 72, "h": 110 },
+      "pivot": { "x": 0.0, "y": 0.0 }
+    },
+    {
+      "filename": "catfly_4.png",
+      "frame": { "x": 388, "y": 80, "w": 72, "h": 110 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 72, "h": 110 },
+      "sourceSize": { "w": 72, "h": 110 },
+      "pivot": { "x": 0.0, "y": 0.0 }
+    },
+    {
+      "filename": "cloud_grey.png",
+      "frame": { "x": 300, "y": 0, "w": 80, "h": 80 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 80 },
+      "sourceSize": { "w": 80, "h": 80 },
+      "pivot": { "x": 0.0, "y": 0.0 }
+    },
+    {
+      "filename": "cloud_white.png",
+      "frame": { "x": 380, "y": 0, "w": 80, "h": 80 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 80 },
+      "sourceSize": { "w": 80, "h": 80 },
+      "pivot": { "x": 0.0, "y": 0.0 }
+    },
+    {
+      "filename": "coin_bronze.png",
       "frame": { "x": 0, "y": 0, "w": 50, "h": 50 },
       "rotated": false,
       "trimmed": false,
@@ -10,17 +73,53 @@
       "pivot": { "x": 0.0, "y": 0.0 }
     },
     {
-      "filename": "catabove.png",
-      "frame": { "x": 0, "y": 50, "w": 80, "h": 85 },
+      "filename": "coin_gold.png",
+      "frame": { "x": 50, "y": 0, "w": 50, "h": 50 },
       "rotated": false,
       "trimmed": false,
-      "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 85 },
-      "sourceSize": { "w": 80, "h": 85 },
-      "pivot": { "x": 0.5, "y": 0.5 }
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 50, "h": 50 },
+      "sourceSize": { "w": 50, "h": 50 },
+      "pivot": { "x": 0.0, "y": 0.0 }
     },
     {
-      "filename": "good.png",
-      "frame": { "x": 50, "y": 0, "w": 50, "h": 50 },
+      "filename": "coin_silver.png",
+      "frame": { "x": 100, "y": 0, "w": 50, "h": 50 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 50, "h": 50 },
+      "sourceSize": { "w": 50, "h": 50 },
+      "pivot": { "x": 0.0, "y": 0.0 }
+    },
+    {
+      "filename": "heartnew.png",
+      "frame": { "x": 150, "y": 0, "w": 50, "h": 50 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 50, "h": 50 },
+      "sourceSize": { "w": 50, "h": 50 },
+      "pivot": { "x": 0.0, "y": 0.0 }
+    },
+    {
+      "filename": "medi.png",
+      "frame": { "x": 200, "y": 0, "w": 50, "h": 50 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 50, "h": 50 },
+      "sourceSize": { "w": 50, "h": 50 },
+      "pivot": { "x": 0.0, "y": 0.0 }
+    },
+    {
+      "filename": "pixil-badge.png",
+      "frame": { "x": 0, "y": 80, "w": 100, "h": 100 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 100, "h": 100 },
+      "sourceSize": { "w": 100, "h": 100 },
+      "pivot": { "x": 0.0, "y": 0.0 }
+    },
+    {
+      "filename": "star.png",
+      "frame": { "x": 250, "y": 0, "w": 50, "h": 50 },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": { "x": 0, "y": 0, "w": 50, "h": 50 },
@@ -33,8 +132,8 @@
     "version": "1.0",
     "image": "spritesheet2.png",
     "format": "RGBA8888",
-    "size": { "w": 100, "h": 135 },
+    "size": { "w": 460, "h": 190 },
     "scale": "1",
-    "smartupdate": "$TexturePacker:SmartUpdate:95c2b27684439674f7c50ed8cddd4e71:a4a49e58f28b690037f8ee8db2a21798:bc5e4c3e253241b36d5edc96e79f938b$"
+    "smartupdate": "$TexturePacker:SmartUpdate:079d070b583a2fc6c17d148321096617:9a335777151068ae4ccde6f1df0c84da:bc5e4c3e253241b36d5edc96e79f938b$"
   }
 }

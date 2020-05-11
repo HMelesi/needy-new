@@ -45,14 +45,23 @@ class MyScaffold extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: ListTile(
-                    title: Text(
-                      '$name',
-                      style: TextStyle(
-                        fontFamily: 'PressStart2P',
-                        color: Colors.grey[700],
-                        fontSize: 22,
-                      ),
-                    ),
+                    title: (name == null)
+                        ? Text(
+                            'Profile',
+                            style: TextStyle(
+                              fontFamily: 'PressStart2P',
+                              color: Colors.grey[700],
+                              fontSize: 22,
+                            ),
+                          )
+                        : Text(
+                            '$name',
+                            style: TextStyle(
+                              fontFamily: 'PressStart2P',
+                              color: Colors.grey[700],
+                              fontSize: 22,
+                            ),
+                          ),
                     onTap: () {
                       Navigator.push(
                           context,
@@ -168,9 +177,14 @@ class MyScaffold extends StatelessWidget {
         child: Container(
           height: 70.0,
           color: Colors.green,
-          child: Footer(userId: userId),
+          child: Footer(userId: userId, addBadges: addBadges),
         ),
       ),
     );
+  }
+
+  void addBadges(num) {
+    print('number of badges: $num');
+    print('change the pet health to zero');
   }
 }

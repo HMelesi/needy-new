@@ -15,17 +15,8 @@ class GameDemoNode extends NodeWithSize {
       this._gameState, petHealth, this._gameOverCallback)
       : super(new Size(320.0, 320.0)) {
     // Add background
-    _background = new RepeatedImage(_images["lib/game/assets/grass.png"]);
+    _background = new RepeatedImage(_images["lib/game/assets/sky.png"]);
     addChild(_background);
-
-    // Create starfield
-    // _starField = new StarField(_spritesGame, 200);
-    // addChild(_starField);
-
-    // Add nebula
-    // _nebula =
-    //     new RepeatedImage(_images["assets/nebula.png"], ui.BlendMode.plus);
-    // addChild(_nebula);
 
     // Setup game screen, it will always be anchored to the bottom of the screen
     _gameScreen = new Node();
@@ -39,7 +30,7 @@ class GameDemoNode extends NodeWithSize {
     // Add heads up display
     _playerState = new PlayerState(_spritesUI, _spritesGame, _gameState);
     _playerState.position = Offset(0.0, 20.0);
-    _playerState.score = petHealth * 10;
+    _playerState.score = petHealth - 10 + 93;
     addChild(_playerState);
 
     _objectFactory =
@@ -76,7 +67,6 @@ class GameDemoNode extends NodeWithSize {
   Level _level;
   int _topLevelReached = 0;
   RepeatedImage _background;
-  RepeatedImage _nebula;
   PlayerState _playerState;
 
   // Game properties
@@ -97,7 +87,7 @@ class GameDemoNode extends NodeWithSize {
     _scroll = _level.scroll(_playerState.scrollSpeed);
     // _starField.move(0.0, _playerState.scrollSpeed);
 
-    _background.move(_playerState.scrollSpeed * 0.2);
+    _background.move(_playerState.scrollSpeed * 0.3);
     // _nebula.move(_playerState.scrollSpeed);
 
     // Add objects
@@ -123,16 +113,19 @@ class GameDemoNode extends NodeWithSize {
       }
     }
 
-    if (_gameOver) return;
+    if (_gameOver) {
+      return;
+    }
 
-    // Check for collsions between ship and objects that can damage the ship
+    // Check for collsions between ship and objects that can hit the ship
     List<Node> nodes = new List<Node>.from(_level.children);
     for (Node node in nodes) {
       if (node is GameObject && node.canDamageShip) {
-        if (node.collidingWith(_level.ship)) {
-          hitCat();
+        if (node.collidingWith(_level.ship) && node is Bad) {
+          hitCatBad();
+          node.collect();
         }
-      } else if (node is GameObject && node.canBeCollected) {
+      } else if (node is GameObject && !node.canDamageShip) {
         if (node.collidingWith(_level.ship)) {
           // The ship ran over something collectable
           node.collect();
@@ -163,26 +156,37 @@ class GameDemoNode extends NodeWithSize {
       _level.addChild(lbl);
     } else if (part == 1) {
       _objectFactory.addBads(level, yPos);
-      // } else if (part == 2) {
-      //   _objectFactory.addEnemyScoutSwarm(level, yPos);
+      _objectFactory.addCoins(level, yPos);
+    } else if (part == 2) {
+      _objectFactory.addBads(level, yPos);
+      _objectFactory.addCoins(level, yPos);
+      _objectFactory.addHeart(level, yPos);
     } else if (part == 3) {
       _objectFactory.addBads(level, yPos);
-      // } else if (part == 4) {
-      //   _objectFactory.addEnemyDestroyerSwarm(level, yPos);
+      _objectFactory.addCoins(level, yPos);
+    } else if (part == 4) {
+      _objectFactory.addBads(level, yPos);
+      _objectFactory.addCoins(level, yPos);
+      _objectFactory.addHeart(level, yPos);
     } else if (part == 5) {
       _objectFactory.addBads(level, yPos);
-      // } else if (part == 6) {
-      //   _objectFactory.addEnemyScoutSwarm(level, yPos);
+      _objectFactory.addCoins(level, yPos);
+    } else if (part == 6) {
+      _objectFactory.addBads(level, yPos);
+      _objectFactory.addCoins(level, yPos);
+      _objectFactory.addHeart(level, yPos);
     } else if (part == 7) {
       _objectFactory.addBads(level, yPos);
+      _objectFactory.addCoins(level, yPos);
+    } else if (part == 8) {
+      _objectFactory.addBads(level, yPos);
+      _objectFactory.addCoins(level, yPos);
+      _objectFactory.addHeart(level, yPos);
     }
-    // else if (part == 8) {
-    //   _objectFactory.addBossFight(level, yPos);
-    // }
   }
 
-  void hitCat() {
-    _playerState.score -= 20;
+  void hitCatBad() {
+    _playerState.score -= 1;
 
     if (_playerState.score <= 0) {
       _level.ship.visible = false;
@@ -224,6 +228,13 @@ class GameDemoNode extends NodeWithSize {
     //       _playerState.score, _playerState.coins, _topLevelReached);
     // });
   }
+
+  // void hitHeart() {
+  //   _playerState.score += 50;
+
+  //   print('cat got a heart <3');
+  //   print(_playerState.score);
+  // }
 }
 
 class Level extends Node {
