@@ -123,10 +123,13 @@ class GameDemoNode extends NodeWithSize {
       if (node is GameObject && node.canDamageAnimal) {
         if (node.collidingWith(_level.animal) && node is Bad) {
           hitCatBad();
+          node.collect();
         }
+
       } else if (node is GameObject && !node.canDamageAnimal) {
         if (node.collidingWith(_level.animal)) {
           // The animal ran over something collectable
+
           node.collect();
         }
       }

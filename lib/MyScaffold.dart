@@ -35,6 +35,7 @@ class MyScaffold extends StatelessWidget {
           ),
           backgroundColor: Colors.green,
         ),
+
         body: body,
         drawer: Theme(
           data: Theme.of(context).copyWith(canvasColor: Colors.green[400]),
@@ -73,6 +74,7 @@ class MyScaffold extends StatelessWidget {
                         color: Colors.white,
                       ),
                     ),
+
                     onTap: () {
                       Navigator.push(
                           context,
@@ -166,6 +168,7 @@ class MyScaffold extends StatelessWidget {
         ),
         bottomNavigationBar: BottomAppBar(
           color: Colors.green,
+
           child: Container(
             height: 70.0,
             color: Colors.green,
@@ -186,5 +189,11 @@ class MyScaffold extends StatelessWidget {
     //     .collection('goals')
     //     .document(goal)
     //     .updateData({'petHealth': 0});
+
+  }
+
+  void addBadges(num) {
+    print('number of badges: $num');
+    print('change the pet health to zero');
   }
 }
