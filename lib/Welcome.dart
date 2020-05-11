@@ -14,7 +14,8 @@ class HomePage extends StatefulWidget {
       this.userId,
       this.logoutCallback,
       this.name,
-      this.logout})
+      this.logout,
+      this.isLoading})
       : super(key: key);
 
   final BaseAuth auth;
@@ -22,6 +23,7 @@ class HomePage extends StatefulWidget {
   final String userId;
   final String name;
   final bool logout;
+  final bool isLoading;
 
   @override
   _HomePageState createState() => new _HomePageState(
@@ -29,7 +31,8 @@ class HomePage extends StatefulWidget {
       name: name,
       logoutCallback: logoutCallback,
       auth: auth,
-      logout: logout);
+      logout: logout,
+      isLoading: true);
 }
 
 class _HomePageState extends State<HomePage> {
@@ -39,7 +42,8 @@ class _HomePageState extends State<HomePage> {
       this.userId,
       this.logoutCallback,
       this.name,
-      this.logout});
+      this.logout,
+      this.isLoading});
 
   final BaseAuth auth;
   final VoidCallback logoutCallback;
@@ -47,14 +51,19 @@ class _HomePageState extends State<HomePage> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   String name;
   final bool logout;
+  bool isLoading;
 
   void logoutplease() {
     logoutCallback();
   }
 
+  initState() {
+    super.initState();
+    getUsername(userId);
+  }
+
   @override
   Widget build(BuildContext context) {
-    getUsername(userId);
     print('welcome: $userId');
     updateToken();
 
@@ -63,8 +72,8 @@ class _HomePageState extends State<HomePage> {
         logoutCallback: logoutCallback,
         name: name,
         userId: userId,
-        body: (userId == null)
-            ? Text('you idiot you have not passed the userid')
+        body: (isLoading)
+            ? Center(child: CircularProgressIndicator())
             : StreamBuilder<QuerySnapshot>(
                 stream: Firestore.instance
                     .collection('users')
@@ -74,6 +83,8 @@ class _HomePageState extends State<HomePage> {
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
+                    return CircularProgressIndicator();
+                  } else if (snapshot.data.documents.length == 0) {
                     return Column(children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -162,7 +173,10 @@ class _HomePageState extends State<HomePage> {
 
   Future getUsername(userId) async {
     Firestore.instance.collection('users').document(userId).get().then((res) {
-      name = (res['username']);
+      setState(() {
+        name = (res['username']);
+        isLoading = false;
+      });
     });
   }
 
