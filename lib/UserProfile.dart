@@ -31,7 +31,7 @@ class _UserProfileState extends State<UserProfile> {
     updateToken();
 
     return MyScaffold(
-      auth: auth,
+      // auth: auth,
       name: name,
       userId: userId,
       body: (userId == null)
