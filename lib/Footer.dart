@@ -153,12 +153,22 @@ class Footer extends StatelessWidget {
                                                                 ),
                                                               ),
                                                               Container(
-                                                                height: 180.0,
+
+                                                                height: 190.0,
                                                                 child: Column(
                                                                   children: <
                                                                       Widget>[
-                                                                    Image.asset(
-                                                                        'images/pixil-$petType.png'),
+                                                                    Padding(
+                                                                      padding: const EdgeInsets
+                                                                              .only(
+                                                                          top:
+                                                                              10.0),
+                                                                      child: Image
+                                                                          .asset(
+                                                                              'images/pixil-$petType.png'),
+                                                                    ),
+
+
                                                                     Padding(
                                                                       padding: const EdgeInsets
                                                                               .all(
@@ -216,13 +226,21 @@ class Footer extends StatelessWidget {
                                                                   ),
                                                                   Container(
                                                                     height:
-                                                                        250.0,
+
+                                                                        230.0,
+
                                                                     child:
                                                                         Column(
                                                                       children: <
                                                                           Widget>[
-                                                                        Image.asset(
-                                                                            'images/pixil-$petType.png'),
+
+                                                                        Padding(
+                                                                          padding:
+                                                                              const EdgeInsets.only(top: 10.0),
+                                                                          child:
+                                                                              Image.asset('images/pixil-$petType.png'),
+                                                                        ),
+
                                                                         Padding(
                                                                           padding:
                                                                               const EdgeInsets.all(20.0),
@@ -294,18 +312,28 @@ class Footer extends StatelessWidget {
                                                                   ),
                                                                   Container(
                                                                     height:
-                                                                        230.0,
+
+                                                                        240.0,
+
                                                                     child:
                                                                         Column(
                                                                       children: <
                                                                           Widget>[
-                                                                        Image.asset(
-                                                                            'images/pixil-$petType.png'),
+
+                                                                        Padding(
+                                                                          padding:
+                                                                              const EdgeInsets.only(top: 10.0),
+                                                                          child:
+                                                                              Image.asset('images/pixil-$petType.png'),
+                                                                        ),
+
                                                                         Padding(
                                                                           padding:
                                                                               const EdgeInsets.all(20.0),
                                                                           child: Text(
-                                                                              '$petName is not healthy enough to play a game right now, stick to your habits to improve $petName\'s health.',
+
+                                                                              '$petName is not healthy enough to play a game right now. Stick to your habits to improve $petName\'s health.',
+
                                                                               style: TextStyle(
                                                                                 fontFamily: 'Pixelar',
                                                                                 fontSize: 26,

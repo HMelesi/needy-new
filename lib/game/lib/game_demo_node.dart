@@ -15,7 +15,7 @@ class GameDemoNode extends NodeWithSize {
       this._gameState, petHealth, this._gameOverCallback)
       : super(new Size(320.0, 320.0)) {
     // Add background
-    _background = new RepeatedImage(_images["lib/game/assets/sky.png"]);
+    _background = new RepeatedImage(_images["lib/game/assets/skynew.png"]);
     addChild(_background);
 
     // Setup game screen, it will always be anchored to the bottom of the screen
@@ -72,9 +72,6 @@ class GameDemoNode extends NodeWithSize {
   // Game properties
   double _scroll = 0.0;
 
-  int _framesToFire = 0;
-  int _framesBetweenShots = 20;
-
   bool _gameOver = false;
 
   void spriteBoxPerformedLayout() {
@@ -85,10 +82,8 @@ class GameDemoNode extends NodeWithSize {
   void update(double dt) {
     // Scroll the level
     _scroll = _level.scroll(_playerState.scrollSpeed);
-    // _starField.move(0.0, _playerState.scrollSpeed);
 
     _background.move(_playerState.scrollSpeed * 0.3);
-    // _nebula.move(_playerState.scrollSpeed);
 
     // Add objects
     addObjects();
