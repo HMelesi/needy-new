@@ -550,7 +550,7 @@ class OverSceneState extends State<OverScene> {
                       ),
                       SizedBox(
                         width: 320.0,
-                        height: 500.0,
+                        height: 400.0,
                         child: BaseBar(
                           userId: userId,
                           petName: petName,
