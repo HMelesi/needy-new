@@ -61,6 +61,8 @@ flutter:
     - lib/game/assets/spritesheet.png
     - lib/game/assets/game_ui.png
     - lib/game/assets/game_ui.json
+    - lib/game/assets/hanaspritesheet.png
+    - lib/game/assets/hanaspritesheet.json
     - lib/game/assets/catfly.gif
 
     - images/cobweb.png

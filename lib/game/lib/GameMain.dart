@@ -39,8 +39,12 @@ gamestart(userId, goalName, petHealth, petType, petName, addBadges) async {
   await _imageMap.load(<String>[
     'lib/game/assets/spritesheet.png',
     'lib/game/assets/game_ui.png',
+
+    'lib/game/assets/hanaspritesheet.png'
+
     'lib/game/assets/skynew.png',
     'lib/game/assets/catfly.gif'
+
   ]);
 
   // Load sprite sheets
@@ -48,11 +52,12 @@ gamestart(userId, goalName, petHealth, petType, petName, addBadges) async {
   _spriteSheet =
       new SpriteSheet(_imageMap['lib/game/assets/spritesheet.png'], json);
 
-  json = await rootBundle.loadString('lib/game/assets/game_ui.json');
+  json = await rootBundle.loadString('lib/game/assets/hanaspritesheet.json');
   _spriteSheetUI =
-      new SpriteSheet(_imageMap['lib/game/assets/game_ui.png'], json);
+      new SpriteSheet(_imageMap['lib/game/assets/hanaspritesheet.png'], json);
 
   assert(_spriteSheet.image != null);
+
 
   // All game assets are loaded - we are good to go!
   runApp(new GamePage(

@@ -174,7 +174,10 @@ class Medi extends Collectable {
   Sprite _sprite;
 
   void collect() {
-    f.playerState.score += 50;
+
+    // f.sounds.play("pickup_0");
+    f.playerState.score += 1;
+
     super.collect();
   }
 }

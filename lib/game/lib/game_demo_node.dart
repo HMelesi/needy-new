@@ -30,7 +30,7 @@ class GameDemoNode extends NodeWithSize {
     // Add heads up display
     _playerState = new PlayerState(_spritesUI, _spritesGame, _gameState);
     _playerState.position = Offset(0.0, 20.0);
-    _playerState.score = petHealth * 10;
+    _playerState.score = petHealth - 10 + 93;
     addChild(_playerState);
 
     _objectFactory =
@@ -181,7 +181,7 @@ class GameDemoNode extends NodeWithSize {
   }
 
   void hitCatBad() {
-    _playerState.score -= 5;
+    _playerState.score -= 1;
 
     if (_playerState.score <= 0) {
       _level.animal.visible = false;
