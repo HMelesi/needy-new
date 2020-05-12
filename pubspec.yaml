@@ -51,19 +51,11 @@ flutter:
     - images/pixil-sloth.png
     - images/catgif.gif
     - images/pixil-badge.png
-    - lib/game/assets/sky.png
     - lib/game/assets/skynew.png
-    - lib/game/assets/sprites.json
-    - lib/game/assets/sprites.png
-    - lib/game/assets/game_uiold.png
-    - lib/game/assets/game_uiold.json
     - lib/game/assets/spritesheet.json
     - lib/game/assets/spritesheet.png
-    - lib/game/assets/game_ui.png
-    - lib/game/assets/game_ui.json
-    - lib/game/assets/hanaspritesheet.png
-    - lib/game/assets/hanaspritesheet.json
-    - lib/game/assets/catfly.gif
+    - lib/game/assets/game_ui_sheet.png
+    - lib/game/assets/game_ui_sheet.json
 
     - images/cobweb.png
     - images/trophy.png
