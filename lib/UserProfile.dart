@@ -6,43 +6,55 @@ import 'package:needy_new/authentication.dart';
 import 'package:intl/intl.dart';
 
 class UserProfile extends StatefulWidget {
-  UserProfile({Key key, this.auth, this.userId, this.name}) : super(key: key);
+  UserProfile({Key key, this.auth, this.userId, this.name, this.isLoading})
+      : super(key: key);
 
   final BaseAuth auth;
   final String userId;
   final String name;
+  final bool isLoading;
 
   @override
-  _UserProfileState createState() =>
-      new _UserProfileState(userId: userId, name: name, auth: auth);
+  _UserProfileState createState() => new _UserProfileState(
+      userId: userId, name: name, auth: auth, isLoading: true);
 }
 
 class _UserProfileState extends State<UserProfile> {
-  _UserProfileState({Key key, this.auth, this.userId, this.name});
+  _UserProfileState(
+      {Key key, this.auth, this.userId, this.name, this.isLoading});
 
   final BaseAuth auth;
   final String userId;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   String name;
   Timestamp userSince;
+  bool isLoading;
   int goalCount = 0;
   int completedGoals = 0;
   int badgeCount = 0;
+  int dataCounter = 0;
 
-  @override
-  Widget build(BuildContext context) {
+  initState() {
+    super.initState();
     getUserInfo(userId);
     getGoalCount(userId);
     getCompletedGoals(userId);
-    print('user profile for $userId');
-    updateToken();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // getUserInfo(userId);
+    // getGoalCount(userId);
+    // getCompletedGoals(userId);
+    // print('user profile for $userId');
+    // updateToken();
 
     return MyScaffold(
-      auth: auth,
+      // auth: auth,
       name: name,
       userId: userId,
-      body: (userId == null)
-          ? Text('userid not passed')
+      body: (isLoading)
+          ? CircularProgressIndicator()
           : StreamBuilder<QuerySnapshot>(
               stream: Firestore.instance
                   .collection('users')
@@ -63,13 +75,13 @@ class _UserProfileState extends State<UserProfile> {
                             child: Image.asset('images/catgif.gif'),
                           ),
                         ),
-                        Text(
-                          'Loading profile...',
-                          style: TextStyle(
-                            fontFamily: 'PressStart2P',
-                            fontSize: 24,
-                          ),
-                        ),
+                        // Text(
+                        //   'Loading profile...',
+                        //   style: TextStyle(
+                        //     fontFamily: 'PressStart2P',
+                        //     fontSize: 24,
+                        //   ),
+                        // ),
                       ],
                     ),
                   );
@@ -181,10 +193,21 @@ class _UserProfileState extends State<UserProfile> {
   }
 
   Future getUserInfo(userId) async {
-    Firestore.instance.collection('users').document(userId).get().then((res) {
+    await Firestore.instance
+        .collection('users')
+        .document(userId)
+        .get()
+        .then((res) {
       name = (res['username']);
       userSince = (res['userSince']);
       badgeCount = (res['badges']);
+      print(dataCounter);
+      dataCounter += 1;
+      if (dataCounter == 3) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     });
   }
 
@@ -196,6 +219,13 @@ class _UserProfileState extends State<UserProfile> {
         .getDocuments()
         .then((res) {
       goalCount = res.documents.length;
+      print(dataCounter);
+      dataCounter += 1;
+      if (dataCounter == 3) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     });
   }
 
@@ -208,17 +238,24 @@ class _UserProfileState extends State<UserProfile> {
         .getDocuments()
         .then((res) {
       completedGoals = res.documents.length;
+      print(dataCounter);
+      dataCounter += 1;
+      if (dataCounter == 3) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     });
   }
 
-  updateToken() async {
-    final dbRef = Firestore.instance;
-    final token = await _firebaseMessaging.getToken();
+  // updateToken() async {
+  //   final dbRef = Firestore.instance;
+  //   final token = await _firebaseMessaging.getToken();
 
-    dbRef.collection('users').document(userId).updateData({
-      'fcm': token,
-    }).then((res) {
-      print('fcm token update');
-    });
-  }
+  //   dbRef.collection('users').document(userId).updateData({
+  //     'fcm': token,
+  //   }).then((res) {
+  //     print('fcm token update');
+  //   });
+  // }
 }

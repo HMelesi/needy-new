@@ -5,7 +5,7 @@ abstract class GameObject extends Node {
 
   double radius = 0.0;
   double removeLimit = 1280.0;
-  bool canDamageShip = false;
+  bool canDamageAnimal = false;
   bool canBeDamaged = false;
   bool canBeCollected = false;
   double maxDamage = 3.0;
@@ -35,22 +35,6 @@ abstract class GameObject extends Node {
     removeFromParent();
   }
 
-  void losePoints(num) {
-    f.playerState.score -= num;
-  }
-
-  void addDamage(double d) {
-    if (!canBeDamaged) return;
-
-    damage += d;
-    if (damage >= maxDamage) {
-      // destroy();
-      f.playerState.score += (maxDamage * 10).ceil();
-    } else {
-      // f.sounds.play("hit");
-    }
-  }
-
   void paint(Canvas canvas) {
     if (_drawDebug) {
       canvas.drawCircle(Offset.zero, radius, _paintDebug);
@@ -75,24 +59,23 @@ class LevelLabel extends GameObject {
   }
 }
 
-class Ship extends GameObject {
-  bool canDamageShip = false;
+class Animal extends GameObject {
+  bool canDamageAnimal = false;
   bool canBeDamaged = false;
   bool canBeCollected = false;
 
-  Ship(GameObjectFactory f) : super(f) {
-    // Add main ship sprite
+  Animal(GameObjectFactory f) : super(f) {
+    // Add main animal sprite
     _sprite = new Sprite(f.sheet["catfly_1.png"]);
     _sprite.scale = 0.9;
     _sprite.rotation = 0.0;
     addChild(_sprite);
 
     // Set start position
-    position = new Offset(0.0, 50.0);
+    position = new Offset(0.0, 0.0);
   }
 
   Sprite _sprite;
-  Sprite _spriteShield;
 
   void applyThrust(Offset joystickValue, double scroll) {
     Offset oldPos = position;
@@ -124,48 +107,24 @@ Color colorForDamage(double damage, double maxDamage, [Color toColor]) {
 abstract class Obstacle extends GameObject {
   Obstacle(GameObjectFactory f) : super(f);
 
-  bool canDamageShip = true;
+  bool canDamageAnimal = true;
   bool canBeCollected = false;
   double explosionScale = 1.0;
-
-  // Explosion createExplosion() {
-  //   f.sounds.play("explosion_${randomInt(3)}");
-  //   Explosion explo = new ExplosionBig(f.sheet);
-  //   explo.scale = explosionScale;
-  //   return explo;
-  // }
 }
 
 abstract class Bad extends Obstacle {
   Bad(GameObjectFactory f) : super(f);
 
-  bool canDamageShip = true;
+  bool canDamageAnimal = true;
   bool canBeCollected = false;
   double explosionScale = 1.0;
   Sprite _sprite;
 
   void setupActions() {
-    // move clouds
-
-    // MotionTween(SetterCallback setter, T startVal, T endVal, double duration, [Curve curve])
-    // double direction = randomDouble();
-
-    // if (randomBool()) direction *= -1;
-    // MotionTween move = new MotionTween<Offset>((a) {
-    //   _sprite.position = a;
-    // }, Offset.zero, Offset(1000 * direction, 0.0), 8);
-    // _sprite.motions.run(new MotionRepeat(move, 3));
-
     MotionTween fadeIn = new MotionTween<double>((a) {
       _sprite.opacity = a;
     }, 0.0, 1.0, 8);
     motions.run(fadeIn);
-
-    // Fade out
-    MotionTween fadeOut = new MotionTween<double>((a) {
-      _sprite.opacity = a;
-    }, 1.0, 0.0, 0.6);
-    motions.run(fadeOut);
   }
 
   set damage(double d) {
@@ -194,7 +153,7 @@ class WhiteCloud extends Bad {
 
 class Collectable extends GameObject {
   Collectable(GameObjectFactory f) : super(f) {
-    canDamageShip = false;
+    canDamageAnimal = false;
     canBeDamaged = false;
     canBeCollected = true;
 
@@ -206,15 +165,19 @@ class Medi extends Collectable {
   Medi(GameObjectFactory f) : super(f) {
     _sprite = new Sprite(f.sheet["medi.png"]);
     _sprite.scale = 1;
-    radius = 50.0;
+
+    radius = 30.0;
+
     addChild(_sprite);
   }
 
   Sprite _sprite;
 
   void collect() {
+
     // f.sounds.play("pickup_0");
     f.playerState.score += 1;
+
     super.collect();
   }
 }
@@ -222,19 +185,12 @@ class Medi extends Collectable {
 class GoldCoin extends Collectable {
   GoldCoin(GameObjectFactory f) : super(f) {
     _sprite = new Sprite(f.sheet["coin_gold.png"]);
-    _sprite.scale = 0.5;
-    radius = 10;
+    _sprite.scale = 0.4;
+    radius = 30.0;
     addChild(_sprite);
   }
 
   void setupActions() {
-    // Rotate
-    // MotionTween rotate = new MotionTween<double>((a) {
-    //   _sprite.rotation = a;
-    // }, 0.0, 360.0, 5.0);
-    // motions.run(new MotionRepeatForever(rotate));
-
-    // Fade in
     MotionTween fadeIn = new MotionTween<double>((a) {
       _sprite.opacity = a;
     }, 0.0, 1.0, 0.6);
@@ -244,28 +200,22 @@ class GoldCoin extends Collectable {
   Sprite _sprite;
 
   void collect() {
-    // f.sounds.play("pickup_0");
     f.playerState.addGoldCoin(this);
+    // f.playerState._coinDisplay.score += 5;
     super.collect();
+    print(f.playerState._coinDisplay.score);
   }
 }
 
 class SilverCoin extends Collectable {
   SilverCoin(GameObjectFactory f) : super(f) {
     _sprite = new Sprite(f.sheet["coin_silver.png"]);
-    _sprite.scale = 0.5;
-    radius = 10;
+    _sprite.scale = 0.4;
+    radius = 30.0;
     addChild(_sprite);
   }
 
   void setupActions() {
-    // Rotate
-    // MotionTween rotate = new MotionTween<double>((a) {
-    //   _sprite.rotation = a;
-    // }, 0.0, 360.0, 5.0);
-    // motions.run(new MotionRepeatForever(rotate));
-
-    // Fade in
     MotionTween fadeIn = new MotionTween<double>((a) {
       _sprite.opacity = a;
     }, 0.0, 1.0, 0.6);
@@ -277,26 +227,21 @@ class SilverCoin extends Collectable {
   void collect() {
     // f.sounds.play("pickup_0");
     f.playerState.addSilverCoin(this);
+    // f.playerState._coinDisplay.score += 1;
     super.collect();
+    print(f.playerState._coinDisplay.score);
   }
 }
 
 class BronzeCoin extends Collectable {
   BronzeCoin(GameObjectFactory f) : super(f) {
     _sprite = new Sprite(f.sheet["coin_bronze.png"]);
-    _sprite.scale = 0.5;
-    radius = 10;
+    _sprite.scale = 0.4;
+    radius = 30.0;
     addChild(_sprite);
   }
 
   void setupActions() {
-    // Rotate
-    // MotionTween rotate = new MotionTween<double>((a) {
-    //   _sprite.rotation = a;
-    // }, 0.0, 360.0, 5.0);
-    // motions.run(new MotionRepeatForever(rotate));
-
-    // Fade in
     MotionTween fadeIn = new MotionTween<double>((a) {
       _sprite.opacity = a;
     }, 0.0, 1.0, 0.6);
@@ -306,8 +251,9 @@ class BronzeCoin extends Collectable {
   Sprite _sprite;
 
   void collect() {
-    // f.sounds.play("pickup_0");
     f.playerState.addBronzeCoin(this);
+    // f.playerState._coinDisplay.score += 1;
     super.collect();
+    print(f.playerState._coinDisplay.score);
   }
 }

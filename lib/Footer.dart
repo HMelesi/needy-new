@@ -6,7 +6,8 @@ class Footer extends StatelessWidget {
   Footer({this.userId, this.addBadges});
 
   final String userId;
-  final Function(int) addBadges;
+
+  final Function(int, String) addBadges;
 
   @override
   Widget build(BuildContext context) {
@@ -39,30 +40,42 @@ class Footer extends StatelessWidget {
                   final int goalsCount = snapshot.data.documents.length;
                   return Column(
                     children: <Widget>[
-                      Container(
-                          color: Colors.green,
-                          height: 25.0,
-                          width: 600.0,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              // Icon(Icons.arrow_left),
-                              Text('<   play with your pets   >',
-                                  style: TextStyle(
-                                    fontFamily: 'Pixelar',
-                                    fontSize: 24,
-                                  )),
-                              // Icon(Icons.arrow_right),
-                            ],
-                          )),
+                      // Container(
+                      //     color: Colors.green,
+                      //     height: 25.0,
+                      //     width: 600.0,
+                      //     child: Row(
+                      //       mainAxisAlignment: MainAxisAlignment.center,
+                      //       children: <Widget>[
+                      //         // Icon(Icons.arrow_left),
+                      //         Text('<   play with your pets   >',
+                      //             style: TextStyle(
+                      //               fontFamily: 'Pixelar',
+                      //               fontSize: 24,
+                      //             )),
+                      //         // Icon(Icons.arrow_right),
+                      //       ],
+                      //     )),
                       Container(
                         color: Colors.green,
-                        height: 45.0,
+                        height: 60.0,
                         width: 600.0,
                         child: CustomScrollView(
                           // shrinkWrap: true,
                           scrollDirection: Axis.horizontal,
+
                           slivers: [
+                            const SliverAppBar(
+                              automaticallyImplyLeading: false,
+                              pinned: true,
+                              title: Text('PLAY >',
+                                  style: TextStyle(
+                                      color: Colors.yellow,
+                                      fontFamily: 'Pixelar',
+                                      fontSize: 20)),
+                              expandedHeight: 90.0,
+                              backgroundColor: Colors.green,
+                            ),
                             SliverList(
                               delegate: SliverChildBuilderDelegate(
                                   (BuildContext context, int index) {
@@ -76,40 +89,249 @@ class Footer extends StatelessWidget {
 
                                   return Container(
                                       height: 50.0,
-                                      width: 200.0,
-                                      margin:
-                                          const EdgeInsets.only(bottom: 5.0),
+                                      width: 220,
                                       child: FlatButton(
                                         child: Row(
                                           children: <Widget>[
-                                            Text(petName,
-                                                style: TextStyle(
-                                                    color: (petHealth == 0)
-                                                        ? Colors.white
-                                                        : (petHealth > 5)
-                                                            ? Colors.pink
-                                                            : Colors.pink[200],
-                                                    fontFamily: 'PressStart2P',
-                                                    fontSize: 16)),
-                                            Image.asset(
-                                                'images/pixil-$petType.png'),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Image.asset(
+                                                  'images/pixil-$petType.png'),
+                                            ),
+                                            Expanded(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Text(petName,
+                                                    style: TextStyle(
+                                                        color: (petHealth == 0)
+                                                            ? Colors.white
+                                                            : (petHealth > 5)
+                                                                ? Colors.pink
+                                                                : Colors
+                                                                    .pink[200],
+                                                        fontFamily:
+                                                            'PressStart2P',
+                                                        fontSize: 15)),
+                                              ),
+                                            ),
                                           ],
                                         ),
                                         onPressed: () {
-                                          print('this is being tapped');
                                           (petHealth == 0)
-                                              ? print(
-                                                  'this pet is dead, you canot play with dead pets')
+                                              ? showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return AlertDialog(
+                                                        backgroundColor:
+                                                            Colors.yellow,
+                                                        content: Stack(
+                                                            overflow: Overflow
+                                                                .visible,
+                                                            children: <Widget>[
+                                                              Positioned(
+                                                                right: -40.0,
+                                                                top: -40.0,
+                                                                child:
+                                                                    InkResponse(
+                                                                  onTap: () {
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .pop();
+                                                                  },
+                                                                  child:
+                                                                      CircleAvatar(
+                                                                    child: Icon(
+                                                                        Icons
+                                                                            .close),
+                                                                    backgroundColor:
+                                                                        Colors
+                                                                            .pink,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              Container(
+                                                                height: 190.0,
+                                                                child: Column(
+                                                                  children: <
+                                                                      Widget>[
+                                                                    Padding(
+                                                                      padding: const EdgeInsets
+                                                                              .only(
+                                                                          top:
+                                                                              10.0),
+                                                                      child: Image
+                                                                          .asset(
+                                                                              'images/pixil-$petType.png'),
+                                                                    ),
+                                                                    Padding(
+                                                                      padding: const EdgeInsets
+                                                                              .all(
+                                                                          20.0),
+                                                                      child: Text(
+                                                                          '$petName is dead. You cannot play with dead pets.',
+                                                                          style:
+                                                                              TextStyle(
+                                                                            fontFamily:
+                                                                                'Pixelar',
+                                                                            fontSize:
+                                                                                26,
+                                                                            color:
+                                                                                Colors.black,
+                                                                          )),
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ]));
+                                                  })
                                               : (petHealth > 5)
-                                                  ? gamestart(
-                                                      userId,
-                                                      goalName,
-                                                      petHealth,
-                                                      petType,
-                                                      petName,
-                                                      addBadges)
-                                                  : print(
-                                                      'this pet is not healthy enough to play right now');
+                                                  ? showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return AlertDialog(
+                                                            backgroundColor:
+                                                                Colors.yellow,
+                                                            content: Stack(
+                                                                overflow:
+                                                                    Overflow
+                                                                        .visible,
+                                                                children: <
+                                                                    Widget>[
+                                                                  Positioned(
+                                                                    right:
+                                                                        -40.0,
+                                                                    top: -40.0,
+                                                                    child:
+                                                                        InkResponse(
+                                                                      onTap:
+                                                                          () {
+                                                                        Navigator.of(context)
+                                                                            .pop();
+                                                                      },
+                                                                      child:
+                                                                          CircleAvatar(
+                                                                        child: Icon(
+                                                                            Icons.close),
+                                                                        backgroundColor:
+                                                                            Colors.pink,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  Container(
+                                                                    height:
+                                                                        240.0,
+                                                                    child:
+                                                                        Column(
+                                                                      children: <
+                                                                          Widget>[
+                                                                        Padding(
+                                                                          padding:
+                                                                              const EdgeInsets.only(top: 10.0),
+                                                                          child:
+                                                                              Image.asset('images/pixil-$petType.png'),
+                                                                        ),
+                                                                        Padding(
+                                                                          padding:
+                                                                              const EdgeInsets.all(20.0),
+                                                                          child: Text(
+                                                                              'Well done! $petName is healthy enough to play!',
+                                                                              style: TextStyle(
+                                                                                fontFamily: 'Pixelar',
+                                                                                fontSize: 26,
+                                                                                color: Colors.black,
+                                                                              )),
+                                                                        ),
+                                                                        RaisedButton(
+                                                                          color:
+                                                                              Colors.pink,
+                                                                          child:
+                                                                              Text(
+                                                                            'START GAME',
+                                                                            style:
+                                                                                TextStyle(
+                                                                              fontFamily: 'PressStart2P',
+                                                                              color: Colors.yellow,
+                                                                            ),
+                                                                          ),
+                                                                          onPressed: () => gamestart(
+                                                                              userId,
+                                                                              goalName,
+                                                                              petHealth,
+                                                                              petType,
+                                                                              petName,
+                                                                              addBadges),
+                                                                        )
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ]));
+                                                      })
+                                                  : showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return AlertDialog(
+                                                            backgroundColor:
+                                                                Colors.yellow,
+                                                            content: Stack(
+                                                                overflow:
+                                                                    Overflow
+                                                                        .visible,
+                                                                children: <
+                                                                    Widget>[
+                                                                  Positioned(
+                                                                    right:
+                                                                        -40.0,
+                                                                    top: -40.0,
+                                                                    child:
+                                                                        InkResponse(
+                                                                      onTap:
+                                                                          () {
+                                                                        Navigator.of(context)
+                                                                            .pop();
+                                                                      },
+                                                                      child:
+                                                                          CircleAvatar(
+                                                                        child: Icon(
+                                                                            Icons.close),
+                                                                        backgroundColor:
+                                                                            Colors.pink,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  Container(
+                                                                    height:
+                                                                        265.0,
+                                                                    child:
+                                                                        Column(
+                                                                      children: <
+                                                                          Widget>[
+                                                                        Padding(
+                                                                          padding:
+                                                                              const EdgeInsets.only(top: 10.0),
+                                                                          child:
+                                                                              Image.asset('images/pixil-$petType.png'),
+                                                                        ),
+                                                                        Padding(
+                                                                          padding:
+                                                                              const EdgeInsets.all(20.0),
+                                                                          child: Text(
+                                                                              '$petName is not healthy enough to play a game right now. Stick to your habits to improve $petName\'s health.',
+                                                                              style: TextStyle(
+                                                                                fontFamily: 'Pixelar',
+                                                                                fontSize: 26,
+                                                                                color: Colors.black,
+                                                                              )),
+                                                                        )
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ]));
+                                                      });
                                         },
                                       ));
                                 }

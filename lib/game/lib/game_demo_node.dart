@@ -15,7 +15,7 @@ class GameDemoNode extends NodeWithSize {
       this._gameState, petHealth, this._gameOverCallback)
       : super(new Size(320.0, 320.0)) {
     // Add background
-    _background = new RepeatedImage(_images["lib/game/assets/sky.png"]);
+    _background = new RepeatedImage(_images["lib/game/assets/skynew.png"]);
     addChild(_background);
 
     // Setup game screen, it will always be anchored to the bottom of the screen
@@ -36,9 +36,9 @@ class GameDemoNode extends NodeWithSize {
     _objectFactory =
         new GameObjectFactory(_spritesGame, _sounds, _level, _playerState);
 
-    _level.ship = new Ship(_objectFactory);
-    _level.ship.setupActions();
-    _level.addChild(_level.ship);
+    _level.animal = new Animal(_objectFactory);
+    _level.animal.setupActions();
+    _level.addChild(_level.animal);
 
     // Add the joystick
     _joystick = new VirtualJoystick();
@@ -72,9 +72,6 @@ class GameDemoNode extends NodeWithSize {
   // Game properties
   double _scroll = 0.0;
 
-  int _framesToFire = 0;
-  int _framesBetweenShots = 20;
-
   bool _gameOver = false;
 
   void spriteBoxPerformedLayout() {
@@ -85,17 +82,15 @@ class GameDemoNode extends NodeWithSize {
   void update(double dt) {
     // Scroll the level
     _scroll = _level.scroll(_playerState.scrollSpeed);
-    // _starField.move(0.0, _playerState.scrollSpeed);
 
     _background.move(_playerState.scrollSpeed * 0.3);
-    // _nebula.move(_playerState.scrollSpeed);
 
     // Add objects
     addObjects();
 
-    // Move the ship
+    // Move the animal
     if (!_gameOver) {
-      _level.ship.applyThrust(_joystick.value, _scroll);
+      _level.animal.applyThrust(_joystick.value, _scroll);
     }
 
     // Move game objects
@@ -117,17 +112,17 @@ class GameDemoNode extends NodeWithSize {
       return;
     }
 
-    // Check for collsions between ship and objects that can hit the ship
+    // Check for collsions between animal and objects that can hit the animal
     List<Node> nodes = new List<Node>.from(_level.children);
     for (Node node in nodes) {
-      if (node is GameObject && node.canDamageShip) {
-        if (node.collidingWith(_level.ship) && node is Bad) {
+      if (node is GameObject && node.canDamageAnimal) {
+        if (node.collidingWith(_level.animal) && node is Bad) {
           hitCatBad();
-          node.collect();
         }
-      } else if (node is GameObject && !node.canDamageShip) {
-        if (node.collidingWith(_level.ship)) {
-          // The ship ran over something collectable
+      } else if (node is GameObject && !node.canDamageAnimal) {
+        if (node.collidingWith(_level.animal)) {
+          // The animal ran over something collectable
+
           node.collect();
         }
       }
@@ -189,7 +184,7 @@ class GameDemoNode extends NodeWithSize {
     _playerState.score -= 1;
 
     if (_playerState.score <= 0) {
-      _level.ship.visible = false;
+      _level.animal.visible = false;
 
       Flash flash = new Flash(size, 1.0);
       addChild(flash);
@@ -201,18 +196,18 @@ class GameDemoNode extends NodeWithSize {
       });
     }
 
-    print('cat was hit');
+    print('animal was hit');
     print(_playerState.score);
 
-    // Hide ship
-    // _level.ship.visible = false;
+    // Hide animal
+    // _level.animal.visible = false;
 
     // _sounds.play("explosion_player");
 
     // Add explosion
     // ExplosionBig explo = new ExplosionBig(_spritesGame);
     // explo.scale = 1.5;
-    // explo.position = _level.ship.position;
+    // explo.position = _level.animal.position;
     // _level.addChild(explo);
 
     // Add flash
@@ -242,7 +237,7 @@ class Level extends Node {
     position = new Offset(160.0, 0.0);
   }
 
-  Ship ship;
+  Animal animal;
 
   double scroll(double scrollSpeed) {
     position += new Offset(0.0, scrollSpeed);

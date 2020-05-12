@@ -39,9 +39,12 @@ gamestart(userId, goalName, petHealth, petType, petName, addBadges) async {
   await _imageMap.load(<String>[
     'lib/game/assets/spritesheet.png',
     'lib/game/assets/game_ui.png',
-    'lib/game/assets/sky.png',
-    'lib/game/assets/catfly.gif',
+
     'lib/game/assets/hanaspritesheet.png'
+
+    'lib/game/assets/skynew.png',
+    'lib/game/assets/catfly.gif'
+
   ]);
 
   // Load sprite sheets
@@ -58,58 +61,65 @@ gamestart(userId, goalName, petHealth, petType, petName, addBadges) async {
 
   // All game assets are loaded - we are good to go!
   runApp(new GamePage(
-      userId: userId,
-      goalName: goalName,
-      petHealth: petHealth,
-      petType: petType,
-      petName: petName,
-      addBadges: addBadges));
+    userId: userId,
+    goalName: goalName,
+    petHealth: petHealth,
+    petType: petType,
+    petName: petName,
+    addBadges: addBadges,
+  ));
 }
 
 class GamePage extends StatefulWidget {
-  GamePage(
-      {this.userId,
-      this.petName,
-      this.goalName,
-      this.petType,
-      this.petHealth,
-      this.addBadges});
+  GamePage({
+    this.userId,
+    this.petName,
+    this.goalName,
+    this.petType,
+    this.petHealth,
+    this.addBadges,
+  });
 
   final String userId;
   final String petName;
   final String goalName;
   final String petType;
   final int petHealth;
-  final Function(int) addBadges;
+
+  final Function addBadges;
 
   @override
   _GamePage createState() {
     return _GamePage(
-        userId: userId,
-        petName: petName,
-        goalName: goalName,
-        petType: petType,
-        petHealth: petHealth,
-        addBadges: addBadges);
+      userId: userId,
+      petName: petName,
+      goalName: goalName,
+      petType: petType,
+      petHealth: petHealth,
+      addBadges: addBadges,
+    );
   }
 }
 
 class _GamePage extends State<GamePage> {
   NodeWithSize rootNode;
 
-  _GamePage(
-      {this.userId,
-      this.petName,
-      this.goalName,
-      this.petType,
-      this.petHealth,
-      this.addBadges});
+  _GamePage({
+    this.userId,
+    this.petName,
+    this.goalName,
+    this.petType,
+    this.petHealth,
+    this.addBadges,
+  });
 
   final String userId;
   final String petName;
   final String goalName;
   final String petType;
-  final Function(int) addBadges;
+
+  final Function addBadges;
+
   int petHealth;
 
   @override
@@ -153,8 +163,9 @@ class _GamePage extends State<GamePage> {
               _gameState.coins = coins - coinsForBadges;
               _gameState.reachedLevel(levelReached);
             });
-            // TODO: on game over it should make a calculation based on your coins for badges?
-            addBadges(badges);
+
+            addBadges(badges, goalName);
+
             Navigator.pushNamed(context, '/over');
           },
           gameState: _gameState);
@@ -292,7 +303,7 @@ class MainSceneState extends State<MainScene> {
                       ),
                       SizedBox(
                         width: 320.0,
-                        height: 500.0,
+                        height: 400.0,
                         child: BottomBar(
                           userId: userId,
                           petName: petName,
@@ -384,11 +395,11 @@ class BottomBar extends StatelessWidget {
       Container(
           child: Column(children: <Widget>[
         Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(15.0),
           child: DecoratedBox(
             decoration: BoxDecoration(color: Colors.yellow),
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(4.0),
               child: Text(
                 'Help $petName fly through the sky, avoiding the clouds and gathering coins to score points! Every 50 points earns a badge for your profile!',
                 style: TextStyle(color: Colors.pink),
@@ -397,11 +408,11 @@ class BottomBar extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(4.0),
           child: Image.asset('images/pixil-cat.png'),
         ),
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(4.0),
           child: Align(
               alignment: Alignment.bottomCenter,
               child: new TextureButton(
@@ -418,7 +429,7 @@ class BottomBar extends StatelessWidget {
                   height: 62.0)),
         ),
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(4.0),
           child: Align(
               alignment: Alignment.bottomCenter,
               child: new TextureButton(
@@ -472,7 +483,7 @@ class MainSceneBackgroundNode extends NodeWithSize {
     assert(_spriteSheet.image != null);
 
     // Add background
-    _background = new RepeatedImage(_imageMap['lib/game/assets/sky.png']);
+    _background = new RepeatedImage(_imageMap['lib/game/assets/skynew.png']);
     addChild(_background);
   }
 
@@ -642,10 +653,20 @@ class BaseBar extends StatelessWidget {
             decoration: BoxDecoration(color: Colors.yellow),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Looks like $petName has died. Dark times.',
-                style: TextStyle(color: Colors.pink),
-              ),
+              child: (badges == 0)
+                  ? Text(
+                      'Looks like $petName has died. Dark times. You didn\'t collect enough coins for a badge today.',
+                      style: TextStyle(color: Colors.pink),
+                    )
+                  : (badges == 1)
+                      ? Text(
+                          'Looks like $petName has died. Dark times. You earnt $badges badge! This has been added to your profile.',
+                          style: TextStyle(color: Colors.pink),
+                        )
+                      : Text(
+                          'Looks like $petName has died. Dark times. You earnt $badges badges! This has been added to your profile.',
+                          style: TextStyle(color: Colors.pink),
+                        ),
             ),
           ),
         ),
@@ -709,7 +730,7 @@ class OverSceneBackgroundNode extends NodeWithSize {
     assert(_spriteSheet.image != null);
 
     // Add background
-    _background = new RepeatedImage(_imageMap['lib/game/assets/sky.png']);
+    _background = new RepeatedImage(_imageMap['lib/game/assets/skynew.png']);
     addChild(_background);
   }
 
