@@ -1,6 +1,6 @@
 # Keeper
 
-Welcome to Keeper, a goal-keeping productivity gameification app for iOS and Android. This final project on our coding bootcamp was born from the loss of routine, habits and normalcy during this Covid 19 pandemic. Create an account and add your goals. For each goal, add habits to stick to in order to complete your goal. You can set a deadline for when you would like to complete your goal as well as how frequently you would like to complete each habit e.g. everyday, and will be notified if it isn't complete. You also can choose a personalised pet for each goal! Maintain your goals and habits so you can keep your pets healthy enough to play the game and earn rewards!
+Welcome to Keeper, a gamified goal-keeping productivity app for iOS and Android. This final project on our coding bootcamp was born from the loss of routine, habits and normalcy during this Covid 19 pandemic. Create an account and add your goals. For each goal, add habits to stick to in order to complete your goal. You can set a deadline for when you would like to complete your goal as well as how frequently you would like to complete each habit e.g. everyday, and will be notified if it isn't complete. You also can choose a personalised pet for each goal! Maintain your goals and habits so you can keep your pets healthy enough to play the game and earn rewards!
 
 ## Getting Started
 
@@ -32,7 +32,7 @@ flutter pub get
 Run the app locally
 
 ```
-f5 
+flutter run 
 ```
 Or start a debugging session (click 'Run' then 'Start Debugging')
 
